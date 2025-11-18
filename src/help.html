@@ -1,676 +1,455 @@
+<!--
+	Author : Benoit (BSM3D) Saint-Moulin
+	Version 1.0
+	2025 © BSM3D
+	www.bsm3d.com
+	Free to use and for Learning purpose.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Analyzer - User Guide</title>
+    <title>Image Analyzer - Help</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
-        /* Styles adapted from Genesis V.2, with size adjustments */
-        :root {
-            --primary-color: #1a2940;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --text-color: #bdc3c7; /* Base text color */
-            --heading-color: #ecf0f1; /* Brighter for headings */
-            --h3-color: #1abc9c; /* Turquoise for H3 */
-            --h4-color: #a9d7f3; /* Lighter blue for H4 */
-            --container-width: 1000px;
+        .help-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
         }
-
-        body {
-            /* Increased base font size */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 17px; /* Increased from default/previous */
-            line-height: 1.7; /* Adjusted line height */
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            background-color: #0a1525;
-            background-image: linear-gradient(to bottom, #0a1525 0%, #1a2940 50%, #0a1525 100%);
-            background-attachment: fixed;
-        }
-
-        .cover-page {
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+        .help-section {
+            margin-bottom: 30px;
             padding: 20px;
-        }
-
-        .cover-page h1 {
-             font-family: 'Segoe UI Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-             font-size: 4.5rem; /* Increased size */
-             font-weight: 300;
-             /* LOGO COLOR WHITE */
-             color: #ffffff;
-             text-shadow: 0 0 15px rgba(52, 152, 219, 0.9); /* Keep the blue glow */
-             margin-bottom: 5px;
-        }
-        .cover-page h2 {
-            font-family: 'Segoe UI Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 2.2rem; /* Increased size */
-            font-weight: 300;
-            color: var(--heading-color);
-            margin-top: 0;
-            margin-bottom: 40px;
-        }
-         .cover-page p {
-             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-             color: #bdc3c7;
-         }
-        .cover-page .author {
-            font-size: 1.2rem; /* Increased size */
-            color: #bdc3c7;
-            margin-top: 30px;
-        }
-         .cover-page .copyright {
-             font-size: 1rem; /* Increased size */
-             color: #7f8c8d;
-             margin-top: 5px;
-         }
-
-        .container {
-            max-width: var(--container-width);
-            margin: 20px auto;
-            padding: 35px; /* Increased padding */
-            background-color: rgba(10, 21, 37, 0.92);
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            background: var(--bg-medium);
             border-radius: 8px;
-            border: 1px solid rgba(52, 152, 219, 0.1);
         }
-
-        /* Table of Contents specific style */
-        #toc-section {
-            background-color: rgba(255, 255, 255, 0.03);
-            padding: 25px; /* Increased padding */
-            border-radius: 5px;
-            margin-bottom: 35px; /* Increased margin */
-        }
-         #toc-section h2 {
-            color: var(--heading-color); /* Brighter ToC title */
-            font-size: 2rem; /* Increased size */
-            border-bottom: 1px solid rgba(52, 152, 219, 0.5); /* Match H2 style */
+        .help-section h2 {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
             padding-bottom: 10px;
-            margin-top: 0;
-            font-weight: 300; /* Light weight */
-            font-family: 'Segoe UI Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-         }
-         #toc-section ul {
-            list-style: none;
-            padding-left: 0;
-            margin-top: 15px;
+            margin-bottom: 15px;
         }
-         #toc-section li {
-            margin-bottom: 10px; /* Increased spacing */
-        }
-         #toc-section a {
-            color: #a9d7f3;
-            text-decoration: none;
-            transition: color 0.2s ease;
-            font-size: 1.05em; /* Slightly larger ToC links */
-        }
-         #toc-section a:hover {
-            color: #ffffff;
-            text-decoration: underline;
-        }
-
-
-        h1, h2, h3, h4 {
-            margin-top: 2em; /* Increased top margin */
-            margin-bottom: 1em;
-            font-weight: 300; /* Light headings */
-            font-family: 'Segoe UI Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        /* Specific heading styles */
-        h1 { font-size: 2.8rem; text-align: center; margin-bottom: 1.2em; color: #FFF; text-shadow: 0 0 8px rgba(52, 152, 219, 0.5);} /* Applied only outside cover */
-        h2 { font-size: 2rem; border-bottom: 1px solid rgba(52, 152, 219, 0.5); padding-bottom: 10px; color: var(--heading-color); } /* Increased size */
-        h3 { font-size: 1.6rem; color: var(--h3-color); } /* Increased size */
-        h4 { font-size: 1.3rem; color: var(--h4-color); } /* Increased size */
-
-        p {
-            margin-bottom: 1.3em; /* Increased paragraph spacing */
+        .help-section h3 {
             color: var(--text-color);
-            text-align: justify; /* JUSTIFY TEXT */
-        }
-
-        ul, ol {
-            margin-bottom: 25px; /* Increased spacing */
-            padding-left: 35px; /* Increased indentation */
-        }
-
-        li {
-            margin-bottom: 12px; /* Increased list item spacing */
-        }
-
-        strong, b {
-             font-weight: 600;
-             color: #ffffff;
-        }
-        em, i {
-             font-style: italic;
-             color: #a9d7f3; /* Keep lighter blue for italics */
-        }
-        code, .inline-code { /* Added class for consistency */
-             background-color: rgba(255, 255, 255, 0.1);
-             padding: 3px 6px; /* Slightly larger padding */
-             border-radius: 3px;
-             font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-             color: #fab1a0;
-             font-size: 0.95em; /* Slightly larger code font */
-        }
-
-        a {
-            color: var(--secondary-color);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-        a:hover {
-            color: #ffffff;
-            text-decoration: underline;
-        }
-
-        hr {
-            border: none;
-            border-top: 1px solid rgba(52, 152, 219, 0.3);
-            margin: 40px 0; /* Increased margin */
-        }
-
-        /* Info boxes */
-        .info-box {
-            background-color: rgba(52, 152, 219, 0.1);
-            border-left: 4px solid var(--secondary-color);
-            padding: 18px; /* Increased padding */
-            margin: 25px 0; /* Increased margin */
-            border-radius: 4px;
-        }
-        .info-box p:last-child {
-            margin-bottom: 0;
-        }
-
-        .warning-box {
-            background-color: rgba(231, 76, 60, 0.1);
-            border-left: 4px solid var(--accent-color);
-            padding: 18px; /* Increased padding */
-            margin: 25px 0; /* Increased margin */
-            border-radius: 4px;
-        }
-        .warning-box p:last-child {
-            margin-bottom: 0;
-        }
-
-        .success-box {
-            background-color: rgba(26, 188, 156, 0.1);
-            border-left: 4px solid var(--h3-color);
-            padding: 18px;
-            margin: 25px 0;
-            border-radius: 4px;
-        }
-        .success-box p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 25px 0; /* Increased margin */
-            background-color: rgba(255, 255, 255, 0.02);
-        }
-        table th {
-            background-color: rgba(52, 152, 219, 0.2);
-            color: #ffffff;
-            padding: 14px; /* Increased padding */
-            text-align: left;
-            font-weight: 600;
-            border-bottom: 2px solid rgba(52, 152, 219, 0.5);
-        }
-        table td {
-            padding: 12px 14px; /* Increased padding */
-            border-bottom: 1px solid rgba(52, 152, 219, 0.1);
-        }
-        table tr:hover {
-            background-color: rgba(52, 152, 219, 0.05);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 35px 0; /* Increased padding */
-            color: #7f8c8d;
-            font-size: 0.95em;
-        }
-        footer a {
-            color: #a9d7f3;
-        }
-        footer p {
-            margin: 8px 0;
-            text-align: center; /* Override justify for footer */
-        }
-
-        /* Section styling */
-        section {
-            margin-bottom: 45px; /* Increased margin */
-        }
-
-        .param-section {
-            margin-left: 25px; /* Increased indentation */
-            margin-bottom: 30px; /* Increased spacing */
-        }
-
-        /* Disclaimer box */
-        .disclaimer-box {
-            background-color: rgba(231, 76, 60, 0.05);
-            border: 1px solid rgba(231, 76, 60, 0.3);
-            padding: 25px; /* Increased padding */
-            border-radius: 5px;
             margin-top: 20px;
+            margin-bottom: 10px;
         }
-        .disclaimer-box p {
-            margin-bottom: 15px; /* Increased spacing */
+        .help-section ul {
+            list-style: disc;
+            padding-left: 25px;
         }
-        .disclaimer-box p:last-child {
-            margin-bottom: 0;
+        .help-section li {
+            margin: 8px 0;
+            background: transparent;
+            padding: 0;
         }
-
-        /* Score indicators */
-        .score-indicator {
-            display: inline-block;
-            padding: 3px 8px;
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-left: 4px solid #17a2b8;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        code {
+            background: var(--border-color);
+            padding: 2px 6px;
             border-radius: 3px;
-            font-weight: 600;
-            font-size: 0.9em;
+            font-family: 'Courier New', monospace;
         }
-        .score-low { background-color: rgba(0, 200, 81, 0.2); color: #00C851; }
-        .score-medium { background-color: rgba(255, 187, 51, 0.2); color: #ffbb33; }
-        .score-high { background-color: rgba(255, 68, 68, 0.2); color: #ff4444; }
     </style>
 </head>
 <body>
+    <div class="help-container">
+        <h1>Image Analyzer - User Guide</h1>
 
-    <!-- COVER PAGE -->
-    <div class="cover-page">
-        <h1>Image Analyzer</h1>
-        <h2>AI Detection & Analysis Tool</h2>
-        <p>Privacy-Focused • Client-Side Processing • Open Source</p>
-        <p class="author">Benoît (BSM3D) Saint-Moulin</p>
-        <p class="copyright">© 2025 BSM3D - Version 1.0</p>
-    </div>
-
-    <!-- MAIN CONTENT CONTAINER -->
-    <div class="container">
-
-        <!-- TABLE OF CONTENTS -->
-        <div id="toc-section">
-            <h2>Table of Contents</h2>
-            <ul>
-                <li><a href="#overview">1. Overview</a></li>
-                <li><a href="#getting-started">2. Getting Started</a></li>
-                <li><a href="#understanding-results">3. Understanding the Results</a></li>
-                <li><a href="#visual-analysis">4. Visual Analysis Tools</a></li>
-                <li><a href="#export-training">5. Export Options & Training Mode</a></li>
-                <li><a href="#best-practices">6. Best Practices & Limitations</a></li>
-                <li><a href="#technical">7. Technical Requirements & Troubleshooting</a></li>
-                <li><a href="#disclaimer">8. Disclaimer & License</a></li>
-            </ul>
+        <div class="help-section">
+            <h2>Overview</h2>
+            <p>
+                <strong>Image Analyzer</strong> is a privacy-focused web application designed to help detect
+                whether an image has been generated by artificial intelligence (AI). All processing happens
+                locally in your browser - no data is sent to any server.
+            </p>
+            <div class="info">
+                <strong>Privacy First:</strong> This tool performs 100% client-side processing. Your images
+                never leave your device.
+            </div>
         </div>
 
-        <hr>
-
-        <!-- SECTION 1: OVERVIEW -->
-        <section id="overview">
-            <h2>1. Overview</h2>
-            
-            <p><strong>Image Analyzer</strong> is a privacy-focused web application designed to help detect whether an image has been generated by artificial intelligence (AI). All processing happens locally in your browser - no data is sent to any server.</p>
-
-            <div class="info-box">
-                <p><strong>Privacy First:</strong> This tool performs 100% client-side processing. Your images never leave your device. All analysis is performed directly in your web browser using JavaScript.</p>
-            </div>
-
-            <h3>Key Features</h3>
-            <ul>
-                <li><strong>AI Probability Scoring:</strong> Advanced algorithms analyze multiple image characteristics to estimate AI generation likelihood</li>
-                <li><strong>EXIF Metadata Extraction:</strong> Reads camera and photo information embedded in image files</li>
-                <li><strong>Visual Analysis Tools:</strong> Heatmaps, frequency analysis, and spectral simulations (UV/IR)</li>
-                <li><strong>Training Mode:</strong> Improve detection accuracy with your own sample datasets</li>
-                <li><strong>Multiple Export Formats:</strong> JSON, CSV, and TXT export options for further analysis</li>
-                <li><strong>No Installation Required:</strong> Runs entirely in modern web browsers</li>
-            </ul>
-
-            <h3>What Makes This Tool Different</h3>
-            <p>Unlike cloud-based AI detection services, Image Analyzer prioritizes user privacy by processing everything locally. This means faster results, no upload limits, and complete control over your data. The tool uses multiple detection methods including pattern recognition, texture analysis, color distribution, symmetry detection, and metadata validation.</p>
-        </section>
-
-        <hr>
-
-        <!-- SECTION 2: GETTING STARTED -->
-        <section id="getting-started">
-            <h2>2. Getting Started</h2>
-
-            <h3>Basic Analysis Workflow</h3>
+        <div class="help-section">
+            <h2>Getting Started</h2>
+            <h3>Basic Analysis</h3>
             <ol>
-                <li>Click the <strong>Load image</strong> button in the main interface</li>
-                <li>Select an image file from your device (JPEG, PNG, or WebP format)</li>
-                <li>Wait for the analysis to complete (typically 2-5 seconds)</li>
+                <li>Click the <strong>Load image</strong> button</li>
+                <li>Select an image file (JPEG, PNG, or WebP)</li>
+                <li>Wait for the analysis to complete</li>
                 <li>Review the results displayed on screen</li>
             </ol>
 
-            <h3>Analysis Components</h3>
-            <p>The analysis provides comprehensive information across four main categories:</p>
-
-            <div class="param-section">
-                <h4>AI Probability Score</h4>
-                <p>A percentage value (0-100%) indicating how likely the image is AI-generated. This score is calculated by analyzing multiple image characteristics and combining them into a weighted probability.</p>
-            </div>
-
-            <div class="param-section">
-                <h4>Detected Indicators</h4>
-                <p>Specific features and patterns that suggest AI generation, including:</p>
-                <ul>
-                    <li>Repetitive patterns and textures</li>
-                    <li>Sharp edge concentrations</li>
-                    <li>Unnatural uniformity</li>
-                    <li>Color palette characteristics</li>
-                    <li>Symmetry anomalies</li>
-                    <li>Digital noise signatures</li>
-                </ul>
-            </div>
-
-            <div class="param-section">
-                <h4>EXIF Metadata</h4>
-                <p>Camera and photo information extracted from the image file, if available. This includes camera model, lens information, exposure settings, GPS coordinates, timestamps, and software used.</p>
-            </div>
-
-            <div class="param-section">
-                <h4>Image Details</h4>
-                <p>Technical information about the file including dimensions, file size, format, color space, and unique color count - a key indicator for AI detection.</p>
-            </div>
-
-            <div class="success-box">
-                <p><strong>Pro Tip:</strong> For best results, analyze the original, unedited image file. Heavy compression or editing can affect detection accuracy.</p>
-            </div>
-        </section>
-
-        <hr>
-
-        <!-- SECTION 3: UNDERSTANDING RESULTS -->
-        <section id="understanding-results">
-            <h2>3. Understanding the Results</h2>
-
-            <h3>AI Probability Score Interpretation</h3>
-            <p>The AI probability score is the primary indicator of whether an image is AI-generated. Understanding how to interpret this score is crucial for making informed decisions.</p>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Score Range</th>
-                        <th>Interpretation</th>
-                        <th>Confidence Level</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="score-indicator score-low">0-30%</span></td>
-                        <td>Likely a real photo</td>
-                        <td>High confidence - exhibits natural photographic characteristics</td>
-                    </tr>
-                    <tr>
-                        <td><span class="score-indicator score-medium">30-70%</span></td>
-                        <td>Uncertain - requires further analysis</td>
-                        <td>Medium confidence - mixed indicators present</td>
-                    </tr>
-                    <tr>
-                        <td><span class="score-indicator score-high">70-100%</span></td>
-                        <td>Highly likely AI-generated</td>
-                        <td>High confidence - multiple AI indicators detected</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="warning-box">
-                <p><strong>Important Disclaimer:</strong> This tool provides probability-based analysis and should NOT be considered absolute proof. AI detection is an evolving field, and no method is 100% accurate. Use this tool as part of a broader verification process that includes human judgment and contextual analysis.</p>
-            </div>
-
-            <h3>Detection Indicators Explained</h3>
-            <p>The tool analyzes multiple aspects of the image to calculate the probability score:</p>
-
-            <div class="param-section">
-                <h4>Pattern Analysis</h4>
-                <p>Examines repetitive patterns and sharp edges that are unnatural in real photographs. AI-generated images often exhibit perfectly repeated textures or unnaturally clean geometric patterns.</p>
-            </div>
-
-            <div class="param-section">
-                <h4>Texture Characteristics</h4>
-                <p>Analyzes uniformity and gradient characteristics. Real photos typically have natural texture variation, while AI-generated images may show overly smooth or perfectly uniform textures.</p>
-            </div>
-
-            <div class="param-section">
-                <h4>Color Distribution</h4>
-                <p>Evaluates color palette diversity and distribution. AI-generated images often have limited, carefully selected color palettes, while real photos exhibit more natural color variation and transitions.</p>
-            </div>
-
-            <div class="param-section">
-                <h4>Symmetry Detection</h4>
-                <p>Identifies unusual symmetry patterns that may indicate AI generation. While some real-world objects are symmetrical, perfect symmetry across complex scenes is often a red flag.</p>
-            </div>
-
-            <div class="param-section">
-                <h4>Noise Characteristics</h4>
-                <p>Distinguishes between natural camera sensor noise and artificial noise patterns. Real photos have characteristic noise patterns from the camera sensor, while AI-generated images may lack this or have artificial noise added.</p>
-            </div>
-
-            <div class="param-section">
-                <h4>Compression Artifacts</h4>
-                <p>Analyzes compression artifacts and edge quality. The way an image compresses can reveal whether it originated from a camera or was generated digitally.</p>
-            </div>
-
-            <h3>EXIF Metadata Significance</h3>
-            <p>EXIF (Exchangeable Image File Format) data is one of the strongest pieces of evidence for determining image authenticity:</p>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>EXIF Status</th>
-                        <th>Interpretation</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Complete EXIF Present</strong></td>
-                        <td>Strong indicator of real photo</td>
-                        <td>Camera settings, GPS, dates suggest genuine capture</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Partial EXIF Present</strong></td>
-                        <td>Possibly edited real photo</td>
-                        <td>Some editing software preserves partial metadata</td>
-                    </tr>
-                    <tr>
-                        <td><strong>EXIF Absent</strong></td>
-                        <td>Common in AI images</td>
-                        <td>Also occurs in heavily edited or exported images</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Suspicious EXIF</strong></td>
-                        <td>Potentially fabricated</td>
-                        <td>Impossible settings or inconsistent data</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="info-box">
-                <p><strong>Technical Note:</strong> Advanced users can potentially fake EXIF data using specialized tools. Therefore, EXIF presence should not be the only factor in your decision. Cross-reference with other indicators and visual analysis.</p>
-            </div>
-
-            <h3>Color Count Analysis</h3>
-            <p>The unique color count is a powerful indicator:</p>
+            <p>The analysis provides:</p>
             <ul>
-                <li><strong>High Color Count (>10,000):</strong> Typical of real photographs with natural color variation</li>
-                <li><strong>Medium Color Count (5,000-10,000):</strong> Could be compressed real photo or high-quality AI generation</li>
-                <li><strong>Low Color Count (<5,000):</strong> Common in AI-generated images with limited color palettes</li>
+                <li><strong>AI Probability Score:</strong> A percentage indicating how likely the image is AI-generated</li>
+                <li><strong>Detected Indicators:</strong> Specific features that suggest AI generation</li>
+                <li><strong>EXIF Metadata:</strong> Camera and photo information (if available)</li>
+                <li><strong>Image Details:</strong> File information including unique color count</li>
             </ul>
-        </section>
+        </div>
 
-        <hr>
+        <div class="help-section">
+            <h2>Understanding the Results</h2>
 
-        <!-- SECTION 4: VISUAL ANALYSIS TOOLS -->
-        <section id="visual-analysis">
-            <h2>4. Visual Analysis Tools</h2>
-
-            <p>Image Analyzer provides powerful visual overlays and transformations to help identify suspicious areas and characteristics. These tools simulate various imaging techniques used in forensic analysis.</p>
-
-            <h3>Heatmap Visualization</h3>
-            <p>The heatmap creates a color-coded overlay showing which areas of the image are suspicious based on local analysis of color diversity and edge characteristics. Click <strong>"Toggle Heatmap"</strong> to activate.</p>
-
-            <h4>How the Heatmap Works</h4>
+            <h3>AI Probability Score</h3>
+            <p>The score ranges from 0% to 100%:</p>
             <ul>
-                <li>Divides the image into 16×16 pixel blocks for localized analysis</li>
+                <li><strong>0-30%:</strong> <span style="color: #00C851;">Likely a real photo</span></li>
+                <li><strong>30-70%:</strong> <span style="color: #ffbb33;">Uncertain - requires further analysis</span></li>
+                <li><strong>70-100%:</strong> <span style="color: #ff4444;">Highly likely AI-generated</span></li>
+            </ul>
+
+            <div class="warning">
+                <strong>Important:</strong> This tool provides probability-based analysis and should NOT be
+                considered absolute proof. Use it as part of a broader verification process.
+            </div>
+
+            <h3>Detection Indicators</h3>
+            <p>The tool analyzes multiple aspects of the image:</p>
+            <ul>
+                <li><strong>Patterns:</strong> Repetitive patterns and sharp edges that are unnatural</li>
+                <li><strong>Textures:</strong> Uniformity and gradient characteristics</li>
+                <li><strong>Colors:</strong> Color palette diversity and distribution</li>
+                <li><strong>Symmetry:</strong> Unusual symmetry patterns</li>
+                <li><strong>Noise:</strong> Digital noise characteristics (natural vs. artificial)</li>
+                <li><strong>Artifacts:</strong> Compression artifacts and edge quality</li>
+            </ul>
+
+            <h3>EXIF Metadata</h3>
+            <p>EXIF data is strong evidence for real photos:</p>
+            <ul>
+                <li><strong>Present:</strong> Suggests the image was taken with a real camera</li>
+                <li><strong>Complete:</strong> Camera settings, GPS, and dates are strong indicators</li>
+                <li><strong>Absent:</strong> Common in AI-generated images, but also in edited photos</li>
+            </ul>
+
+            <div class="info">
+                <strong>Note:</strong> Advanced users can potentially fake EXIF data, so it should not be
+                the only factor in your decision.
+            </div>
+        </div>
+
+        <div class="help-section">
+            <h2>Visual Analysis Tools</h2>
+            <p>The tool provides powerful visual overlays to help identify suspicious areas:</p>
+
+            <h3>🗺️ Heatmap Visualization</h3>
+            <p>
+                The heatmap creates a color-coded overlay showing which areas of the image are suspicious.
+                Click <strong>"Toggle Heatmap"</strong> to activate.
+            </p>
+
+            <h4>How It Works</h4>
+            <ul>
+                <li>Divides image into 16×16 pixel blocks</li>
                 <li>Analyzes each block for:
                     <ul>
-                        <li>Limited color palette (< 10 unique colors = suspicious)</li>
+                        <li>Limited color palette (< 10 colors = suspicious)</li>
                         <li>Sharp edge concentration (many abrupt transitions)</li>
                         <li>Natural variation (> 50 colors = natural)</li>
                     </ul>
                 </li>
-                <li>Assigns a suspicion score (0-100%) to each block</li>
-                <li>Applies color-coded overlay based on suspicion level</li>
+                <li>Assigns suspicion score (0-100%) to each block</li>
             </ul>
 
-            <h4>Color Code Interpretation</h4>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Color</th>
-                        <th>Suspicion Level</th>
-                        <th>Interpretation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong style="color: #00ff00;">🟢 Green</strong></td>
-                        <td>Low (0-30%)</td>
-                        <td>Natural characteristics, likely real photo</td>
-                    </tr>
-                    <tr>
-                        <td><strong style="color: #ffff00;">🟡 Yellow</strong></td>
-                        <td>Medium (30-60%)</td>
-                        <td>Slightly suspicious, requires attention</td>
-                    </tr>
-                    <tr>
-                        <td><strong style="color: #ff0000;">🔴 Red</strong></td>
-                        <td>High (60-100%)</td>
-                        <td>Likely AI-generated or heavily processed</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h4>Color Code</h4>
+            <ul>
+                <li><strong style="color: #00ff00;">🟢 Green:</strong> Low suspicion (0-30%) - Natural characteristics</li>
+                <li><strong style="color: #ffff00;">🟡 Yellow:</strong> Medium suspicion (30-60%) - Slightly suspicious</li>
+                <li><strong style="color: #ff0000;">🔴 Red:</strong> High suspicion (60-100%) - Likely AI-generated</li>
+            </ul>
 
-            <div class="info-box">
-                <p><strong>Usage Tip:</strong> Hover over the heatmap to see the suspicion level for each area. Real photos typically show mostly green with occasional yellow spots. AI-generated images often have large red areas or unusual patterns of high suspicion zones.</p>
+            <div class="info">
+                <strong>Tip:</strong> Hover over the heatmap to see the suspicion level (green/yellow/red) for each area.
             </div>
 
-            <h4>Practical Examples</h4>
+            <h4>Real-World Examples</h4>
             <ul>
-                <li><strong>AI-Generated Portrait:</strong> Often shows red zones in background areas with perfect blur or texture, and in overly smooth skin areas</li>
-                <li><strong>Real Portrait:</strong> Mostly green with yellow in genuinely blurred background, natural skin texture variation</li>
-                <li><strong>AI-Generated Landscape:</strong> Red zones in unnaturally uniform sky, repetitive foliage textures, or perfect reflections</li>
-                <li><strong>Real Landscape:</strong> Natural variation throughout, yellow in genuinely uniform areas like clear sky</li>
+                <li><strong>AI Portrait:</strong> Face often shows RED (too smooth, limited pores)</li>
+                <li><strong>Real Photo:</strong> Skin shows mostly GREEN (natural texture, pores visible)</li>
+                <li><strong>AI Landscape:</strong> Sky often shows RED (unnaturally uniform gradient)</li>
+                <li><strong>Real Landscape:</strong> Sky shows GREEN/YELLOW (clouds, natural variation)</li>
+                <li><strong>AI Background:</strong> Blurred areas show RED (mathematically perfect blur)</li>
+                <li><strong>Real Background:</strong> Out-of-focus areas show GREEN (optical bokeh)</li>
             </ul>
 
-            <h3>Frequency Analysis</h3>
-            <p>Displays the image's frequency spectrum, revealing patterns invisible to the naked eye. This technique is based on Fourier Transform analysis used in forensic image authentication. Click <strong>"Frequency"</strong> to activate.</p>
+            <h3>🔲 Block Analysis Tool</h3>
+            <p>
+                Visualizes compression artifacts and repeated patterns.
+                Click <strong>"Block Analysis"</strong> to activate.
+            </p>
 
-            <h4>How Frequency Analysis Works</h4>
+            <h4>What It Shows</h4>
             <ul>
-                <li><strong>Fast Fourier Transform (FFT):</strong> Converts spatial image data to frequency domain</li>
-                <li><strong>Pattern Detection:</strong> Reveals periodic patterns, grid artifacts, and compression signatures</li>
-                <li><strong>Artifact Identification:</strong> Shows JPEG compression blocks, upscaling artifacts, and processing traces</li>
+                <li><strong style="color: #0064ff;">Blue Grid (8×8):</strong> JPEG compression block boundaries
+                    <ul>
+                        <li>Many blue boxes = heavy compression (normal for JPEGs)</li>
+                        <li>No blue boxes = suspiciously smooth (possible AI)</li>
+                    </ul>
+                </li>
+                <li><strong style="color: #ff00ff;">Magenta Boxes (16×16):</strong> Repeated patterns
+                    <ul>
+                        <li>Same pattern appearing 3+ times in the image</li>
+                        <li>Common in AI-generated backgrounds and textures</li>
+                        <li>Rare in real photos unless tiled surfaces</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h4>Real-World Examples</h4>
+            <ul>
+                <li><strong>AI Image:</strong> Few/no blue blocks (too smooth), many magenta boxes (repeated elements)</li>
+                <li><strong>Real Photo:</strong> Many blue blocks (normal compression), few magenta boxes</li>
+                <li><strong>AI Wallpaper:</strong> Lots of magenta boxes (tiled/repeated patterns)</li>
+                <li><strong>Brick Wall Photo:</strong> Magenta boxes are OK (real repetition)</li>
+            </ul>
+
+            <div class="warning">
+                <strong>Important:</strong> Both tools show indicators, not proof. A blue sky may naturally
+                appear uniform (yellow/red on heatmap), and a tiled floor will show repeated patterns
+                (magenta boxes) even in real photos.
+            </div>
+
+            <h3>🔍 Pixel Information Tooltip</h3>
+            <p>
+                Hover your mouse over the image to see detailed pixel information:
+            </p>
+            <ul>
+                <li><strong>Position:</strong> X, Y coordinates</li>
+                <li><strong>RGB Values:</strong> Red, Green, Blue (0-255)</li>
+                <li><strong>Alpha:</strong> Transparency value and percentage</li>
+                <li><strong>Hex Code:</strong> Color in hexadecimal format</li>
+                <li><strong>Brightness:</strong> Calculated luminance (0-255)</li>
+            </ul>
+
+            <p><strong>Use Case:</strong> Check if areas that look identical actually have the same RGB values
+            (sign of copy-paste or AI generation) or natural variation (real photo).</p>
+        </div>
+
+        <div class="help-section">
+            <h2>Advanced Analysis Tools</h2>
+            <p>Additional forensic tools for in-depth image examination:</p>
+
+            <h3>🔍 Edge Detection Overlay</h3>
+            <p>
+                Uses Sobel edge detection algorithm to highlight edges and transitions in the image.
+                Click <strong>"Edge Detection"</strong> to toggle.
+            </p>
+
+            <h4>What It Reveals</h4>
+            <ul>
+                <li><strong>Cyan highlights:</strong> Detected edges and sharp transitions</li>
+                <li><strong>AI Images:</strong> Often show edges that are "too perfect" or mathematically precise</li>
+                <li><strong>Real Photos:</strong> Natural edge variation from optical physics and sensor noise</li>
+                <li><strong>Suspicious Patterns:</strong> Consistent edge strength across different objects (unnatural)</li>
+            </ul>
+
+            <h4>Use Cases</h4>
+            <ul>
+                <li><strong>Hair/Fur:</strong> AI often creates unnaturally smooth or repetitive strands</li>
+                <li><strong>Text:</strong> AI-generated text may have inconsistent edges</li>
+                <li><strong>Reflections:</strong> Check if reflections match the object's edge quality</li>
+            </ul>
+
+            <h3>📊 RGB Channel Separation</h3>
+            <p>
+                View individual color channels independently. Click <strong>"RGB: RGB"</strong> to cycle through
+                channels: RGB → R → G → B → RGB.
+            </p>
+
+            <h4>Channel Views</h4>
+            <ul>
+                <li><strong>Red Channel Only:</strong> Shows only red color values (green/blue = 0)</li>
+                <li><strong>Green Channel Only:</strong> Shows only green color values</li>
+                <li><strong>Blue Channel Only:</strong> Shows only blue color values</li>
             </ul>
 
             <h4>What to Look For</h4>
             <ul>
-                <li><strong>Regular Patterns:</strong> Grid-like patterns suggest AI generation or heavy processing</li>
-                <li><strong>Compression Artifacts:</strong> Visible in real photos compressed as JPEG, but different signature in AI-generated images</li>
-                <li><strong>Noise Distribution:</strong> Real camera sensor noise has characteristic frequency signatures</li>
-                <li><strong>Upscaling Artifacts:</strong> Repeated patterns indicate image upscaling, common in AI generation</li>
+                <li><strong>Channel Noise:</strong> Real photos have correlated noise across channels; AI may not</li>
+                <li><strong>Color Bleeding:</strong> AI might show inconsistencies between color channels</li>
+                <li><strong>Compression Artifacts:</strong> Different patterns in each channel can indicate editing</li>
+                <li><strong>Suspicious Uniformity:</strong> One channel appearing too smooth compared to others</li>
             </ul>
 
-            <div class="success-box">
-                <p><strong>Expert Insight:</strong> Real photos show natural, non-uniform frequency distribution. AI-generated images often show artificial regularity or suspicious patterns in the frequency domain, especially in areas that appear smooth in the spatial domain.</p>
+            <h4>Real-World Examples</h4>
+            <ul>
+                <li><strong>Blue Sky:</strong> Should show detail in blue channel, low values in red channel</li>
+                <li><strong>Skin Tones:</strong> All channels should have values; pure single-channel is suspicious</li>
+                <li><strong>Shadows:</strong> Should be dark across all channels equally</li>
+            </ul>
+
+            <h3>🔬 Magnifier Tool (8x Zoom)</h3>
+            <p>
+                Pixel-level inspection with 8x magnification. Click <strong>"Magnifier (8x)"</strong> to activate,
+                then hover over the image.
+            </p>
+
+            <h4>Features</h4>
+            <ul>
+                <li><strong>8x magnification:</strong> See individual pixels clearly</li>
+                <li><strong>Grid overlay:</strong> Shows pixel boundaries</li>
+                <li><strong>Red crosshair:</strong> Indicates center pixel</li>
+                <li><strong>Follows mouse:</strong> Appears next to cursor for easy inspection</li>
+            </ul>
+
+            <h4>What to Inspect</h4>
+            <ul>
+                <li><strong>Pixel-level patterns:</strong> AI may create subtle repeating pixel patterns</li>
+                <li><strong>Text clarity:</strong> AI-generated text often has pixel-level artifacts</li>
+                <li><strong>Fine details:</strong> Hair, eyelashes, fabric texture quality</li>
+                <li><strong>Smooth gradients:</strong> Too smooth = suspicious; natural variation = real</li>
+            </ul>
+
+            <h4>Examples</h4>
+            <ul>
+                <li><strong>AI Faces:</strong> Pores may be painted on (uniform pixels) instead of real (varied pixels)</li>
+                <li><strong>Real Photos:</strong> Sensor noise creates slight pixel variation even in smooth areas</li>
+                <li><strong>AI Backgrounds:</strong> Perfectly uniform gradients without noise</li>
+            </ul>
+
+            <h3>📊 RGB Histogram Analyzer</h3>
+            <p>
+                Displays the distribution of red, green, and blue values across the image.
+                Click <strong>"Histogram"</strong> to toggle the floating histogram display.
+            </p>
+
+            <h4>Understanding the Histogram</h4>
+            <ul>
+                <li><strong>X-axis:</strong> Color value (0-255, left=dark, right=bright)</li>
+                <li><strong>Y-axis:</strong> Frequency (how many pixels have that value)</li>
+                <li><strong>Red line:</strong> Distribution of red channel values</li>
+                <li><strong>Green line:</strong> Distribution of green channel values</li>
+                <li><strong>Blue line:</strong> Distribution of blue channel values</li>
+            </ul>
+
+            <h4>Suspicious Patterns</h4>
+            <ul>
+                <li><strong>Unnatural spikes:</strong> Sharp peaks at specific values (possible posterization)</li>
+                <li><strong>Missing gaps:</strong> Ranges with zero pixels (sign of editing or AI generation)</li>
+                <li><strong>Clipping:</strong> Large spikes at 0 or 255 (crushed blacks/blown highlights)</li>
+                <li><strong>Too smooth:</strong> Bell curve that's too perfect (AI smoothing)</li>
+            </ul>
+
+            <h4>Natural Photo Patterns</h4>
+            <ul>
+                <li><strong>Gradual distribution:</strong> Smooth curves without sharp gaps</li>
+                <li><strong>Balanced channels:</strong> R, G, B follow similar (but not identical) patterns</li>
+                <li><strong>Central tendency:</strong> Most values in middle range (not extreme darks/lights)</li>
+                <li><strong>Sensor noise:</strong> All values represented (no large empty gaps)</li>
+            </ul>
+
+            <h4>Examples</h4>
+            <ul>
+                <li><strong>Sunset Photo:</strong> Red/orange peaks toward bright end, blue toward dark end</li>
+                <li><strong>AI Portrait:</strong> May show unnatural gaps or too-perfect bell curve</li>
+                <li><strong>Overprocessed:</strong> Sharp spikes and gaps indicate heavy editing</li>
+            </ul>
+
+            <h3>🎨 Brightness/Contrast Adjustment</h3>
+            <p>
+                Interactive sliders to adjust brightness and contrast in real-time. Use these to reveal hidden
+                artifacts or compression issues.
+            </p>
+
+            <h4>Controls</h4>
+            <ul>
+                <li><strong>Brightness slider:</strong> -100 to +100 (adjusts overall luminance)</li>
+                <li><strong>Contrast slider:</strong> -100 to +100 (adjusts tonal range)</li>
+                <li><strong>Reset button:</strong> Returns to original values (0, 0)</li>
+            </ul>
+
+            <h4>Detection Techniques</h4>
+            <ul>
+                <li><strong>Extreme brightness (+100):</strong> Reveals banding, posterization, hidden watermarks</li>
+                <li><strong>Extreme darkness (-100):</strong> Shows compression artifacts in shadows</li>
+                <li><strong>High contrast (+100):</strong> Exposes smooth gradients that are too perfect</li>
+                <li><strong>Low contrast (-100):</strong> Can reveal hidden layer boundaries</li>
+            </ul>
+
+            <h4>What to Look For</h4>
+            <ul>
+                <li><strong>Banding:</strong> Visible "steps" in gradients (AI smoothing artifact)</li>
+                <li><strong>Hidden elements:</strong> Watermarks, removed objects, composition guides</li>
+                <li><strong>Inconsistent noise:</strong> Some areas have noise, others don't (sign of compositing)</li>
+                <li><strong>Too-smooth areas:</strong> Regions that stay perfectly smooth even at extreme settings</li>
+            </ul>
+
+            <div class="info">
+                <strong>Pro Tip:</strong> Use brightness/contrast adjustments in combination with other tools.
+                For example, crank brightness to +100, then activate edge detection to see if hidden edges appear.
             </div>
 
-            <h3>Ultraviolet (UV) Mode</h3>
-            <p>Simulates ultraviolet photography with false-color visualization. UV imaging is used in forensics to detect alterations and material properties. Click <strong>"Ultraviolet"</strong> to activate.</p>
-
-            <h4>How UV Mode Works</h4>
+            <h4>Examples</h4>
             <ul>
-                <li><strong>UV channel simulation:</strong> Emphasizes blue/UV wavelengths (300-400nm)</li>
-                <li><strong>False-color mapping:</strong> Blue = UV, Green = visible blue, Red = visible green</li>
-                <li><strong>Material discrimination:</strong> Different materials reflect/absorb UV differently</li>
-                <li><strong>Detail enhancement:</strong> Reveals hidden textures and surface properties</li>
+                <li><strong>AI Sky:</strong> High contrast reveals unnatural banding in gradient</li>
+                <li><strong>Real Photo:</strong> Extreme adjustments show natural sensor noise throughout</li>
+                <li><strong>Edited Photo:</strong> Brightness adjustments may reveal clone stamp patterns</li>
             </ul>
 
-            <h4>Characteristic UV Appearances</h4>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Material/Subject</th>
-                        <th>Real Photo UV Response</th>
-                        <th>AI Image Issues</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Human Skin</strong></td>
-                        <td>Appears darker, blemishes more visible</td>
-                        <td>Often shows unrealistic uniformity</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Teeth/Eyes</strong></td>
-                        <td>Teeth glow bright, eyes show UV fluorescence</td>
-                        <td>May lack realistic fluorescence</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Flowers</strong></td>
-                        <td>Show UV patterns invisible to human eye</td>
-                        <td>Usually lack accurate UV nectar guides</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Fabrics</strong></td>
-                        <td>Natural vs. synthetic show different absorption</td>
-                        <td>May not differentiate materials correctly</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Sky</strong></td>
-                        <td>Appears darker, increased contrast</td>
-                        <td>Often shows unrealistic sky rendering</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h3>💡 Blacklight UV Mode</h3>
+            <p>
+                Simulates ultraviolet (UV) blacklight illumination to reveal fluorescent details and hidden patterns.
+                Click <strong>"Blacklight UV"</strong> to activate.
+            </p>
+
+            <h4>How It Works</h4>
+            <ul>
+                <li><strong>Enhanced blue/violet channels:</strong> Boosts UV-responsive wavelengths (400-450nm)</li>
+                <li><strong>Suppressed red channel:</strong> Reduces non-fluorescent visible light</li>
+                <li><strong>Fluorescent glow effect:</strong> Simulates material fluorescence under UV</li>
+                <li><strong>Luminance enhancement:</strong> Reveals subtle brightness variations</li>
+            </ul>
+
+            <h4>What to Look For</h4>
+            <ul>
+                <li><strong>Whitening agents:</strong> Paper, fabrics, teeth appear bright blue/white</li>
+                <li><strong>Organic materials:</strong> Body fluids, certain inks glow distinctively</li>
+                <li><strong>Synthetic vs natural:</strong> Different materials fluoresce differently</li>
+                <li><strong>Hidden watermarks:</strong> Security features visible under UV</li>
+                <li><strong>Retouching:</strong> Edited areas may show different fluorescence</li>
+            </ul>
 
             <h4>AI Detection Applications</h4>
             <ul>
-                <li><strong>Skin Analysis:</strong> Real skin shows UV-absorbent properties; AI often fails to simulate this accurately</li>
-                <li><strong>Material Consistency:</strong> Check if all elements in the scene behave according to UV physics</li>
-                <li><strong>Fluorescence Effects:</strong> Real photos may show UV-induced fluorescence; AI typically doesn't simulate this</li>
-                <li><strong>Detail Revelation:</strong> UV reveals skin texture, paint layers, and material age - often absent in AI images</li>
+                <li><strong>Texture inconsistencies:</strong> AI-generated textures may lack realistic fluorescent response</li>
+                <li><strong>Material properties:</strong> AI often fails to simulate accurate UV fluorescence</li>
+                <li><strong>Lighting simulation:</strong> Check if UV response matches claimed lighting conditions</li>
+                <li><strong>Composite detection:</strong> Mismatched fluorescence between image elements</li>
             </ul>
 
-            <h4>Practical Examples</h4>
+            <h4>Examples</h4>
             <ul>
-                <li><strong>AI Portrait:</strong> Skin appears unrealistically uniform in UV, lacks natural blemishes and texture variation</li>
-                <li><strong>Real Portrait:</strong> Skin shows increased texture, freckles, blemishes more visible, eyes and teeth may fluoresce</li>
-                <li><strong>AI Flower:</strong> Lacks UV nectar guides that bees see (if the AI wasn't trained on UV photography)</li>
-                <li><strong>Real Flower:</strong> Shows characteristic UV patterns that guide pollinators</li>
+                <li><strong>AI Portrait:</strong> Teeth/eyes may not show realistic UV fluorescence</li>
+                <li><strong>Real Photo:</strong> Clothing shows expected optical brightener glow</li>
+                <li><strong>AI Document:</strong> Paper lacks realistic whitening agent response</li>
+                <li><strong>Composite Image:</strong> Foreground/background show mismatched UV properties</li>
             </ul>
 
-            <h3>Infrared (IR) Mode</h3>
-            <p>Simulates near-infrared (NIR) photography with false-color visualization. IR imaging reveals heat signatures and material properties invisible in visible light. Click <strong>"Infrared"</strong> to activate.</p>
+            <h3>🌡️ Infrared Mode</h3>
+            <p>
+                Simulates near-infrared (NIR) photography with false-color visualization.
+                Click <strong>"Infrared"</strong> to activate.
+            </p>
 
-            <h4>How IR Mode Works</h4>
+            <h4>How It Works</h4>
             <ul>
                 <li><strong>IR channel simulation:</strong> Enhances red/NIR wavelengths (700-900nm)</li>
                 <li><strong>False-color mapping:</strong> Red = IR, Green = visible red, Blue = visible green</li>
@@ -678,537 +457,167 @@
                 <li><strong>Material discrimination:</strong> Different materials reflect IR differently</li>
             </ul>
 
-            <h4>Characteristic IR Appearances</h4>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Material/Subject</th>
-                        <th>Real Photo IR Response</th>
-                        <th>AI Image Issues</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Vegetation</strong></td>
-                        <td>Appears bright magenta/red (highly IR-reflective)</td>
-                        <td>Often lacks characteristic IR plant response</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Water</strong></td>
-                        <td>Appears very dark (IR absorptive)</td>
-                        <td>May show unrealistic brightness</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Human Skin</strong></td>
-                        <td>Appears pale/translucent (IR penetration)</td>
-                        <td>Often overly smooth, lacks subcutaneous detail</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Clouds</strong></td>
-                        <td>Remain white/bright (scatter all wavelengths)</td>
-                        <td>Usually handled correctly by AI</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Synthetic Materials</strong></td>
-                        <td>Show distinctive IR signatures</td>
-                        <td>May not differentiate materials accurately</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h4>Characteristic Appearances</h4>
+            <ul>
+                <li><strong>Vegetation (chlorophyll):</strong> Appears bright magenta/red (highly IR-reflective)</li>
+                <li><strong>Water:</strong> Appears very dark (IR absorptive)</li>
+                <li><strong>Skin:</strong> Appears pale/translucent (IR penetration)</li>
+                <li><strong>Clouds:</strong> Remain white/bright (scatter all wavelengths)</li>
+                <li><strong>Synthetic materials:</strong> Show distinctive IR signatures</li>
+            </ul>
 
             <h4>AI Detection Applications</h4>
             <ul>
-                <li><strong>Physical Accuracy:</strong> AI may not simulate correct IR material properties consistently</li>
-                <li><strong>Vegetation Detection:</strong> Real plants show strong IR response due to chlorophyll; AI-generated foliage often fails this test</li>
-                <li><strong>Atmospheric Effects:</strong> Real IR shows haze penetration; AI often fails to simulate this accurately</li>
-                <li><strong>Skin Translucency:</strong> Real skin in IR shows subcutaneous detail; AI typically produces overly smooth results</li>
-                <li><strong>Material Consistency:</strong> Check if all elements show physically accurate IR behavior throughout the scene</li>
+                <li><strong>Physical accuracy:</strong> AI may not simulate correct IR material properties</li>
+                <li><strong>Vegetation detection:</strong> Real plants show strong IR response; AI-generated may not</li>
+                <li><strong>Atmospheric effects:</strong> Real IR shows haze penetration; AI often fails this</li>
+                <li><strong>Skin translucency:</strong> Real skin in IR shows subcutaneous detail; AI typically smooth</li>
+                <li><strong>Material consistency:</strong> Check if all elements show physically accurate IR behavior</li>
             </ul>
 
-            <h4>Practical Examples</h4>
+            <h4>Examples</h4>
             <ul>
-                <li><strong>AI Landscape:</strong> Trees may not show characteristic IR magenta/red coloration, or show it inconsistently</li>
-                <li><strong>Real Landscape Photo:</strong> Grass and foliage appear bright magenta due to chlorophyll IR reflectance</li>
-                <li><strong>AI Portrait:</strong> Skin may lack realistic IR translucency and subcutaneous vein visibility</li>
-                <li><strong>Real Portrait:</strong> Skin shows IR penetration, freckles/blemishes less visible, veins more visible</li>
-                <li><strong>AI Sky:</strong> Lacks realistic atmospheric IR scattering, haze appears too dense</li>
-                <li><strong>Real Sky:</strong> Shows haze penetration, distant objects more visible than in visible light</li>
+                <li><strong>AI Landscape:</strong> Trees may not show characteristic IR magenta/red coloration</li>
+                <li><strong>Real Photo:</strong> Grass and foliage appear bright magenta due to chlorophyll</li>
+                <li><strong>AI Portrait:</strong> Skin may lack realistic IR translucency and vein visibility</li>
+                <li><strong>Real Portrait:</strong> Skin shows IR penetration, freckles/blemishes less visible</li>
+                <li><strong>AI Sky:</strong> Lacks realistic atmospheric IR scattering</li>
+                <li><strong>Real Sky:</strong> Shows haze penetration, distant objects more visible</li>
             </ul>
 
-            <div class="info-box">
-                <p><strong>Pro Tip:</strong> Use UV and IR modes together! Real photos should show physically consistent behavior across UV and IR spectra. AI-generated images often fail one or both spectral tests. If an image passes both UV and IR consistency checks, it's much more likely to be a real photograph.</p>
+            <div class="info">
+                <strong>Pro Tip:</strong> Use UV and IR modes together! Real photos should show physically consistent
+                behavior across UV and IR spectra. AI-generated images often fail one or both spectral tests.
             </div>
+        </div>
 
-            <h3>Using Multiple Analysis Modes Together</h3>
-            <p>The most effective analysis strategy combines multiple visualization modes:</p>
-            <ol>
-                <li><strong>Start with Heatmap:</strong> Quickly identify suspicious areas</li>
-                <li><strong>Apply Frequency Analysis:</strong> Check for artificial patterns and processing artifacts</li>
-                <li><strong>Test with UV Mode:</strong> Verify material behavior and detail consistency</li>
-                <li><strong>Validate with IR Mode:</strong> Confirm physical accuracy and chlorophyll response</li>
-                <li><strong>Cross-Reference:</strong> Areas flagged by multiple modes are most suspicious</li>
-            </ol>
-        </section>
-
-        <hr>
-
-        <!-- SECTION 5: EXPORT & TRAINING -->
-        <section id="export-training">
-            <h2>5. Export Options & Training Mode</h2>
-
-            <h3>Export Functionality</h3>
-            <p>Image Analyzer allows you to export analysis results in multiple formats for documentation, further analysis, or integration with other tools.</p>
-
-            <h4>Available Export Formats</h4>
-
-            <div class="param-section">
-                <h4>JSON Export</h4>
-                <p>Exports complete analysis data in JSON (JavaScript Object Notation) format, ideal for programmatic use, data analysis, or integration with other applications. The JSON file includes:</p>
-                <ul>
-                    <li>AI probability score and all component scores</li>
-                    <li>Detected indicators with confidence levels</li>
-                    <li>Complete EXIF metadata</li>
-                    <li>Image technical specifications</li>
-                    <li>Color analysis data</li>
-                    <li>Timestamp of analysis</li>
-                </ul>
-            </div>
-
-            <div class="param-section">
-                <h4>CSV Export</h4>
-                <p>Exports key metrics in CSV (Comma-Separated Values) format, compatible with spreadsheet applications like Microsoft Excel, Google Sheets, or LibreOffice Calc. Perfect for:</p>
-                <ul>
-                    <li>Batch analysis comparison</li>
-                    <li>Statistical analysis</li>
-                    <li>Creating charts and graphs</li>
-                    <li>Database import</li>
-                </ul>
-            </div>
-
-            <div class="param-section">
-                <h4>TXT Export</h4>
-                <p>Exports EXIF data in human-readable text format. This format is ideal for:</p>
-                <ul>
-                    <li>Quick reference and documentation</li>
-                    <li>Including in reports or presentations</li>
-                    <li>Printing or email sharing</li>
-                    <li>Easy readability without special software</li>
-                </ul>
-            </div>
-
-            <h3>Training Mode</h3>
-            <p>Training Mode is an advanced feature that allows you to improve detection accuracy by providing sample images of known AI-generated and real photos. The system analyzes your samples and adjusts detection thresholds accordingly.</p>
-
-            <h4>How to Use Training Mode</h4>
-            <ol>
-                <li>Click the <strong>Training Mode</strong> button in the main interface</li>
-                <li>In the "AI-Generated Images" section, load at least 5 images you know are AI-generated</li>
-                <li>In the "Real Images" section, load at least 5 images you know are real photographs</li>
-                <li>Click <strong>Start Training</strong> to begin the analysis</li>
-                <li>Wait for the training process to complete (may take 1-2 minutes)</li>
-                <li>Review the training report showing characteristic differences found</li>
-            </ol>
-
-            <div class="info-box">
-                <p><strong>Training Tips:</strong> The more diverse your training samples, the better the detector will perform. Include various subjects, styles, and lighting conditions in your training set. Maximum 100 images per type to prevent memory issues.</p>
-            </div>
-
-            <h4>What Training Does</h4>
+        <div class="help-section">
+            <h2>Export Options</h2>
+            <p>You can export analysis results in multiple formats:</p>
             <ul>
-                <li><strong>Feature Analysis:</strong> Examines characteristics of both AI-generated and real image sets</li>
-                <li><strong>Statistical Comparison:</strong> Calculates statistical differences between the two groups</li>
-                <li><strong>Threshold Adjustment:</strong> Automatically adjusts detection thresholds based on your samples</li>
-                <li><strong>Accuracy Improvement:</strong> Enhances future detection accuracy for similar image types</li>
-                <li><strong>Report Generation:</strong> Provides detailed analysis of discovered patterns</li>
+                <li><strong>Export JSON:</strong> Complete analysis data in JSON format for programmatic use</li>
+                <li><strong>Export CSV:</strong> Key metrics in spreadsheet-compatible format</li>
+                <li><strong>Export Txt:</strong> Human-readable EXIF data in text format</li>
             </ul>
+        </div>
 
-            <h4>Training Report Interpretation</h4>
-            <p>After training, you'll receive a report showing:</p>
-            <ul>
-                <li>Average AI probability scores for each group</li>
-                <li>Key differentiating features discovered</li>
-                <li>Color palette differences</li>
-                <li>Texture and pattern variations</li>
-                <li>EXIF metadata presence statistics</li>
-                <li>Recommended detection threshold adjustments</li>
-            </ul>
-
-            <div class="warning-box">
-                <p><strong>Important:</strong> Training is most effective when you're certain about the origin of your sample images. Including mislabeled images will decrease accuracy rather than improve it. Quality of training data is more important than quantity.</p>
-            </div>
-
-            <h4>When to Use Training Mode</h4>
-            <ul>
-                <li>When working with images from specific AI generators (Midjourney, DALL-E, Stable Diffusion, etc.)</li>
-                <li>When analyzing a specific type of content (portraits, landscapes, abstract art)</li>
-                <li>When the default detection seems less accurate for your use case</li>
-                <li>When building a specialized detection system for a particular domain</li>
-            </ul>
-        </section>
-
-        <hr>
-
-        <!-- SECTION 6: BEST PRACTICES & LIMITATIONS -->
-        <section id="best-practices">
-            <h2>6. Best Practices & Limitations</h2>
-
-            <h3>Best Practices for Accurate Detection</h3>
-
-            <ol>
-                <li><strong>Use Multiple Detection Methods:</strong> Don't rely solely on this tool or any single indicator. Combine automated detection with visual inspection, contextual analysis, and other verification methods.</li>
-                
-                <li><strong>Analyze Original Files:</strong> Whenever possible, analyze the original, unedited image file. Compression, resizing, or editing can alter detection characteristics.</li>
-                
-                <li><strong>Consider the Context:</strong> Where did the image come from? Who provided it? What is its claimed purpose? Context can provide crucial clues.</li>
-                
-                <li><strong>Look for Logical Inconsistencies:</strong> Check for anatomical impossibilities, incorrect physics (lighting, shadows, reflections), or objects that don't make sense in the scene.</li>
-                
-                <li><strong>Verify EXIF Data Carefully:</strong> If EXIF is present, verify that camera model and settings make sense. Check for impossible combinations (e.g., ISO 100 with 1/8000s shutter in darkness).</li>
-                
-                <li><strong>Use Training Mode:</strong> If you regularly analyze similar types of images, use Training Mode with verified samples to improve accuracy.</li>
-                
-                <li><strong>Stay Updated:</strong> AI technology evolves rapidly. What works today may be less effective tomorrow. Keep learning about new AI capabilities and detection methods.</li>
-                
-                <li><strong>Keep Expectations Realistic:</strong> No tool can guarantee perfect detection. Accept that some images will be difficult or impossible to classify with certainty.</li>
-            </ol>
-
-            <h3>Known Limitations</h3>
-
-            <div class="warning-box">
-                <p><strong>Critical Limitations to Understand:</strong></p>
-                <ul>
-                    <li><strong>No 100% Accuracy:</strong> No AI detection method is perfect. Both false positives and false negatives occur.</li>
-                    
-                    <li><strong>Evolving AI Technology:</strong> AI image generation improves rapidly. New models may bypass current detection methods.</li>
-                    
-                    <li><strong>Image Quality Dependence:</strong> Results depend heavily on image quality, format, and compression level.</li>
-                    
-                    <li><strong>Edited Real Photos:</strong> Heavily edited or filtered real photographs may incorrectly appear as AI-generated.</li>
-                    
-                    <li><strong>High-Quality AI Images:</strong> Some AI-generated images are virtually indistinguishable from real photos.</li>
-                    
-                    <li><strong>Hybrid Content:</strong> Images that combine real photos with AI-generated elements are particularly challenging.</li>
-                    
-                    <li><strong>Processing Limitations:</strong> Client-side processing has memory and performance constraints compared to cloud-based solutions.</li>
-                    
-                    <li><strong>Format Limitations:</strong> Some image formats or color spaces may not be fully supported.</li>
-                </ul>
-            </div>
-
-            <h3>False Positives and False Negatives</h3>
-
-            <h4>Common Causes of False Positives (Real Photos Flagged as AI)</h4>
-            <ul>
-                <li>Heavy post-processing, filters, or beauty mode effects</li>
-                <li>Professional photo retouching and compositing</li>
-                <li>Certain smartphone camera processing algorithms</li>
-                <li>Miniature photography or tilt-shift effects</li>
-                <li>Studio photography with perfect lighting and backgrounds</li>
-                <li>Images with removed or stripped EXIF data</li>
-            </ul>
-
-            <h4>Common Causes of False Negatives (AI Images Not Detected)</h4>
-            <ul>
-                <li>Latest-generation AI models trained to avoid detection</li>
-                <li>AI images with added fake EXIF data</li>
-                <li>AI images post-processed to add realistic imperfections</li>
-                <li>High-quality AI generation with photorealistic rendering</li>
-                <li>AI images based on real photo references or datasets</li>
-            </ul>
-
-            <h3>Ethical Considerations</h3>
-
-            <div class="info-box">
-                <p><strong>Responsible Use:</strong> This tool should be used responsibly and ethically. Consider the following:</p>
-                <ul>
-                    <li>Respect people's privacy when analyzing images containing individuals</li>
-                    <li>Don't use results to unfairly accuse or defame others without additional evidence</li>
-                    <li>Understand that AI-generated content isn't inherently bad or deceptive</li>
-                    <li>Consider the legal implications in your jurisdiction before making public claims</li>
-                    <li>Be transparent about using automated detection tools and their limitations</li>
-                </ul>
-            </div>
-
-            <h3>Future-Proofing Your Detection Strategy</h3>
-            <p>As AI technology advances, maintain effectiveness by:</p>
-            <ul>
-                <li>Regularly updating your knowledge of new AI models and capabilities</li>
-                <li>Combining multiple detection tools and methods</li>
-                <li>Focusing on fundamental physical and logical inconsistencies that AI struggles with</li>
-                <li>Building expertise in human visual analysis alongside automated tools</li>
-                <li>Participating in communities focused on AI detection and digital forensics</li>
-            </ul>
-        </section>
-
-        <hr>
-
-        <!-- SECTION 7: TECHNICAL REQUIREMENTS & TROUBLESHOOTING -->
-        <section id="technical">
-            <h2>7. Technical Requirements & Troubleshooting</h2>
-
-            <h3>System Requirements</h3>
-
-            <h4>Browser Compatibility</h4>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Browser</th>
-                        <th>Compatibility</th>
-                        <th>Recommended</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Google Chrome</td>
-                        <td>Yes</td>
-                        <td>Latest version</td>
-                    </tr>
-                    <tr>
-                        <td>Mozilla Firefox</td>
-                        <td>Yes</td>
-                        <td>Latest version</td>
-                    </tr>
-                    <tr>
-                        <td>Safari</td>
-                        <td>Yes</td>
-                        <td>Latest version</td>
-                    </tr>
-                    <tr>
-                        <td>Microsoft Edge</td>
-                        <td>Yes</td>
-                        <td>Latest version</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>Hardware Requirements</h4>
-            <ul>
-                <li><strong>RAM:</strong> Minimum 4GB, 8GB+ recommended for large images</li>
-                <li><strong>Processor:</strong> Modern multi-core processor (Intel i5/AMD Ryzen 5 or better)</li>
-                <li><strong>Storage:</strong> At least 100MB free space for browser cache</li>
-                <li><strong>Display:</strong> Minimum 1366x768 resolution, 1920x1080 or higher recommended</li>
-            </ul>
-
-            <h4>Software Requirements</h4>
-            <ul>
-                <li><strong>JavaScript:</strong> Must be enabled in browser settings</li>
-                <li><strong>Cookies:</strong> Session cookies required for proper functionality</li>
-                <li><strong>Canvas API:</strong> Required for image processing (supported by all modern browsers)</li>
-                <li><strong>File API:</strong> Required for local file access</li>
-            </ul>
-
-            <h3>Supported Image Formats</h3>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Format</th>
-                        <th>Extension</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>JPEG</td>
-                        <td>.jpg, .jpeg</td>
-                        <td>Most common format, full support with EXIF</td>
-                    </tr>
-                    <tr>
-                        <td>PNG</td>
-                        <td>.png</td>
-                        <td>Lossless format, full support, limited EXIF</td>
-                    </tr>
-                    <tr>
-                        <td>WebP</td>
-                        <td>.webp</td>
-                        <td>Modern format, efficient compression, full support</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>Image Limitations</h4>
-            <ul>
-                <li><strong>Maximum Dimensions:</strong> 4096 x 4096 pixels</li>
-                <li><strong>Maximum File Size:</strong> 15MB</li>
-                <li><strong>Color Space:</strong> RGB (sRGB recommended)</li>
-                <li><strong>Bit Depth:</strong> 8-bit per channel (24-bit RGB)</li>
-            </ul>
-
-            <h3>Troubleshooting Common Issues</h3>
-
-            <div class="param-section">
-                <h4>Image Won't Load</h4>
-                <p><strong>Symptoms:</strong> Error message when selecting image, or no response after file selection</p>
-                <p><strong>Possible Causes & Solutions:</strong></p>
-                <ul>
-                    <li><strong>Unsupported Format:</strong> Ensure file is JPEG, PNG, or WebP. Convert if necessary.</li>
-                    <li><strong>File Too Large:</strong> Check file size is under 15MB. Reduce image size if needed.</li>
-                    <li><strong>Image Too Large:</strong> Verify dimensions are within 4096 x 4096 pixel limit. Resize if needed.</li>
-                    <li><strong>Corrupted File:</strong> Try opening the image in another program to verify it's not corrupted.</li>
-                    <li><strong>Browser Issues:</strong> Clear browser cache, try a different browser, or restart your browser.</li>
-                </ul>
-            </div>
-
-            <div class="param-section">
-                <h4>Analysis is Slow or Freezing</h4>
-                <p><strong>Symptoms:</strong> Analysis takes more than 30 seconds, browser becomes unresponsive</p>
-                <p><strong>Possible Causes & Solutions:</strong></p>
-                <ul>
-                    <li><strong>Large Image File:</strong> Large, high-resolution images take longer. Consider reducing size to 2048px maximum dimension.</li>
-                    <li><strong>Low Memory:</strong> Close other browser tabs and applications to free up RAM.</li>
-                    <li><strong>Browser Performance:</strong> Try using Chrome or Edge which typically have better performance for heavy JavaScript.</li>
-                    <li><strong>Multiple Analyses:</strong> Wait for current analysis to complete before loading another image.</li>
-                    <li><strong>System Resources:</strong> Check if other programs are using significant CPU/RAM and close them.</li>
-                </ul>
-            </div>
-
-            <div class="param-section">
-                <h4>Heatmap or Visual Tools Not Working</h4>
-                <p><strong>Symptoms:</strong> Clicking visualization buttons has no effect</p>
-                <p><strong>Possible Causes & Solutions:</strong></p>
-                <ul>
-                    <li><strong>Image Not Loaded:</strong> Ensure you've successfully loaded and analyzed an image first.</li>
-                    <li><strong>Canvas Not Supported:</strong> Update your browser to a version that supports HTML5 Canvas API.</li>
-                    <li><strong>Memory Issues:</strong> Close other tabs and refresh the page to free up memory.</li>
-                    <li><strong>JavaScript Errors:</strong> Open browser console (F12) to check for errors. Report any errors found.</li>
-                </ul>
-            </div>
-
-            <div class="param-section">
-                <h4>Training Mode Fails or Crashes</h4>
-                <p><strong>Symptoms:</strong> Training doesn't start, browser crashes, or error message appears</p>
-                <p><strong>Possible Causes & Solutions:</strong></p>
-                <ul>
-                    <li><strong>Insufficient Images:</strong> Ensure you have at least 5 images of each type (AI and real).</li>
-                    <li><strong>Corrupted Images:</strong> Verify all training images are valid and not corrupted.</li>
-                    <li><strong>Too Many Images:</strong> Try with fewer images if experiencing memory issues (start with 10-20 total).</li>
-                    <li><strong>Memory Exhaustion:</strong> Close all other applications and browser tabs before training.</li>
-                    <li><strong>Mixed Image Sizes:</strong> Very large images in training set can cause issues. Resize to maximum 1024px.</li>
-                </ul>
-            </div>
-
-            <div class="param-section">
-                <h4>Export Functions Not Working</h4>
-                <p><strong>Symptoms:</strong> Export buttons don't respond or downloads fail</p>
-                <p><strong>Possible Causes & Solutions:</strong></p>
-                <ul>
-                    <li><strong>No Analysis Data:</strong> Ensure you've analyzed an image before attempting export.</li>
-                    <li><strong>Browser Download Settings:</strong> Check if browser is blocking downloads or has download restrictions.</li>
-                    <li><strong>Popup Blocker:</strong> Disable popup blocker for this site if it's interfering with downloads.</li>
-                    <li><strong>Storage Permission:</strong> Grant storage/download permissions when browser prompts.</li>
-                </ul>
-            </div>
-
-            <div class="param-section">
-                <h4>Inaccurate Results</h4>
-                <p><strong>Symptoms:</strong> Detection results don't match expectations</p>
-                <p><strong>Possible Causes & Solutions:</strong></p>
-                <ul>
-                    <li><strong>Heavily Edited Image:</strong> Remember that edited real photos may score high on AI probability.</li>
-                    <li><strong>Low-Quality Image:</strong> Poor quality or heavily compressed images are harder to analyze accurately.</li>
-                    <li><strong>Advanced AI Model:</strong> Latest AI models may bypass detection. Use multiple verification methods.</li>
-                    <li><strong>Use Training Mode:</strong> Train the detector with samples specific to your use case.</li>
-                    <li><strong>Check All Indicators:</strong> Don't rely solely on the probability score. Review all detection indicators.</li>
-                </ul>
-            </div>
-
-            <h3>Performance Optimization Tips</h3>
-            <ul>
-                <li><strong>Image Preprocessing:</strong> Resize very large images to 2048px maximum dimension before analysis</li>
-                <li><strong>Browser Selection:</strong> Use Chrome or Edge for best performance with heavy computation</li>
-                <li><strong>System Optimization:</strong> Close unnecessary applications to free up RAM</li>
-                <li><strong>Cache Management:</strong> Clear browser cache periodically if experiencing issues</li>
-                <li><strong>Extension Conflicts:</strong> Disable browser extensions if they might interfere with canvas operations</li>
-            </ul>
-
-            <h3>Getting Help</h3>
-            <p>If you encounter issues not covered in this troubleshooting section:</p>
-            <ul>
-                <li>Check the GitHub repository for known issues and updates</li>
-                <li>Report bugs via GitHub Issues with detailed description and screenshots</li>
-                <li>Include browser version, operating system, and console errors (F12 → Console tab)</li>
-                <li>Visit the demo site for the latest version: <a href="https://bsm3d.com/analyse/" target="_blank">https://bsm3d.com/analyse/</a></li>
-            </ul>
-        </section>
-
-        <hr>
-
-        <!-- SECTION 8: DISCLAIMER & LICENSE -->
-        <section id="disclaimer">
-            <h2>8. Disclaimer & License</h2>
-            
-            <div class="disclaimer-box">
-                <p>© 2025 Benoît (BSM3D) Saint-Moulin</p>
-
-                <p><strong>OPEN SOURCE PROJECT</strong><br>
-                This software is free and open source, distributed under an open license for educational, research, and practical purposes.</p>
-
-                <p><strong>AUTHORIZED USAGE:</strong></p>
-                <ul>
-                    <li>Educational use within academic framework</li>
-                    <li>Personal use and modification</li>
-                    <li>Research and analysis purposes</li>
-                    <li>Integration into non-commercial projects</li>
-                    <li>Citation with appropriate author reference</li>
-                </ul>
-
-                <p><strong>RESTRICTIONS:</strong></p>
-                <ul>
-                    <li>Commercial use or code exploitation requires prior authorization from the author</li>
-                    <li>Redistribution must maintain original copyright notice and attribution</li>
-                    <li>Modified versions must be clearly marked as such</li>
-                </ul>
-
-                <p><strong>ACCURACY AND RELIABILITY DISCLAIMER:</strong><br>
-                This tool provides probability-based analysis using algorithmic methods and should NOT be considered absolute proof of AI generation or authenticity. Detection accuracy depends on numerous factors including image quality, AI model used, post-processing, and evolving AI technology. Results are provided for informational purposes only and should not be used as sole evidence in legal, professional, or critical decision-making contexts.</p>
-
-                <p><strong>NO WARRANTY DISCLAIMER:</strong><br>
-                This software has been developed and tested with care, but comes with no guarantees. It was developed as a passion project during free time. While every effort has been made to ensure reliability and accuracy, users should:</p>
-                <ul>
-                    <li>Verify results using multiple methods and tools</li>
-                    <li>Understand the limitations of automated AI detection</li>
-                    <li>Exercise human judgment and contextual analysis</li>
-                    <li>Not rely solely on this tool for critical decisions</li>
-                    <li>Stay informed about evolving AI and detection technologies</li>
-                </ul>
-
-                <p><strong>PRIVACY COMMITMENT:</strong><br>
-                This tool performs 100% client-side processing. No images or analysis data are transmitted to any server or third party. All processing occurs locally in your web browser. The author has no access to images you analyze or results generated.</p>
-
-                <p><strong>ETHICAL USE STATEMENT:</strong><br>
-                This tool is designed to help identify AI-generated content for legitimate purposes such as authenticity verification, research, education, and combating misinformation. Users are expected to employ this tool responsibly and ethically, respecting privacy, intellectual property, and the rights of others.</p>
-
-                <p>Contact: For authorization requests, bug reports, or information: <a href="https://www.bsm3d.com" target="_blank">www.bsm3d.com</a> or via GitHub repository</p>
-
-                <p><strong>Transparency Note:</strong> This documentation is the result of human work, based on personal notes, research, and development experience. Artificial intelligence has been used as a tool for proofreading, organization, and correction assistance. The documentation may contain errors or inaccuracies - feedback and corrections are welcome.</p>
-
-                <p>Have fun, experiment responsibly, and help build a more transparent digital media landscape!</p>
-                
-                <p><strong>WARRANTY DISCLAIMER:</strong><br>
-                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-
-                <p><strong>LIMITATION OF LIABILITY:</strong><br>
-                IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
-            </div>
-        </section>
-
-        <hr>
-
-        <footer>
-            <hr>
-            <p>Image Analyzer - AI Detection & Analysis Tool</p>
-            <p>Design, Code, and Documentation by Benoît (BSM3D) Saint-Moulin © 2025</p>
-            <p>Website: <a href="https://www.bsm3d.com" target="_blank">www.bsm3d.com</a></p>
-            <p>Demo: <a href="https://bsm3d.com/analyse/" target="_blank">https://bsm3d.com/analyse/</a></p>
-            <p>GitHub: <a href="https://github.com/bsm3d" target="_blank">@bsm3d</a></p>
-            <p style="margin-top: 15px; font-size: 0.9em; color: #7f8c8d;">
-                Privacy-first design. Client-side processing. Open source for transparency.<br>Special thanks to the open source community and all contributors who make tools like this possible.
+        <div class="help-section">
+            <h2>Training Mode</h2>
+            <p>
+                Training Mode allows you to improve detection accuracy by providing sample images
+                of known AI-generated and real photos.
             </p>
-            <p style="margin-top: 15px;">Documentation version 1.0 - November 2025</p>
-            <p><strong>Made with ❤️ by Benoît (BSM3D) Saint-Moulin</strong></p>
-        </footer>
 
-    </div> <!-- End .container -->
+            <h3>How to Use Training Mode</h3>
+            <ol>
+                <li>Click <strong>Training Mode</strong> button</li>
+                <li>Load at least 5 AI-generated images in the "AI-Generated Images" section</li>
+                <li>Load at least 5 real photos in the "Real Images" section</li>
+                <li>Click <strong>Start Training</strong></li>
+                <li>Wait for analysis and review the training report</li>
+            </ol>
 
+            <div class="info">
+                <strong>Tip:</strong> The more diverse your training samples, the better the detector will perform.
+                Maximum 100 images per type.
+            </div>
+
+            <h3>What Training Does</h3>
+            <ul>
+                <li>Analyzes characteristics of both image types</li>
+                <li>Calculates statistical differences</li>
+                <li>Adjusts detection thresholds automatically</li>
+                <li>Improves future detection accuracy</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h2>Limitations</h2>
+            <div class="warning">
+                <strong>Known Limitations:</strong>
+                <ul>
+                    <li>No AI detection method is 100% accurate</li>
+                    <li>AI technology evolves rapidly - new models may bypass detection</li>
+                    <li>Results depend on image quality and format</li>
+                    <li>Highly edited real photos may appear as AI-generated</li>
+                    <li>Some AI-generated images are indistinguishable from real photos</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="help-section">
+            <h2>Best Practices</h2>
+            <ol>
+                <li><strong>Use multiple detection methods:</strong> Don't rely solely on this tool</li>
+                <li><strong>Consider the context:</strong> Where did the image come from?</li>
+                <li><strong>Look for logical inconsistencies:</strong> Check for anatomical or physical impossibilities</li>
+                <li><strong>Check EXIF data carefully:</strong> Verify camera model and settings make sense</li>
+                <li><strong>Train the detector:</strong> Use Training Mode with your specific use case</li>
+                <li><strong>Keep expectations realistic:</strong> No tool can guarantee perfect detection</li>
+            </ol>
+        </div>
+
+        <div class="help-section">
+            <h2>Technical Requirements</h2>
+            <ul>
+                <li>Modern web browser (Chrome, Firefox, Safari, Edge)</li>
+                <li>JavaScript enabled</li>
+                <li>Minimum 4GB RAM recommended</li>
+                <li>Supported image formats: JPEG, PNG, WebP</li>
+                <li>Maximum image size: 4096 x 4096 pixels</li>
+                <li>Maximum file size: 15MB</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h2>Troubleshooting</h2>
+
+            <h3>Image won't load</h3>
+            <ul>
+                <li>Ensure the file is in a supported format (JPEG, PNG, WebP)</li>
+                <li>Check the file size is under 15MB</li>
+                <li>Verify the image dimensions are within limits</li>
+            </ul>
+
+            <h3>Analysis is slow</h3>
+            <ul>
+                <li>Large images take longer to analyze</li>
+                <li>Close other browser tabs to free up memory</li>
+                <li>Consider reducing image size before analysis</li>
+            </ul>
+
+            <h3>Training Mode fails</h3>
+            <ul>
+                <li>Ensure you have at least 5 images of each type</li>
+                <li>Verify images are valid and not corrupted</li>
+                <li>Try with fewer images if you're experiencing memory issues</li>
+            </ul>
+        </div>
+
+        <div class="help-section">
+            <h2>About & License</h2>
+            <p>
+                <strong>Image Analyzer</strong> is developed by Benoît (BSM3D) Saint-Moulin.
+            </p>
+            <p>
+                This tool is free to use and the source code is publicly available on GitHub.
+                It is provided for educational and research purposes.
+            </p>
+            <p>
+                Website: <a href="https://www.bsm3d.com" target="_blank">www.bsm3d.com</a><br>
+                Demo: <a href="https://bsm3d.com/analyse/" target="_blank">https://bsm3d.com/analyse/</a><br>
+                GitHub: <a href="https://github.com/bsm3d" target="_blank">@bsm3d</a>
+            </p>
+            <p>
+                © 2025 Benoît Saint-Moulin (BSM3D) - All rights reserved.
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="window.close()" style="padding: 10px 30px; font-size: 16px;">
+                Close Help
+            </button>
+        </div>
+    </div>
 </body>
 </html>
