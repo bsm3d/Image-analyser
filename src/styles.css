@@ -331,6 +331,10 @@ section {
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
 }
 
+.preview-section {
+    position: relative;
+}
+
 .section-title {
     font-size: 1.8rem;
     color: var(--heading-color);
@@ -473,6 +477,21 @@ input[type="file"]:hover {
 }
 
 /* ============================================
+   WELCOME MESSAGE
+   ============================================ */
+#welcomeMessage {
+    margin-top: 20px;
+}
+
+#welcomeMessage h2 {
+    margin-top: 0;
+}
+
+#welcomeMessage h3 {
+    margin-top: 1em;
+}
+
+/* ============================================
    IMAGE DISPLAY & CANVAS
    ============================================ */
 #imageContainer,
@@ -590,7 +609,7 @@ input[type="file"]:hover {
 
 .exif-items-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 15px;
     margin-top: 20px;
 }

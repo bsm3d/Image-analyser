@@ -86,7 +86,6 @@ class UIManager {
         this.heatmapCanvas.style.pointerEvents = 'all';
         this.heatmapCanvas.style.display = 'none';
         this.heatmapCanvas.style.opacity = '0.75'; // Increased from 0.6
-        this.canvas.parentElement.style.position = 'relative';
         this.canvas.parentElement.appendChild(this.heatmapCanvas);
         this.heatmapCtx = this.heatmapCanvas.getContext('2d');
         this.heatmapVisible = false;
