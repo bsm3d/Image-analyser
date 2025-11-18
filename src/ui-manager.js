@@ -79,14 +79,19 @@ class UIManager {
     }
 
     createHeatmapCanvas() {
+        // Get the canvas container (parent of the canvas)
+        this.canvasContainer = this.canvas.parentElement;
+
         this.heatmapCanvas = document.createElement('canvas');
         this.heatmapCanvas.style.position = 'absolute';
         this.heatmapCanvas.style.top = '0';
         this.heatmapCanvas.style.left = '0';
+        this.heatmapCanvas.style.width = '100%';
+        this.heatmapCanvas.style.height = '100%';
         this.heatmapCanvas.style.pointerEvents = 'all';
         this.heatmapCanvas.style.display = 'none';
-        this.heatmapCanvas.style.opacity = '0.75'; // Increased from 0.6
-        this.canvas.parentElement.appendChild(this.heatmapCanvas);
+        this.heatmapCanvas.style.opacity = '0.75';
+        this.canvasContainer.appendChild(this.heatmapCanvas);
         this.heatmapCtx = this.heatmapCanvas.getContext('2d');
         this.heatmapVisible = false;
 
@@ -95,10 +100,12 @@ class UIManager {
         this.blockCanvas.style.position = 'absolute';
         this.blockCanvas.style.top = '0';
         this.blockCanvas.style.left = '0';
+        this.blockCanvas.style.width = '100%';
+        this.blockCanvas.style.height = '100%';
         this.blockCanvas.style.pointerEvents = 'none';
         this.blockCanvas.style.display = 'none';
         this.blockCanvas.style.opacity = '0.7';
-        this.canvas.parentElement.appendChild(this.blockCanvas);
+        this.canvasContainer.appendChild(this.blockCanvas);
         this.blockCtx = this.blockCanvas.getContext('2d');
         this.blockVisible = false;
 
@@ -126,10 +133,12 @@ class UIManager {
         this.edgeCanvas.style.position = 'absolute';
         this.edgeCanvas.style.top = '0';
         this.edgeCanvas.style.left = '0';
+        this.edgeCanvas.style.width = '100%';
+        this.edgeCanvas.style.height = '100%';
         this.edgeCanvas.style.pointerEvents = 'none';
         this.edgeCanvas.style.display = 'none';
         this.edgeCanvas.style.opacity = '0.8';
-        this.canvas.parentElement.appendChild(this.edgeCanvas);
+        this.canvasContainer.appendChild(this.edgeCanvas);
         this.edgeCtx = this.edgeCanvas.getContext('2d');
         this.edgeVisible = false;
 
@@ -138,9 +147,11 @@ class UIManager {
         this.channelCanvas.style.position = 'absolute';
         this.channelCanvas.style.top = '0';
         this.channelCanvas.style.left = '0';
+        this.channelCanvas.style.width = '100%';
+        this.channelCanvas.style.height = '100%';
         this.channelCanvas.style.pointerEvents = 'none';
         this.channelCanvas.style.display = 'none';
-        this.canvas.parentElement.appendChild(this.channelCanvas);
+        this.canvasContainer.appendChild(this.channelCanvas);
         this.channelCtx = this.channelCanvas.getContext('2d');
         this.channelVisible = false;
 
@@ -175,9 +186,11 @@ class UIManager {
         this.blacklightCanvas.style.position = 'absolute';
         this.blacklightCanvas.style.top = '0';
         this.blacklightCanvas.style.left = '0';
+        this.blacklightCanvas.style.width = '100%';
+        this.blacklightCanvas.style.height = '100%';
         this.blacklightCanvas.style.pointerEvents = 'none';
         this.blacklightCanvas.style.display = 'none';
-        this.canvas.parentElement.appendChild(this.blacklightCanvas);
+        this.canvasContainer.appendChild(this.blacklightCanvas);
         this.blacklightCtx = this.blacklightCanvas.getContext('2d');
         this.blacklightVisible = false;
 
@@ -186,9 +199,11 @@ class UIManager {
         this.infraredCanvas.style.position = 'absolute';
         this.infraredCanvas.style.top = '0';
         this.infraredCanvas.style.left = '0';
+        this.infraredCanvas.style.width = '100%';
+        this.infraredCanvas.style.height = '100%';
         this.infraredCanvas.style.pointerEvents = 'none';
         this.infraredCanvas.style.display = 'none';
-        this.canvas.parentElement.appendChild(this.infraredCanvas);
+        this.canvasContainer.appendChild(this.infraredCanvas);
         this.infraredCtx = this.infraredCanvas.getContext('2d');
         this.infraredVisible = false;
     }
@@ -761,11 +776,9 @@ async drawImage(img, dimensions) {
     renderHeatmap() {
         if (!this.heatmapData) return;
 
-        const rect = this.canvas.getBoundingClientRect();
+        // Match the internal canvas dimensions to the main canvas
         this.heatmapCanvas.width = this.canvas.width;
         this.heatmapCanvas.height = this.canvas.height;
-        this.heatmapCanvas.style.width = rect.width + 'px';
-        this.heatmapCanvas.style.height = rect.height + 'px';
 
         const imageData = this.heatmapCtx.createImageData(this.heatmapCanvas.width, this.heatmapCanvas.height);
         const data = imageData.data;
@@ -934,11 +947,9 @@ async drawImage(img, dimensions) {
     renderBlockAnalysis() {
         if (!this.blockAnalysisData) return;
 
-        const rect = this.canvas.getBoundingClientRect();
+        // Match the internal canvas dimensions to the main canvas
         this.blockCanvas.width = this.canvas.width;
         this.blockCanvas.height = this.canvas.height;
-        this.blockCanvas.style.width = rect.width + 'px';
-        this.blockCanvas.style.height = rect.height + 'px';
 
         this.blockCtx.clearRect(0, 0, this.blockCanvas.width, this.blockCanvas.height);
 
@@ -1028,11 +1039,9 @@ async drawImage(img, dimensions) {
             }
         }
 
-        const rect = this.canvas.getBoundingClientRect();
+        // Match the internal canvas dimensions to the main canvas
         this.edgeCanvas.width = this.canvas.width;
         this.edgeCanvas.height = this.canvas.height;
-        this.edgeCanvas.style.width = rect.width + 'px';
-        this.edgeCanvas.style.height = rect.height + 'px';
 
         const edgeImageData = new ImageData(edges, width, height);
         this.edgeCtx.putImageData(edgeImageData, 0, 0);
@@ -1089,11 +1098,9 @@ async drawImage(img, dimensions) {
             }
         }
 
-        const rect = this.canvas.getBoundingClientRect();
+        // Match the internal canvas dimensions to the main canvas
         this.channelCanvas.width = this.canvas.width;
         this.channelCanvas.height = this.canvas.height;
-        this.channelCanvas.style.width = rect.width + 'px';
-        this.channelCanvas.style.height = rect.height + 'px';
 
         this.channelCtx.putImageData(imageData, 0, 0);
 
@@ -1365,11 +1372,9 @@ async drawImage(img, dimensions) {
             }
         }
 
-        const rect = this.canvas.getBoundingClientRect();
+        // Match the internal canvas dimensions to the main canvas
         this.blacklightCanvas.width = this.canvas.width;
         this.blacklightCanvas.height = this.canvas.height;
-        this.blacklightCanvas.style.width = rect.width + 'px';
-        this.blacklightCanvas.style.height = rect.height + 'px';
 
         this.blacklightCtx.putImageData(imageData, 0, 0);
 
@@ -1427,11 +1432,9 @@ async drawImage(img, dimensions) {
             }
         }
 
-        const rect = this.canvas.getBoundingClientRect();
+        // Match the internal canvas dimensions to the main canvas
         this.infraredCanvas.width = this.canvas.width;
         this.infraredCanvas.height = this.canvas.height;
-        this.infraredCanvas.style.width = rect.width + 'px';
-        this.infraredCanvas.style.height = rect.height + 'px';
 
         this.infraredCtx.putImageData(imageData, 0, 0);
 
