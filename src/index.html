@@ -4,19 +4,7 @@
 	2025 © BSM3D
 	www.bsm3d.com
 	Free to use and for Learning purpose.
-	
-	roadmap : 
-	- improve detection of skin, metal pain, clothes..	
-	- improve image type : 3d, illustration, photo,...
-	- Add External Json config file to collect / Deep mode training
-	- Add Neural Network Detection Layers
-	- Add invertHue visualy check for Stamping / reveal imperfection
-	- Add blacklight analysis
-	- Add Brightness / Contrast to visualy check image
-	- Add Crypto/Signature encoding / decoding / invisible signature to valid real owner / picture
-	- Try to code as eco / environnment friendly ressouces uses and avoid AI Detection API dependency
-	- Some French Translating to English
-	- Create nice HTML5 banner for fun :)
+
 -->
 
 <!DOCTYPE html>
@@ -561,42 +549,42 @@
 
         <!-- Analysis Tools (shown after image load) -->
         <div id="analysisToolsContainer" class="button-container" style="display:none;">
-            <button id="toggleHeatmap">🗺️ Toggle Heatmap</button>
-            <button id="toggleBlockAnalysis">🔲 Block Analysis</button>
-            <button id="toggleEdgeDetection">🔍 Edge Detection</button>
-            <button id="toggleRGBChannels">🎨 RGB: RGB</button>
-            <button id="toggleMagnifier">🔬 Magnifier (8x)</button>
-            <button id="toggleHistogram">📊 Histogram</button>
-            <button id="toggleBlacklight">💜 Blacklight UV</button>
-            <button id="toggleInfrared">🌡️ Infrared</button>
+            <button id="toggleHeatmap">Toggle Heatmap</button>
+            <button id="toggleBlockAnalysis">Block Analysis</button>
+            <button id="toggleEdgeDetection">Edge Detection</button>
+            <button id="toggleRGBChannels">RGB: RGB</button>
+            <button id="toggleMagnifier">Magnifier (8x)</button>
+            <button id="toggleHistogram">Histogram</button>
+            <button id="toggleBlacklight">Blacklight UV</button>
+            <button id="toggleInfrared">Infrared</button>
         </div>
 
         <!-- Brightness/Contrast Controls -->
         <div id="brightnessContrastControls" class="bc-controls" style="display:none;">
             <div class="bc-slider-group">
-                <label for="brightnessSlider">☀️ Brightness: <span id="brightnessValue">0</span></label>
+                <label for="brightnessSlider">Brightness: <span id="brightnessValue">0</span></label>
                 <input type="range" id="brightnessSlider" min="-100" max="100" value="0" step="1">
             </div>
             <div class="bc-slider-group">
-                <label for="contrastSlider">🎚️ Contrast: <span id="contrastValue">0</span></label>
+                <label for="contrastSlider">Contrast: <span id="contrastValue">0</span></label>
                 <input type="range" id="contrastSlider" min="-100" max="100" value="0" step="1">
             </div>
-            <button id="resetAdjustments">🔄 Reset</button>
+            <button id="resetAdjustments">Reset</button>
         </div>
 
         <!-- Main Content Area -->
         <div class="main-content">
             <!-- Preview Section -->
             <div class="preview-section">
-                <div id="loading" class="loading">⚡ Analysis in progress...</div>
+                <div id="loading" class="loading">Analysis in progress...</div>
                 <div id="welcomeMessage">
-                    <h2>🎯 How to Use Image Analyzer</h2>
+                    <h2>How to Use Image Analyzer</h2>
                     <p>
                         Click <strong>"Load Image"</strong> to analyze an image for AI-generation indicators.
                         This tool uses <strong>heuristic analysis</strong> (pattern detection, not neural networks)
                         to identify suspicious characteristics in images.
                     </p>
-                    <h3>⚠️ Important Limitations</h3>
+                    <h3>Important Limitations</h3>
                     <ul>
                         <li><strong>No AI detector is 100% reliable</strong> - Use this as an assistance tool</li>
                         <li>This tool <strong>helps the human eye</strong> analyze images, not replace it</li>
@@ -605,7 +593,7 @@
                         <li>Advanced AI models can bypass heuristic detection</li>
                     </ul>
                     <p style="margin-top: 20px; font-style: italic; color: #7f8c8d;">
-                        💡 Always combine this tool with critical thinking and context analysis.
+                        Always combine this tool with critical thinking and context analysis.
                     </p>
                 </div>
                 <canvas id="imagePreview"></canvas>
@@ -667,7 +655,7 @@
     <!-- Initialization Script -->
     <script>
         window.addEventListener('load', () => {
-            console.log('🚀 Initializing Image Analyzer application...');
+            console.log('Initializing Image Analyzer application...');
 
             try {
                 // Initialize main components
@@ -691,16 +679,16 @@
                     trainingUI.container.style.display = isHidden ? 'block' : 'none';
 
                     openTrainingModeBtn.textContent = isHidden
-                        ? '✖️ Close Training Mode'
-                        : '🎓 Training Mode';
+                        ? 'Close Training Mode'
+                        : 'Training Mode';
 
                     // Log container state after click for debugging
                     console.log('Training mode display state:', trainingUI.container.style.display);
                 });
 
-                console.log('✅ Application initialized successfully');
+                console.log('Application initialized successfully');
             } catch (error) {
-                console.error('❌ Initialization error:', error);
+                console.error('Initialization error:', error);
                 alert('An error occurred during initialization. Please check the console for details.');
             }
         });
