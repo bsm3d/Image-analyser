@@ -15,95 +15,607 @@
 	- Add Brightness / Contrast to visualy check image
 	- Add Crypto/Signature encoding / decoding / invisible signature to valid real owner / picture
 	- Try to code as eco / environnment friendly ressouces uses and avoid AI Detection API dependency
-	- Som French Translating to English
+	- Some French Translating to English
 	- Create nice HTML5 banner for fun :)
 -->
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Analyzer ©2025 BSM3D</title>
+    <title>Image Analyzer - AI Detection Tool ©2025 BSM3D</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Pour masquer le conteneur au chargement */
-        .hidden {
+        /* Genesis V.2 Design System - Matching help.html */
+        :root {
+            --primary-color: #1a2940;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #1abc9c;
+            --text-color: #bdc3c7;
+            --heading-color: #ecf0f1;
+            --h3-color: #1abc9c;
+            --h4-color: #a9d7f3;
+            --container-width: 1400px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #0a1525;
+            background-image: linear-gradient(to bottom, #0a1525 0%, #1a2940 50%, #0a1525 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* Header Section with Logo */
+        .app-header {
+            text-align: center;
+            padding: 40px 20px 30px;
+            background-color: rgba(10, 21, 37, 0.6);
+            border-bottom: 1px solid rgba(52, 152, 219, 0.2);
+        }
+
+        .app-header h1 {
+            font-family: 'Segoe UI Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(52, 152, 219, 0.9);
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .app-header .subtitle {
+            font-family: 'Segoe UI Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: var(--heading-color);
+            margin-bottom: 15px;
+        }
+
+        .app-header .version-info {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Button Styling */
+        button {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #2980b9 100%);
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #2980b9 0%, var(--secondary-color) 100%);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.5);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        button#helpButton {
+            background: linear-gradient(135deg, var(--success-color) 0%, #16a085 100%);
+        }
+
+        button#helpButton:hover {
+            background: linear-gradient(135deg, #16a085 0%, var(--success-color) 100%);
+            box-shadow: 0 5px 15px rgba(26, 188, 156, 0.5);
+        }
+
+        button#openTrainingMode {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+
+        button#openTrainingMode:hover {
+            background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.5);
+        }
+
+        /* Button Container */
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            padding: 25px 20px;
+            background-color: rgba(10, 21, 37, 0.8);
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(52, 152, 219, 0.15);
+        }
+
+        /* Analysis Tools Container */
+        #analysisToolsContainer {
+            margin-top: -10px;
+            margin-bottom: 25px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Brightness/Contrast Controls */
+        .bc-controls {
+            background-color: rgba(10, 21, 37, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(52, 152, 219, 0.15);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .bc-slider-group {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .bc-slider-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--heading-color);
+            font-weight: 500;
+        }
+
+        .bc-slider-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(52, 152, 219, 0.2);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .bc-slider-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.5);
+        }
+
+        .bc-slider-group input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.5);
+        }
+
+        #resetAdjustments {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #c0392b 100%);
+        }
+
+        #resetAdjustments:hover {
+            background: linear-gradient(135deg, #c0392b 0%, var(--accent-color) 100%);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.5);
+        }
+
+        /* Main Content Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background-color: rgba(10, 21, 37, 0.92);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(52, 152, 219, 0.1);
+            position: relative;
+        }
+
+        #imagePreview {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.3);
+            display: block;
+        }
+
+        /* Loading Indicator */
+        .loading {
             display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(52, 152, 219, 0.95);
+            color: #ffffff;
+            padding: 20px 40px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.5);
+            z-index: 1000;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Welcome Message */
+        #welcomeMessage {
+            background: rgba(26, 188, 156, 0.1);
+            border: 1px solid rgba(26, 188, 156, 0.3);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        #welcomeMessage h2 {
+            color: var(--success-color);
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+            font-family: 'Segoe UI Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #welcomeMessage h3 {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        #welcomeMessage p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        #welcomeMessage ul {
+            text-align: left;
+            display: inline-block;
+            line-height: 1.8;
+            margin: 15px 0;
+        }
+
+        #welcomeMessage li {
+            margin-bottom: 8px;
+        }
+
+        #welcomeMessage strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Results Section */
+        .results-section {
+            background-color: rgba(10, 21, 37, 0.92);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(52, 152, 219, 0.1);
+        }
+
+        .analysis-container {
+            height: 100%;
+        }
+
+        .data-panel {
+            color: var(--text-color);
+        }
+
+        .data-panel h3 {
+            color: var(--h3-color);
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(52, 152, 219, 0.3);
+            font-family: 'Segoe UI Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .data-panel h4 {
+            color: var(--h4-color);
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* EXIF Data Full Width Section */
+        .exif-full-width {
+            background-color: rgba(10, 21, 37, 0.92);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(52, 152, 219, 0.1);
+            margin-bottom: 25px;
+        }
+
+        #exifData {
+            columns: 2;
+            column-gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            #exifData {
+                columns: 1;
+            }
+        }
+
+        /* Training Mode Container */
+        #trainingModeContainer {
+            background-color: rgba(10, 21, 37, 0.92);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(155, 89, 182, 0.3);
+            margin-bottom: 25px;
+            animation: slideDown 0.3s ease;
+        }
+
+        /* Hidden Class */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Footer */
+        .app-footer {
+            text-align: center;
+            padding: 35px 20px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+            border-top: 1px solid rgba(52, 152, 219, 0.2);
+            background-color: rgba(10, 21, 37, 0.6);
+            margin-top: 40px;
+        }
+
+        .app-footer p {
+            margin: 8px 0;
+        }
+
+        .app-footer a {
+            color: #a9d7f3;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .app-footer a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        .app-footer .footer-links {
+            margin: 15px 0;
+        }
+
+        .app-footer .footer-links a {
+            margin: 0 15px;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 21, 37, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(52, 152, 219, 0.5);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(52, 152, 219, 0.7);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .app-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .app-header .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .button-container {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .bc-controls {
+                flex-direction: column;
+            }
+        }
+
+        /* Additional utility styles for dynamic content */
+        .score-indicator {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .score-low { 
+            background-color: rgba(26, 188, 156, 0.2); 
+            color: #1abc9c; 
+            border: 1px solid rgba(26, 188, 156, 0.4);
+        }
+
+        .score-medium { 
+            background-color: rgba(241, 196, 15, 0.2); 
+            color: #f1c40f; 
+            border: 1px solid rgba(241, 196, 15, 0.4);
+        }
+
+        .score-high { 
+            background-color: rgba(231, 76, 60, 0.2); 
+            color: #e74c3c; 
+            border: 1px solid rgba(231, 76, 60, 0.4);
+        }
+
+        /* Info boxes for results */
+        .info-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background-color: rgba(26, 188, 156, 0.1);
+            border-left: 4px solid var(--success-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Header with Logo -->
+    <header class="app-header">
         <h1>Image Analyzer</h1>
-        <p style="color: #888; margin-top: -10px; margin-bottom: 20px; font-size: 0.9em;">
+        <p class="subtitle">AI Detection & Analysis Tool</p>
+        <p class="version-info">
             By Benoît (BSM3D) Saint-Moulin | Version 1.0 | November 2025
         </p>
+    </header>
 
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Primary Action Buttons -->
         <div class="button-container">
             <input type="file" id="imageInput" accept="image/*" multiple style="display: none">
-            <button onclick="document.getElementById('imageInput').click()">Load image</button>
-            <button id="exportJSON">Export JSON</button>
-            <button id="exportCSV">Export CSV</button>
-            <button id="exportExifText">Export Txt</button>
-            <button id="openTrainingMode">Training Mode</button>
-            <button id="helpButton" onclick="window.open('help.html', '_blank')">Help</button>
+            <button onclick="document.getElementById('imageInput').click()">📁 Load Image</button>
+            <button id="exportJSON">💾 Export JSON</button>
+            <button id="exportCSV">📊 Export CSV</button>
+            <button id="exportExifText">📄 Export TXT</button>
+            <button id="openTrainingMode">🎓 Training Mode</button>
+            <button id="helpButton" onclick="window.open('help.html', '_blank')">❓ Help</button>
         </div>
 
         <!-- Analysis Tools (shown after image load) -->
         <div id="analysisToolsContainer" class="button-container" style="display:none;">
-            <button id="toggleHeatmap">Toggle Heatmap</button>
-            <button id="toggleBlockAnalysis">Block Analysis</button>
-            <button id="toggleEdgeDetection">Edge Detection</button>
-            <button id="toggleRGBChannels">RGB: RGB</button>
-            <button id="toggleMagnifier">Magnifier (8x)</button>
-            <button id="toggleHistogram">Histogram</button>
-            <button id="toggleBlacklight">Blacklight UV</button>
-            <button id="toggleInfrared">Infrared</button>
+            <button id="toggleHeatmap">🗺️ Toggle Heatmap</button>
+            <button id="toggleBlockAnalysis">🔲 Block Analysis</button>
+            <button id="toggleEdgeDetection">🔍 Edge Detection</button>
+            <button id="toggleRGBChannels">🎨 RGB: RGB</button>
+            <button id="toggleMagnifier">🔬 Magnifier (8x)</button>
+            <button id="toggleHistogram">📊 Histogram</button>
+            <button id="toggleBlacklight">💜 Blacklight UV</button>
+            <button id="toggleInfrared">🌡️ Infrared</button>
         </div>
 
         <!-- Brightness/Contrast Controls -->
         <div id="brightnessContrastControls" class="bc-controls" style="display:none;">
             <div class="bc-slider-group">
-                <label for="brightnessSlider">Brightness: <span id="brightnessValue">0</span></label>
+                <label for="brightnessSlider">☀️ Brightness: <span id="brightnessValue">0</span></label>
                 <input type="range" id="brightnessSlider" min="-100" max="100" value="0" step="1">
             </div>
             <div class="bc-slider-group">
-                <label for="contrastSlider">Contrast: <span id="contrastValue">0</span></label>
+                <label for="contrastSlider">🎚️ Contrast: <span id="contrastValue">0</span></label>
                 <input type="range" id="contrastSlider" min="-100" max="100" value="0" step="1">
             </div>
-            <button id="resetAdjustments">Reset</button>
+            <button id="resetAdjustments">🔄 Reset</button>
         </div>
 
+        <!-- Main Content Area -->
         <div class="main-content">
+            <!-- Preview Section -->
             <div class="preview-section">
-                <div id="loading" class="loading">Analysis in progress...</div>
-                <div id="welcomeMessage" style="padding: 30px; text-align: center; background: var(--bg-medium); border-radius: 8px; margin-bottom: 20px;">
-                    <h2 style="color: var(--accent-color); margin-bottom: 15px;">How to Use</h2>
-                    <p style="margin-bottom: 10px; line-height: 1.6;">
-                        Click <strong>"Load image"</strong> to analyze an image for AI-generation indicators.
+                <div id="loading" class="loading">⚡ Analysis in progress...</div>
+                <div id="welcomeMessage">
+                    <h2>🎯 How to Use Image Analyzer</h2>
+                    <p>
+                        Click <strong>"Load Image"</strong> to analyze an image for AI-generation indicators.
                         This tool uses <strong>heuristic analysis</strong> (pattern detection, not neural networks)
                         to identify suspicious characteristics in images.
                     </p>
-                    <h3 style="color: var(--text-color); margin-top: 20px; margin-bottom: 10px; font-size: 1em;">Important Limitations</h3>
-                    <ul style="text-align: left; display: inline-block; line-height: 1.8;">
+                    <h3>⚠️ Important Limitations</h3>
+                    <ul>
                         <li><strong>No AI detector is 100% reliable</strong> - Use this as an assistance tool</li>
                         <li>This tool <strong>helps the human eye</strong> analyze images, not replace it</li>
                         <li>Results are <strong>probability-based</strong>, not definitive proof</li>
                         <li>Highly edited real photos may appear as AI-generated</li>
                         <li>Advanced AI models can bypass heuristic detection</li>
                     </ul>
-                    <p style="margin-top: 20px; font-style: italic; color: #888;">
-                        Always combine this tool with critical thinking and context analysis.
+                    <p style="margin-top: 20px; font-style: italic; color: #7f8c8d;">
+                        💡 Always combine this tool with critical thinking and context analysis.
                     </p>
                 </div>
                 <canvas id="imagePreview"></canvas>
             </div>
 
+            <!-- Results Section -->
             <div class="results-section">
                 <div class="analysis-container">
                     <div id="analysisData" class="data-panel">
-                        <!-- Résultats d'analyse -->
+                        <!-- Analysis results will be displayed here -->
                     </div>
                 </div>
             </div>
@@ -112,45 +624,61 @@
         <!-- EXIF Data Section (Full Width, Two Columns) -->
         <div class="exif-full-width">
             <div id="exifData" class="data-panel">
-                <!-- Données EXIF -->
+                <!-- EXIF data will be displayed here -->
             </div>
         </div>
 
-        <!-- Conteneur de formation (initialement caché) -->
+        <!-- Training Mode Container (initially hidden) -->
         <div id="trainingModeContainer" class="hidden">
-            <!-- Le contenu sera ajouté dynamiquement par le script -->
+            <!-- Content will be added dynamically by the script -->
         </div>
     </div>
 
-    <!-- Librairies externes -->
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p><strong>Image Analyzer</strong> - AI Detection & Analysis Tool</p>
+        <p>Design, Code, and Documentation by Benoît (BSM3D) Saint-Moulin © 2025</p>
+        <div class="footer-links">
+            <a href="https://www.bsm3d.com" target="_blank">www.bsm3d.com</a>
+            <a href="https://bsm3d.com/analyse/" target="_blank">Demo</a>
+            <a href="https://github.com/bsm3d" target="_blank">GitHub</a>
+            <a href="help.html" target="_blank">Documentation</a>
+        </div>
+        <p style="margin-top: 15px; font-size: 0.85em; color: #5f6c7d;">
+            Privacy-first design • Client-side processing • Open source for transparency
+        </p>
+        <p style="margin-top: 10px;"><strong>Made with ❤️ by Benoît (BSM3D) Saint-Moulin</strong></p>
+    </footer>
+
+    <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
 
-    <!-- Scripts de l'application -->
+    <!-- Application Scripts -->
     <script src="exif-reader.js"></script>
     <script src="image-analyzer.js"></script>
     <script src="export-manager.js"></script>
     <script src="ui-manager.js"></script>
 
-    <!-- Nouveaux scripts de détection IA -->
+    <!-- AI Detection Scripts -->
     <script src="ai-detector.js"></script>
     <script src="training-manager.js"></script>
     <script src="ui-training.js"></script>
 
-    <!-- Script d'initialisation -->
+    <!-- Initialization Script -->
     <script>
         window.addEventListener('load', () => {
-            console.log('Initialisation de l\'application...');
+            console.log('🚀 Initializing Image Analyzer application...');
 
             try {
-                // Initialisation des composants principaux
+                // Initialize main components
                 const uiManager = new UIManager();
 
-                // Initialisation des composants IA
+                // Initialize AI components
                 const aiDetector = new AIDetector();
                 const trainingManager = new TrainingManager(aiDetector);
                 const trainingUI = new AITrainingUI(aiDetector);
 
-                // Gestion du mode d'entraînement
+                // Training mode management
                 const openTrainingModeBtn = document.getElementById('openTrainingMode');
                 const trainingModeContainer = document.getElementById('trainingModeContainer');
 
@@ -158,21 +686,22 @@
                 trainingUI.container.style.display = 'none';
 
                 openTrainingModeBtn.addEventListener('click', () => {
-				const isHidden = trainingUI.container.style.display === 'none';
+                    const isHidden = trainingUI.container.style.display === 'none';
 
-				trainingUI.container.style.display = isHidden ? 'block' : 'none';
+                    trainingUI.container.style.display = isHidden ? 'block' : 'none';
 
-				openTrainingModeBtn.textContent = isHidden
-					? 'Close Training Mode'
-					: 'Training Mode';
+                    openTrainingModeBtn.textContent = isHidden
+                        ? '✖️ Close Training Mode'
+                        : '🎓 Training Mode';
 
-				// Vérifiez l'état du conteneur après le clic
-				console.log('Display state of trainingModeContainer after click:', trainingUI.container.style.display);
-			});
+                    // Log container state after click for debugging
+                    console.log('Training mode display state:', trainingUI.container.style.display);
+                });
 
-                console.log('Init Ok');
+                console.log('✅ Application initialized successfully');
             } catch (error) {
-                console.error('Init Error:', error);
+                console.error('❌ Initialization error:', error);
+                alert('An error occurred during initialization. Please check the console for details.');
             }
         });
     </script>
