@@ -15,7 +15,7 @@
     --heading-color: #ecf0f1;
     --h3-color: #1abc9c;
     --h4-color: #a9d7f3;
-    --container-width: 1400px;
+    --container-max-width: 95%;
     --bg-dark: #0a1525;
     --bg-medium: rgba(10, 21, 37, 0.92);
     --border-color: rgba(52, 152, 219, 0.3);
@@ -97,7 +97,7 @@ body {
 }
 
 .app-header > * {
-    max-width: var(--container-width);
+    max-width: var(--container-max-width);
     margin-left: auto;
     margin-right: auto;
 }
@@ -134,7 +134,7 @@ body {
 }
 
 .app-footer > * {
-    max-width: var(--container-width);
+    max-width: var(--container-max-width);
     margin-left: auto;
     margin-right: auto;
 }
@@ -162,7 +162,7 @@ body {
    CONTAINER & LAYOUT
    ============================================ */
 .container {
-    max-width: var(--container-width);
+    max-width: var(--container-max-width);
     margin: 20px auto;
     padding: 35px;
     background-color: var(--bg-medium);
@@ -1029,6 +1029,29 @@ input[type="file"]:hover {
     text-align: center;
     font-weight: 600;
     font-size: 14px;
+}
+
+.histogram-tooltip {
+    position: fixed;
+    background: rgba(10, 21, 37, 0.95);
+    border: 2px solid var(--secondary-color);
+    border-radius: 6px;
+    padding: 12px 15px;
+    color: var(--text-color);
+    font-size: 13px;
+    line-height: 1.8;
+    pointer-events: none;
+    z-index: 10001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    min-width: 120px;
+}
+
+.histogram-tooltip.active {
+    opacity: 1;
+    visibility: visible;
 }
 
 /* ============================================
