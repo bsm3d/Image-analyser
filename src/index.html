@@ -48,9 +48,6 @@
             <button id="toggleHistogram">Histogram</button>
             <button id="toggleBlacklight">Blacklight UV</button>
             <button id="toggleInfrared">Infrared</button>
-            <button id="zoomIn">Zoom In (+)</button>
-            <button id="zoomOut">Zoom Out (-)</button>
-            <button id="zoomReset">Reset Zoom</button>
         </div>
 
         <!-- Brightness/Contrast Controls -->
@@ -92,6 +89,11 @@
                 </div>
                 <div class="canvas-container">
                     <canvas id="imagePreview"></canvas>
+                    <div class="zoom-controls" id="zoomControls" style="display: none;">
+                        <button id="zoomIn" class="zoom-btn" title="Zoom In">+</button>
+                        <button id="zoomOut" class="zoom-btn" title="Zoom Out">-</button>
+                        <button id="zoomReset" class="zoom-btn" title="Reset Zoom">1:1</button>
+                    </div>
                 </div>
             </div>
 

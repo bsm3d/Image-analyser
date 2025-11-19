@@ -503,6 +503,12 @@ async drawImage(img, dimensions) {
         // Create or update image details container
         this.displayImageDetails(img);
 
+        // Show zoom controls
+        const zoomControls = document.getElementById('zoomControls');
+        if (zoomControls) {
+            zoomControls.style.display = 'flex';
+        }
+
     } catch (error) {
         console.error('Error drawing the image:', error);
         throw new Error('Error drawing the image');
@@ -1173,51 +1179,51 @@ async drawImage(img, dimensions) {
     }
 
     renderMagnifier(centerX, centerY) {
-        // Display image at real size (1:1 pixel ratio) for fine analysis
-        const displaySize = 100; // 100x100 pixel area at 1:1
+        const zoom = 8; // 8x magnification
+        const size = 25; // 25x25 pixel area
+        const halfSize = Math.floor(size / 2);
 
-        // Calculate source rectangle from original image
-        const halfSize = Math.floor(displaySize / 2);
-        const srcX = Math.max(0, centerX - halfSize);
-        const srcY = Math.max(0, centerY - halfSize);
-        const srcW = Math.min(displaySize, this.canvas.width - srcX);
-        const srcH = Math.min(displaySize, this.canvas.height - srcY);
+        this.magnifierCtx.clearRect(0, 0, 200, 200);
 
-        // Clear magnifier canvas
-        this.magnifierCtx.fillStyle = '#000';
-        this.magnifierCtx.fillRect(0, 0, 200, 200);
+        // Draw magnified area
+        const sx = Math.max(0, centerX - halfSize);
+        const sy = Math.max(0, centerY - halfSize);
+        const sw = Math.min(size, this.canvas.width - sx);
+        const sh = Math.min(size, this.canvas.height - sy);
 
-        // Get image data at real size (1:1)
-        if (this.currentImage) {
-            // Draw directly from original image at 1:1 pixel ratio
-            this.magnifierCtx.imageSmoothingEnabled = false;
+        this.magnifierCtx.imageSmoothingEnabled = false;
+        this.magnifierCtx.drawImage(
+            this.canvas,
+            sx, sy, sw, sh,
+            0, 0, 200, 200
+        );
 
-            // Calculate offset to center the magnified area
-            const offsetX = (200 - srcW) / 2;
-            const offsetY = (200 - srcH) / 2;
-
-            this.magnifierCtx.drawImage(
-                this.currentImage,
-                srcX, srcY, srcW, srcH,  // Source from original image
-                offsetX, offsetY, srcW, srcH  // Draw at 1:1 ratio, centered
-            );
+        // Draw grid
+        this.magnifierCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        this.magnifierCtx.lineWidth = 1;
+        for (let i = 0; i <= size; i++) {
+            const pos = (i / size) * 200;
+            this.magnifierCtx.beginPath();
+            this.magnifierCtx.moveTo(pos, 0);
+            this.magnifierCtx.lineTo(pos, 200);
+            this.magnifierCtx.stroke();
+            this.magnifierCtx.beginPath();
+            this.magnifierCtx.moveTo(0, pos);
+            this.magnifierCtx.lineTo(200, pos);
+            this.magnifierCtx.stroke();
         }
 
-        // Draw crosshair at center
-        this.magnifierCtx.strokeStyle = '#00ff00';
+        // Draw crosshair
+        this.magnifierCtx.strokeStyle = 'rgba(255, 0, 0, 0.8)';
         this.magnifierCtx.lineWidth = 2;
         this.magnifierCtx.beginPath();
-        this.magnifierCtx.moveTo(100, 90);
-        this.magnifierCtx.lineTo(100, 110);
-        this.magnifierCtx.moveTo(90, 100);
-        this.magnifierCtx.lineTo(110, 100);
+        this.magnifierCtx.moveTo(100, 0);
+        this.magnifierCtx.lineTo(100, 200);
         this.magnifierCtx.stroke();
-
-        // Add labels
-        this.magnifierCtx.fillStyle = '#00ff00';
-        this.magnifierCtx.font = '11px monospace';
-        this.magnifierCtx.fillText('1:1 Real Size', 5, 15);
-        this.magnifierCtx.fillText(`Pos: ${centerX},${centerY}`, 5, 195);
+        this.magnifierCtx.beginPath();
+        this.magnifierCtx.moveTo(0, 100);
+        this.magnifierCtx.lineTo(200, 100);
+        this.magnifierCtx.stroke();
     }
 
     // Histogram Methods
@@ -1521,6 +1527,10 @@ async drawImage(img, dimensions) {
         if (this.histogramContainer) this.histogramContainer.style.display = 'none';
         if (this.blacklightCanvas) this.blacklightCanvas.style.display = 'none';
         if (this.infraredCanvas) this.infraredCanvas.style.display = 'none';
+
+        // Hide zoom controls
+        const zoomControls = document.getElementById('zoomControls');
+        if (zoomControls) zoomControls.style.display = 'none';
 
         // Reset visibility flags
         this.heatmapVisible = false;
