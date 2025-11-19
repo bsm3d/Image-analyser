@@ -96,6 +96,12 @@ body {
     border-bottom: 1px solid var(--border-color);
 }
 
+.app-header > * {
+    max-width: var(--container-width);
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .app-header h1 {
     font-family: 'Segoe UI Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 3rem;
@@ -125,6 +131,12 @@ body {
     background: rgba(10, 21, 37, 0.6);
     border-top: 1px solid var(--border-color);
     margin-top: 40px;
+}
+
+.app-footer > * {
+    max-width: var(--container-width);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .app-footer p {
@@ -164,6 +176,7 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 30px;
     margin-top: 30px;
+    align-items: start;
 }
 
 /* ============================================
@@ -393,11 +406,17 @@ section {
 
 .preview-section {
     position: relative;
+    overflow: hidden;
 }
 
 .ai-training-container {
     width: 100%;
     margin-top: 30px;
+}
+
+.exif-full-width {
+    max-height: 600px;
+    overflow-y: auto;
 }
 
 .analysis-container {
@@ -595,14 +614,22 @@ input[type="file"]:hover {
    ============================================ */
 .canvas-container {
     position: relative;
-    display: inline-block;
+    display: block;
     width: 100%;
     max-width: 100%;
+    overflow: hidden;
 }
 
 #imagePreview {
     display: block;
     width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.canvas-container canvas {
+    display: block;
     max-width: 100%;
     height: auto;
 }
