@@ -173,6 +173,18 @@ class UIManager {
         this.histogramCtx = this.histogramCanvas.getContext('2d');
         this.histogramVisible = false;
 
+        // Histogram tooltip
+        this.histogramTooltip = document.createElement('div');
+        this.histogramTooltip.className = 'histogram-tooltip';
+        document.body.appendChild(this.histogramTooltip);
+        this.histogramData = { histR: null, histG: null, histB: null };
+
+        // Add histogram hover events
+        this.histogramCanvas.addEventListener('mousemove', (e) => this.onHistogramHover(e));
+        this.histogramCanvas.addEventListener('mouseleave', () => {
+            this.histogramTooltip.classList.remove('active');
+        });
+
         // Blacklight UV canvas
         this.blacklightCanvas = document.createElement('canvas');
         this.blacklightCanvas.style.position = 'absolute';
@@ -300,6 +312,21 @@ class UIManager {
             toggleInfraredBtn.addEventListener('click', () => {
                 this.toggleInfrared();
             });
+        }
+
+        // Zoom controls
+        const zoomInBtn = document.getElementById('zoomIn');
+        const zoomOutBtn = document.getElementById('zoomOut');
+        const zoomResetBtn = document.getElementById('zoomReset');
+
+        if (zoomInBtn) {
+            zoomInBtn.addEventListener('click', () => this.zoomIn());
+        }
+        if (zoomOutBtn) {
+            zoomOutBtn.addEventListener('click', () => this.zoomOut());
+        }
+        if (zoomResetBtn) {
+            zoomResetBtn.addEventListener('click', () => this.zoomReset());
         }
 
         // Brightness/Contrast controls
@@ -1146,51 +1173,51 @@ async drawImage(img, dimensions) {
     }
 
     renderMagnifier(centerX, centerY) {
-        const zoom = 8; // 8x magnification
-        const size = 25; // 25x25 pixel area
-        const halfSize = Math.floor(size / 2);
+        // Display image at real size (1:1 pixel ratio) for fine analysis
+        const displaySize = 100; // 100x100 pixel area at 1:1
 
-        this.magnifierCtx.clearRect(0, 0, 200, 200);
+        // Calculate source rectangle from original image
+        const halfSize = Math.floor(displaySize / 2);
+        const srcX = Math.max(0, centerX - halfSize);
+        const srcY = Math.max(0, centerY - halfSize);
+        const srcW = Math.min(displaySize, this.canvas.width - srcX);
+        const srcH = Math.min(displaySize, this.canvas.height - srcY);
 
-        // Draw magnified area
-        const sx = Math.max(0, centerX - halfSize);
-        const sy = Math.max(0, centerY - halfSize);
-        const sw = Math.min(size, this.canvas.width - sx);
-        const sh = Math.min(size, this.canvas.height - sy);
+        // Clear magnifier canvas
+        this.magnifierCtx.fillStyle = '#000';
+        this.magnifierCtx.fillRect(0, 0, 200, 200);
 
-        this.magnifierCtx.imageSmoothingEnabled = false;
-        this.magnifierCtx.drawImage(
-            this.canvas,
-            sx, sy, sw, sh,
-            0, 0, 200, 200
-        );
+        // Get image data at real size (1:1)
+        if (this.currentImage) {
+            // Draw directly from original image at 1:1 pixel ratio
+            this.magnifierCtx.imageSmoothingEnabled = false;
 
-        // Draw grid
-        this.magnifierCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-        this.magnifierCtx.lineWidth = 1;
-        for (let i = 0; i <= size; i++) {
-            const pos = (i / size) * 200;
-            this.magnifierCtx.beginPath();
-            this.magnifierCtx.moveTo(pos, 0);
-            this.magnifierCtx.lineTo(pos, 200);
-            this.magnifierCtx.stroke();
-            this.magnifierCtx.beginPath();
-            this.magnifierCtx.moveTo(0, pos);
-            this.magnifierCtx.lineTo(200, pos);
-            this.magnifierCtx.stroke();
+            // Calculate offset to center the magnified area
+            const offsetX = (200 - srcW) / 2;
+            const offsetY = (200 - srcH) / 2;
+
+            this.magnifierCtx.drawImage(
+                this.currentImage,
+                srcX, srcY, srcW, srcH,  // Source from original image
+                offsetX, offsetY, srcW, srcH  // Draw at 1:1 ratio, centered
+            );
         }
 
-        // Draw crosshair
-        this.magnifierCtx.strokeStyle = 'rgba(255, 0, 0, 0.8)';
+        // Draw crosshair at center
+        this.magnifierCtx.strokeStyle = '#00ff00';
         this.magnifierCtx.lineWidth = 2;
         this.magnifierCtx.beginPath();
-        this.magnifierCtx.moveTo(100, 0);
-        this.magnifierCtx.lineTo(100, 200);
+        this.magnifierCtx.moveTo(100, 90);
+        this.magnifierCtx.lineTo(100, 110);
+        this.magnifierCtx.moveTo(90, 100);
+        this.magnifierCtx.lineTo(110, 100);
         this.magnifierCtx.stroke();
-        this.magnifierCtx.beginPath();
-        this.magnifierCtx.moveTo(0, 100);
-        this.magnifierCtx.lineTo(200, 100);
-        this.magnifierCtx.stroke();
+
+        // Add labels
+        this.magnifierCtx.fillStyle = '#00ff00';
+        this.magnifierCtx.font = '11px monospace';
+        this.magnifierCtx.fillText('1:1 Real Size', 5, 15);
+        this.magnifierCtx.fillText(`Pos: ${centerX},${centerY}`, 5, 195);
     }
 
     // Histogram Methods
@@ -1262,6 +1289,9 @@ async drawImage(img, dimensions) {
 
         this.histogramCtx.globalAlpha = 1.0;
 
+        // Store histogram data for tooltip
+        this.histogramData = { histR, histG, histB };
+
         // Draw grid
         this.histogramCtx.strokeStyle = '#444';
         this.histogramCtx.lineWidth = 1;
@@ -1296,6 +1326,31 @@ async drawImage(img, dimensions) {
         // Clean up
         tempCanvas.width = 0;
         tempCanvas.height = 0;
+    }
+
+    onHistogramHover(e) {
+        if (!this.histogramData.histR) return;
+
+        const rect = this.histogramCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const value = Math.floor(x / 2); // Each value takes 2 pixels
+
+        if (value >= 0 && value <= 255) {
+            const countR = this.histogramData.histR[value];
+            const countG = this.histogramData.histG[value];
+            const countB = this.histogramData.histB[value];
+
+            this.histogramTooltip.innerHTML = `
+                <strong>Value: ${value}</strong><br>
+                <span style="color: #ff0000;">R: ${countR}</span><br>
+                <span style="color: #00ff00;">G: ${countG}</span><br>
+                <span style="color: #0000ff;">B: ${countB}</span>
+            `;
+
+            this.histogramTooltip.style.left = (e.clientX + 15) + 'px';
+            this.histogramTooltip.style.top = (e.clientY + 15) + 'px';
+            this.histogramTooltip.classList.add('active');
+        }
     }
 
     // Brightness/Contrast Methods
@@ -1501,6 +1556,68 @@ async drawImage(img, dimensions) {
         }
 
         console.log('All tools and parameters have been reset');
+    }
+
+    // Zoom Methods
+    zoomIn() {
+        if (this.zoomLevel < 3) {
+            this.zoomLevel += 0.25;
+            this.applyZoom();
+        }
+    }
+
+    zoomOut() {
+        if (this.zoomLevel > 1) {
+            this.zoomLevel -= 0.25;
+            this.applyZoom();
+        }
+    }
+
+    zoomReset() {
+        this.zoomLevel = 1;
+        this.applyZoom();
+    }
+
+    applyZoom() {
+        if (this.canvas && this.canvasContainer) {
+            this.canvas.style.transform = `scale(${this.zoomLevel})`;
+            this.canvas.style.transformOrigin = 'top left';
+
+            // Enable scrolling when zoomed
+            if (this.zoomLevel > 1) {
+                this.canvasContainer.style.overflowX = 'auto';
+                this.canvasContainer.style.overflowY = 'auto';
+            } else {
+                this.canvasContainer.style.overflowX = 'hidden';
+                this.canvasContainer.style.overflowY = 'hidden';
+            }
+
+            // Update all overlays
+            if (this.heatmapCanvas) {
+                this.heatmapCanvas.style.transform = `scale(${this.zoomLevel})`;
+                this.heatmapCanvas.style.transformOrigin = 'top left';
+            }
+            if (this.blockCanvas) {
+                this.blockCanvas.style.transform = `scale(${this.zoomLevel})`;
+                this.blockCanvas.style.transformOrigin = 'top left';
+            }
+            if (this.edgeCanvas) {
+                this.edgeCanvas.style.transform = `scale(${this.zoomLevel})`;
+                this.edgeCanvas.style.transformOrigin = 'top left';
+            }
+            if (this.channelCanvas) {
+                this.channelCanvas.style.transform = `scale(${this.zoomLevel})`;
+                this.channelCanvas.style.transformOrigin = 'top left';
+            }
+            if (this.blacklightCanvas) {
+                this.blacklightCanvas.style.transform = `scale(${this.zoomLevel})`;
+                this.blacklightCanvas.style.transformOrigin = 'top left';
+            }
+            if (this.infraredCanvas) {
+                this.infraredCanvas.style.transform = `scale(${this.zoomLevel})`;
+                this.infraredCanvas.style.transformOrigin = 'top left';
+            }
+        }
     }
 
     showLoading(show) {
