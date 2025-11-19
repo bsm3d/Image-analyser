@@ -86,8 +86,6 @@ class UIManager {
         this.heatmapCanvas.style.position = 'absolute';
         this.heatmapCanvas.style.top = '0';
         this.heatmapCanvas.style.left = '0';
-        this.heatmapCanvas.style.width = '100%';
-        this.heatmapCanvas.style.height = '100%';
         this.heatmapCanvas.style.pointerEvents = 'all';
         this.heatmapCanvas.style.display = 'none';
         this.heatmapCanvas.style.opacity = '0.75';
@@ -100,8 +98,6 @@ class UIManager {
         this.blockCanvas.style.position = 'absolute';
         this.blockCanvas.style.top = '0';
         this.blockCanvas.style.left = '0';
-        this.blockCanvas.style.width = '100%';
-        this.blockCanvas.style.height = '100%';
         this.blockCanvas.style.pointerEvents = 'none';
         this.blockCanvas.style.display = 'none';
         this.blockCanvas.style.opacity = '0.7';
@@ -133,8 +129,6 @@ class UIManager {
         this.edgeCanvas.style.position = 'absolute';
         this.edgeCanvas.style.top = '0';
         this.edgeCanvas.style.left = '0';
-        this.edgeCanvas.style.width = '100%';
-        this.edgeCanvas.style.height = '100%';
         this.edgeCanvas.style.pointerEvents = 'none';
         this.edgeCanvas.style.display = 'none';
         this.edgeCanvas.style.opacity = '0.8';
@@ -147,8 +141,6 @@ class UIManager {
         this.channelCanvas.style.position = 'absolute';
         this.channelCanvas.style.top = '0';
         this.channelCanvas.style.left = '0';
-        this.channelCanvas.style.width = '100%';
-        this.channelCanvas.style.height = '100%';
         this.channelCanvas.style.pointerEvents = 'none';
         this.channelCanvas.style.display = 'none';
         this.canvasContainer.appendChild(this.channelCanvas);
@@ -186,8 +178,6 @@ class UIManager {
         this.blacklightCanvas.style.position = 'absolute';
         this.blacklightCanvas.style.top = '0';
         this.blacklightCanvas.style.left = '0';
-        this.blacklightCanvas.style.width = '100%';
-        this.blacklightCanvas.style.height = '100%';
         this.blacklightCanvas.style.pointerEvents = 'none';
         this.blacklightCanvas.style.display = 'none';
         this.canvasContainer.appendChild(this.blacklightCanvas);
@@ -199,8 +189,6 @@ class UIManager {
         this.infraredCanvas.style.position = 'absolute';
         this.infraredCanvas.style.top = '0';
         this.infraredCanvas.style.left = '0';
-        this.infraredCanvas.style.width = '100%';
-        this.infraredCanvas.style.height = '100%';
         this.infraredCanvas.style.pointerEvents = 'none';
         this.infraredCanvas.style.display = 'none';
         this.canvasContainer.appendChild(this.infraredCanvas);
@@ -1115,6 +1103,8 @@ async drawImage(img, dimensions) {
 
         if (this.magnifierVisible) {
             this.magnifierContainer.style.display = 'block';
+            // Hide pixel tooltip when magnifier is active
+            this.pixelTooltip.classList.remove('active');
             this.setupMagnifier();
         } else {
             this.magnifierContainer.style.display = 'none';
@@ -1132,6 +1122,9 @@ async drawImage(img, dimensions) {
         }
 
         this.canvas._magnifierListener = (e) => {
+            // Hide pixel tooltip while magnifier is active
+            this.pixelTooltip.classList.remove('active');
+
             const rect = this.canvas.getBoundingClientRect();
             const scaleX = this.canvas.width / rect.width;
             const scaleY = this.canvas.height / rect.height;
