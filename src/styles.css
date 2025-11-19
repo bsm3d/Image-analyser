@@ -395,6 +395,23 @@ section {
     position: relative;
 }
 
+.ai-training-container {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.analysis-container {
+    width: 100%;
+}
+
+.data-panel {
+    width: 100%;
+}
+
+.data-panel h2 {
+    margin-top: 0;
+}
+
 .section-title {
     font-size: 1.8rem;
     color: var(--heading-color);
@@ -447,7 +464,8 @@ button:disabled {
     padding: 20px;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    justify-content: center;
+    justify-content: flex-start;
+    width: 100%;
 }
 
 /* ============================================
@@ -943,6 +961,50 @@ input[type="file"]:hover {
 }
 
 /* ============================================
+   TOOLTIPS
+   ============================================ */
+.pixel-tooltip,
+.heatmap-tooltip {
+    position: fixed;
+    background: rgba(10, 21, 37, 0.95);
+    border: 2px solid var(--secondary-color);
+    border-radius: 6px;
+    padding: 12px 15px;
+    color: var(--text-color);
+    font-size: 13px;
+    line-height: 1.6;
+    pointer-events: none;
+    z-index: 10001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    min-width: 180px;
+}
+
+.pixel-tooltip.active,
+.heatmap-tooltip.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.pixel-tooltip .color-preview {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    border: 1px solid var(--border-color);
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.heatmap-tooltip {
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* ============================================
    MAGNIFIER & HISTOGRAM
    ============================================ */
 .magnifier-container {
@@ -1082,8 +1144,25 @@ footer p {
     h3 { font-size: 1.3rem; }
     h4 { font-size: 1.1rem; }
 
+    .app-header {
+        padding: 25px 15px;
+    }
+
+    .app-header h1 {
+        font-size: 2rem;
+    }
+
+    .app-header .subtitle {
+        font-size: 1.1rem;
+    }
+
+    .app-header .version-info {
+        font-size: 0.85rem;
+    }
+
     .container {
         padding: 15px;
+        margin: 10px auto;
     }
 
     .button-container {
@@ -1094,6 +1173,9 @@ footer p {
     button {
         width: 100%;
         margin: 5px 0;
+        padding: 14px 20px;
+        font-size: 15px;
+        min-height: 48px;
     }
 
     .bc-controls {
@@ -1147,6 +1229,14 @@ footer p {
     h3 { font-size: 1.1rem; }
     h4 { font-size: 1rem; }
 
+    .app-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .app-header .subtitle {
+        font-size: 1rem;
+    }
+
     .preview-section,
     .results-section,
     .exif-full-width,
@@ -1155,7 +1245,43 @@ footer p {
     }
 
     button {
-        padding: 10px 15px;
-        font-size: 14px;
+        padding: 14px 20px;
+        font-size: 15px;
+        min-height: 48px;
+    }
+
+    .pixel-tooltip,
+    .heatmap-tooltip {
+        font-size: 12px;
+        padding: 10px 12px;
+        min-width: 150px;
+    }
+}
+
+/* ============================================
+   TOUCH DEVICE SUPPORT
+   ============================================ */
+@media (hover: none) and (pointer: coarse) {
+    button {
+        min-height: 48px;
+        padding: 14px 20px;
+    }
+
+    input[type="range"] {
+        height: 12px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        width: 28px;
+        height: 28px;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+        width: 28px;
+        height: 28px;
+    }
+
+    .canvas-container {
+        touch-action: pan-y pinch-zoom;
     }
 }

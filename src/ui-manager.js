@@ -1280,6 +1280,26 @@ async drawImage(img, dimensions) {
             this.histogramCtx.stroke();
         }
 
+        // Draw value labels on X axis (0, 64, 128, 192, 255)
+        this.histogramCtx.fillStyle = '#bdc3c7';
+        this.histogramCtx.font = '11px Segoe UI';
+        this.histogramCtx.textAlign = 'center';
+        const xLabels = [0, 64, 128, 192, 255];
+        xLabels.forEach(val => {
+            const x = val * 2;
+            this.histogramCtx.fillText(val, x, 195);
+        });
+
+        // Draw legend
+        this.histogramCtx.textAlign = 'left';
+        this.histogramCtx.font = '12px Segoe UI';
+        this.histogramCtx.fillStyle = '#ff0000';
+        this.histogramCtx.fillText('R', 5, 15);
+        this.histogramCtx.fillStyle = '#00ff00';
+        this.histogramCtx.fillText('G', 25, 15);
+        this.histogramCtx.fillStyle = '#0000ff';
+        this.histogramCtx.fillText('B', 45, 15);
+
         // Clean up
         tempCanvas.width = 0;
         tempCanvas.height = 0;
