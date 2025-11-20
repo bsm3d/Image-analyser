@@ -735,14 +735,15 @@ async drawImage(img, dimensions) {
     generateHeatmapData(img) {
         const tempCanvas = document.createElement('canvas');
         const tempCtx = tempCanvas.getContext('2d');
-        tempCanvas.width = this.canvas.width;
-        tempCanvas.height = this.canvas.height;
-        tempCtx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
+        // Use ORIGINAL image dimensions for full-resolution analysis
+        tempCanvas.width = img.width;
+        tempCanvas.height = img.height;
+        tempCtx.drawImage(img, 0, 0, img.width, img.height);
 
-        const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+        const imageData = tempCtx.getImageData(0, 0, img.width, img.height);
         const data = imageData.data;
-        const width = tempCanvas.width;
-        const height = tempCanvas.height;
+        const width = img.width;
+        const height = img.height;
 
         // Create heatmap data based on suspicious features
         const heatmapData = new Uint8ClampedArray(width * height);
@@ -812,13 +813,15 @@ async drawImage(img, dimensions) {
     }
 
     renderHeatmap() {
-        if (!this.heatmapData) return;
+        if (!this.heatmapData || !this.currentImage) return;
 
-        // Match the internal canvas dimensions to the main canvas
-        this.heatmapCanvas.width = this.canvas.width;
-        this.heatmapCanvas.height = this.canvas.height;
+        // Create temp canvas at ORIGINAL image dimensions
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCanvas.width = this.currentImage.width;
+        tempCanvas.height = this.currentImage.height;
 
-        const imageData = this.heatmapCtx.createImageData(this.heatmapCanvas.width, this.heatmapCanvas.height);
+        const imageData = tempCtx.createImageData(this.currentImage.width, this.currentImage.height);
         const data = imageData.data;
 
         for (let i = 0; i < this.heatmapData.length; i++) {
@@ -844,21 +847,36 @@ async drawImage(img, dimensions) {
             }
         }
 
-        this.heatmapCtx.putImageData(imageData, 0, 0);
+        // Put full-resolution heatmap into temp canvas
+        tempCtx.putImageData(imageData, 0, 0);
+
+        // Match overlay canvas to display canvas and scale down
+        this.heatmapCanvas.width = this.canvas.width;
+        this.heatmapCanvas.height = this.canvas.height;
+        this.heatmapCtx.drawImage(tempCanvas, 0, 0, this.currentImage.width, this.currentImage.height, 0, 0, this.canvas.width, this.canvas.height);
+
+        // Clean up
+        tempCanvas.width = 0;
+        tempCanvas.height = 0;
     }
 
     onHeatmapHover(e) {
-        if (!this.heatmapData) return;
+        if (!this.heatmapData || !this.currentImage) return;
 
         const rect = this.heatmapCanvas.getBoundingClientRect();
         const scaleX = this.heatmapCanvas.width / rect.width;
         const scaleY = this.heatmapCanvas.height / rect.height;
 
-        const x = Math.floor((e.clientX - rect.left) * scaleX);
-        const y = Math.floor((e.clientY - rect.top) * scaleY);
+        // Get position in display canvas
+        const displayX = Math.floor((e.clientX - rect.left) * scaleX);
+        const displayY = Math.floor((e.clientY - rect.top) * scaleY);
 
-        if (x >= 0 && x < this.heatmapCanvas.width && y >= 0 && y < this.heatmapCanvas.height) {
-            const suspicion = this.heatmapData[y * this.heatmapCanvas.width + x];
+        // Convert to original image coordinates
+        const imgX = Math.floor(displayX * (this.currentImage.width / this.heatmapCanvas.width));
+        const imgY = Math.floor(displayY * (this.currentImage.height / this.heatmapCanvas.height));
+
+        if (imgX >= 0 && imgX < this.currentImage.width && imgY >= 0 && imgY < this.currentImage.height) {
+            const suspicion = this.heatmapData[imgY * this.currentImage.width + imgX];
 
             let level, color;
             if (suspicion < 30) {
@@ -882,14 +900,15 @@ async drawImage(img, dimensions) {
     generateBlockAnalysisData(img) {
         const tempCanvas = document.createElement('canvas');
         const tempCtx = tempCanvas.getContext('2d');
-        tempCanvas.width = this.canvas.width;
-        tempCanvas.height = this.canvas.height;
-        tempCtx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
+        // Use ORIGINAL image dimensions for full-resolution analysis
+        tempCanvas.width = img.width;
+        tempCanvas.height = img.height;
+        tempCtx.drawImage(img, 0, 0, img.width, img.height);
 
-        const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+        const imageData = tempCtx.getImageData(0, 0, img.width, img.height);
         const data = imageData.data;
-        const width = tempCanvas.width;
-        const height = tempCanvas.height;
+        const width = img.width;
+        const height = img.height;
 
         // Store for rendering
         this.blockAnalysisData = {
@@ -983,7 +1002,7 @@ async drawImage(img, dimensions) {
     }
 
     renderBlockAnalysis() {
-        if (!this.blockAnalysisData) return;
+        if (!this.blockAnalysisData || !this.currentImage) return;
 
         // Match the internal canvas dimensions to the main canvas
         this.blockCanvas.width = this.canvas.width;
@@ -991,18 +1010,22 @@ async drawImage(img, dimensions) {
 
         this.blockCtx.clearRect(0, 0, this.blockCanvas.width, this.blockCanvas.height);
 
-        // Draw JPEG blocks (blue grid)
+        // Calculate scale from original image to display canvas
+        const scaleX = this.canvas.width / this.blockAnalysisData.width;
+        const scaleY = this.canvas.height / this.blockAnalysisData.height;
+
+        // Draw JPEG blocks (blue grid) - scale coordinates
         this.blockCtx.strokeStyle = 'rgba(0, 100, 255, 0.6)';
         this.blockCtx.lineWidth = 1;
         this.blockAnalysisData.jpegBlocks.forEach(({ x, y }) => {
-            this.blockCtx.strokeRect(x, y, 8, 8);
+            this.blockCtx.strokeRect(x * scaleX, y * scaleY, 8 * scaleX, 8 * scaleY);
         });
 
-        // Draw repeated patterns (magenta boxes)
+        // Draw repeated patterns (magenta boxes) - scale coordinates
         this.blockCtx.strokeStyle = 'rgba(255, 0, 255, 0.8)';
         this.blockCtx.lineWidth = 2;
         this.blockAnalysisData.repeatedPatterns.forEach(({ x, y }) => {
-            this.blockCtx.strokeRect(x, y, 16, 16);
+            this.blockCtx.strokeRect(x * scaleX, y * scaleY, 16 * scaleX, 16 * scaleY);
         });
 
         // Add legend
@@ -1034,14 +1057,15 @@ async drawImage(img, dimensions) {
 
         const tempCanvas = document.createElement('canvas');
         const tempCtx = tempCanvas.getContext('2d');
-        tempCanvas.width = this.canvas.width;
-        tempCanvas.height = this.canvas.height;
-        tempCtx.drawImage(this.canvas, 0, 0);
+        // Use ORIGINAL image dimensions for full-resolution edge detection
+        tempCanvas.width = this.currentImage.width;
+        tempCanvas.height = this.currentImage.height;
+        tempCtx.drawImage(this.currentImage, 0, 0, this.currentImage.width, this.currentImage.height);
 
-        const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+        const imageData = tempCtx.getImageData(0, 0, this.currentImage.width, this.currentImage.height);
         const data = imageData.data;
-        const width = tempCanvas.width;
-        const height = tempCanvas.height;
+        const width = this.currentImage.width;
+        const height = this.currentImage.height;
 
         // Convert to grayscale
         const gray = new Uint8ClampedArray(width * height);
@@ -1077,12 +1101,14 @@ async drawImage(img, dimensions) {
             }
         }
 
-        // Match the internal canvas dimensions to the main canvas
+        // Put full-resolution edge data into temp canvas
+        const edgeImageData = new ImageData(edges, width, height);
+        tempCtx.putImageData(edgeImageData, 0, 0);
+
+        // Match overlay canvas to display canvas and scale down
         this.edgeCanvas.width = this.canvas.width;
         this.edgeCanvas.height = this.canvas.height;
-
-        const edgeImageData = new ImageData(edges, width, height);
-        this.edgeCtx.putImageData(edgeImageData, 0, 0);
+        this.edgeCtx.drawImage(tempCanvas, 0, 0, width, height, 0, 0, this.canvas.width, this.canvas.height);
 
         // Clean up
         tempCanvas.width = 0;
@@ -1115,11 +1141,12 @@ async drawImage(img, dimensions) {
 
         const tempCanvas = document.createElement('canvas');
         const tempCtx = tempCanvas.getContext('2d');
-        tempCanvas.width = this.canvas.width;
-        tempCanvas.height = this.canvas.height;
-        tempCtx.drawImage(this.canvas, 0, 0);
+        // Use ORIGINAL image dimensions for full-resolution channel analysis
+        tempCanvas.width = this.currentImage.width;
+        tempCanvas.height = this.currentImage.height;
+        tempCtx.drawImage(this.currentImage, 0, 0, this.currentImage.width, this.currentImage.height);
 
-        const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+        const imageData = tempCtx.getImageData(0, 0, this.currentImage.width, this.currentImage.height);
         const data = imageData.data;
 
         // Filter based on selected channel
@@ -1136,11 +1163,13 @@ async drawImage(img, dimensions) {
             }
         }
 
-        // Match the internal canvas dimensions to the main canvas
+        // Put full-resolution channel data into temp canvas
+        tempCtx.putImageData(imageData, 0, 0);
+
+        // Match overlay canvas to display canvas and scale down
         this.channelCanvas.width = this.canvas.width;
         this.channelCanvas.height = this.canvas.height;
-
-        this.channelCtx.putImageData(imageData, 0, 0);
+        this.channelCtx.drawImage(tempCanvas, 0, 0, this.currentImage.width, this.currentImage.height, 0, 0, this.canvas.width, this.canvas.height);
 
         // Clean up
         tempCanvas.width = 0;
@@ -1260,11 +1289,12 @@ async drawImage(img, dimensions) {
 
         const tempCanvas = document.createElement('canvas');
         const tempCtx = tempCanvas.getContext('2d');
-        tempCanvas.width = this.canvas.width;
-        tempCanvas.height = this.canvas.height;
-        tempCtx.drawImage(this.canvas, 0, 0);
+        // Use ORIGINAL image dimensions for accurate histogram
+        tempCanvas.width = this.currentImage.width;
+        tempCanvas.height = this.currentImage.height;
+        tempCtx.drawImage(this.currentImage, 0, 0, this.currentImage.width, this.currentImage.height);
 
-        const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+        const imageData = tempCtx.getImageData(0, 0, this.currentImage.width, this.currentImage.height);
         const data = imageData.data;
 
         // Calculate histograms
@@ -1432,11 +1462,12 @@ async drawImage(img, dimensions) {
 
         const tempCanvas = document.createElement('canvas');
         const tempCtx = tempCanvas.getContext('2d');
-        tempCanvas.width = this.canvas.width;
-        tempCanvas.height = this.canvas.height;
-        tempCtx.drawImage(this.canvas, 0, 0);
+        // Use ORIGINAL image dimensions for full-resolution blacklight effect
+        tempCanvas.width = this.currentImage.width;
+        tempCanvas.height = this.currentImage.height;
+        tempCtx.drawImage(this.currentImage, 0, 0, this.currentImage.width, this.currentImage.height);
 
-        const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+        const imageData = tempCtx.getImageData(0, 0, this.currentImage.width, this.currentImage.height);
         const data = imageData.data;
 
         // Blacklight UV effect: Enhance blue/violet channels, suppress red
@@ -1463,11 +1494,13 @@ async drawImage(img, dimensions) {
             }
         }
 
-        // Match the internal canvas dimensions to the main canvas
+        // Put full-resolution blacklight data into temp canvas
+        tempCtx.putImageData(imageData, 0, 0);
+
+        // Match overlay canvas to display canvas and scale down
         this.blacklightCanvas.width = this.canvas.width;
         this.blacklightCanvas.height = this.canvas.height;
-
-        this.blacklightCtx.putImageData(imageData, 0, 0);
+        this.blacklightCtx.drawImage(tempCanvas, 0, 0, this.currentImage.width, this.currentImage.height, 0, 0, this.canvas.width, this.canvas.height);
 
         // Clean up
         tempCanvas.width = 0;
@@ -1491,11 +1524,12 @@ async drawImage(img, dimensions) {
 
         const tempCanvas = document.createElement('canvas');
         const tempCtx = tempCanvas.getContext('2d');
-        tempCanvas.width = this.canvas.width;
-        tempCanvas.height = this.canvas.height;
-        tempCtx.drawImage(this.canvas, 0, 0);
+        // Use ORIGINAL image dimensions for full-resolution infrared effect
+        tempCanvas.width = this.currentImage.width;
+        tempCanvas.height = this.currentImage.height;
+        tempCtx.drawImage(this.currentImage, 0, 0, this.currentImage.width, this.currentImage.height);
 
-        const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+        const imageData = tempCtx.getImageData(0, 0, this.currentImage.width, this.currentImage.height);
         const data = imageData.data;
 
         // Infrared effect: Red/near-infrared enhancement
@@ -1523,11 +1557,13 @@ async drawImage(img, dimensions) {
             }
         }
 
-        // Match the internal canvas dimensions to the main canvas
+        // Put full-resolution infrared data into temp canvas
+        tempCtx.putImageData(imageData, 0, 0);
+
+        // Match overlay canvas to display canvas and scale down
         this.infraredCanvas.width = this.canvas.width;
         this.infraredCanvas.height = this.canvas.height;
-
-        this.infraredCtx.putImageData(imageData, 0, 0);
+        this.infraredCtx.drawImage(tempCanvas, 0, 0, this.currentImage.width, this.currentImage.height, 0, 0, this.canvas.width, this.canvas.height);
 
         // Clean up
         tempCanvas.width = 0;
