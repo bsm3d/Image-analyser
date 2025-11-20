@@ -64,7 +64,14 @@ class AITrainingUI {
             </div>
         `;
 
-        document.body.appendChild(this.container);
+        // Ajouter le conteneur dans le div trainingModeContainer au lieu de document.body
+        const trainingModeContainer = document.getElementById('trainingModeContainer');
+        if (trainingModeContainer) {
+            trainingModeContainer.appendChild(this.container);
+        } else {
+            // Fallback si le conteneur n'existe pas
+            document.body.appendChild(this.container);
+        }
         this.bindEvents();
     }
 
