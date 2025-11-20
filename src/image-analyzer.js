@@ -13,11 +13,21 @@ class ImageAnalyzer {
     }
 
     async analyze(img) {
-        this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
-        const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+        // Create a temporary canvas with ORIGINAL image dimensions for full-resolution analysis
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCanvas.width = img.width;
+        tempCanvas.height = img.height;
+        tempCtx.drawImage(img, 0, 0, img.width, img.height);
+
+        const imageData = tempCtx.getImageData(0, 0, img.width, img.height);
         const data = imageData.data;
 
-        return {
+        // Store dimensions for analysis methods
+        this.analysisWidth = img.width;
+        this.analysisHeight = img.height;
+
+        const results = {
             patterns: this.detectPatterns(data),
             textures: this.analyzeTextures(data),
             colors: this.analyzeColors(data),
@@ -27,13 +37,19 @@ class ImageAnalyzer {
             jpegBlocks: this.detectJPEGBlocks(data),
             frequency: this.analyzeFrequency(data)
         };
+
+        // Clean up
+        tempCanvas.width = 0;
+        tempCanvas.height = 0;
+
+        return results;
     }
 
     detectPatterns(data) {
         let sharpEdges = 0;
         let repeatingPatterns = 0;
-        const width = this.canvas.width;
-        const height = this.canvas.height;
+        const width = this.analysisWidth;
+        const height = this.analysisHeight;
 
         // Détection des bords nets
         for (let y = 0; y < height; y++) {
@@ -75,8 +91,8 @@ class ImageAnalyzer {
         let uniformity = 0;
         let complexity = 0;
         let unnaturalGradients = 0;
-        const width = this.canvas.width;
-        const height = this.canvas.height;
+        const width = this.analysisWidth;
+        const height = this.analysisHeight;
 
         for (let y = 1; y < height - 1; y++) {
             for (let x = 1; x < width - 1; x++) {
@@ -157,8 +173,8 @@ class ImageAnalyzer {
     }
 
     analyzeSymmetry(data) {
-        const width = this.canvas.width;
-        const height = this.canvas.height;
+        const width = this.analysisWidth;
+        const height = this.analysisHeight;
         let horizontalSymmetry = 0;
         let verticalSymmetry = 0;
 
@@ -195,8 +211,8 @@ class ImageAnalyzer {
     analyzeNoise(data) {
         let naturalNoise = 0;
         let artificialNoise = 0;
-        const width = this.canvas.width;
-        const height = this.canvas.height;
+        const width = this.analysisWidth;
+        const height = this.analysisHeight;
 
         for (let y = 1; y < height - 1; y++) {
             for (let x = 1; x < width - 1; x++) {
@@ -236,8 +252,8 @@ class ImageAnalyzer {
     detectArtifacts(data) {
         let compressionArtifacts = 0;
         let perfectEdges = 0;
-        const width = this.canvas.width;
-        const height = this.canvas.height;
+        const width = this.analysisWidth;
+        const height = this.analysisHeight;
 
         for (let y = 1; y < height - 1; y++) {
             for (let x = 1; x < width - 1; x++) {
@@ -278,8 +294,8 @@ class ImageAnalyzer {
 
     detectJPEGBlocks(data) {
         // Detect 8x8 JPEG compression blocks
-        const width = this.canvas.width;
-        const height = this.canvas.height;
+        const width = this.analysisWidth;
+        const height = this.analysisHeight;
         let blockBoundaries = 0;
         let totalBlocks = 0;
 
@@ -319,8 +335,8 @@ class ImageAnalyzer {
 
     analyzeFrequency(data) {
         // Analyze high-frequency content (detail level)
-        const width = this.canvas.width;
-        const height = this.canvas.height;
+        const width = this.analysisWidth;
+        const height = this.analysisHeight;
         let highFreq = 0;
         let lowFreq = 0;
 
