@@ -9,10 +9,10 @@
 class ExifReader {
     constructor() {
         if (typeof EXIF === 'undefined') {
-            console.error('La librairie EXIF.js n\'est pas chargée');
-            throw new Error('La librairie EXIF.js est requise');
+            console.error('EXIF.js library is not loaded');
+            throw new Error('EXIF.js library is required');
         }
-        console.log('ExifReader initialisé');
+        console.log('ExifReader initialized');
     }
 
     readExif(file) {
@@ -20,12 +20,12 @@ class ExifReader {
         return new Promise((resolve, reject) => {
             EXIF.getData(file, function() {
                 try {
-                    console.log('Lecture des données EXIF...');
+                    console.log('Reading EXIF data...');
                     const exifData = EXIF.getAllTags(this);
-                    console.log('Données EXIF trouvées:', exifData);
+                    console.log('EXIF data found:', exifData);
                     resolve(self.formatExifData(exifData));
                 } catch (error) {
-                    console.error('Erreur lors de la lecture des données EXIF:', error);
+                    console.error('Error reading EXIF data:', error);
                     reject(error);
                 }
             });
@@ -34,57 +34,57 @@ class ExifReader {
 
     formatExifData(exifData) {
         const relevantTags = {
-            // Informations sur l'appareil
-            'Make': 'Marque appareil',
-            'Model': 'Modèle appareil',
-            'LensMake': 'Marque objectif',
-            'LensModel': 'Modèle objectif',
-            'CameraSerialNumber': 'N° série appareil',
-            'LensSerialNumber': 'N° série objectif',
+            // Camera information
+            'Make': 'Camera Make',
+            'Model': 'Camera Model',
+            'LensMake': 'Lens Make',
+            'LensModel': 'Lens Model',
+            'CameraSerialNumber': 'Camera Serial Number',
+            'LensSerialNumber': 'Lens Serial Number',
 
-            // Date et logiciel
-            'DateTimeOriginal': 'Date de prise',
-            'CreateDate': 'Date de création',
-            'ModifyDate': 'Date de modification',
-            'Software': 'Logiciel',
+            // Date and software
+            'DateTimeOriginal': 'Date Taken',
+            'CreateDate': 'Creation Date',
+            'ModifyDate': 'Modification Date',
+            'Software': 'Software',
             
-            // Paramètres de prise de vue
-            'ExposureTime': 'Temps d\'exposition',
-            'FNumber': 'Ouverture',
-            'ExposureProgram': 'Programme',
+            // Shooting parameters
+            'ExposureTime': 'Exposure Time',
+            'FNumber': 'Aperture',
+            'ExposureProgram': 'Program',
             'ISOSpeedRatings': 'ISO',
-            'ExposureBiasValue': 'Compensation exposition',
-            'MaxApertureValue': 'Ouverture max',
-            'MeteringMode': 'Mode de mesure',
-            'LightSource': 'Source lumière',
+            'ExposureBiasValue': 'Exposure Compensation',
+            'MaxApertureValue': 'Max Aperture',
+            'MeteringMode': 'Metering Mode',
+            'LightSource': 'Light Source',
             'Flash': 'Flash',
-            'FocalLength': 'Focale',
-            'WhiteBalance': 'Balance des blancs',
-            'DigitalZoomRatio': 'Zoom numérique',
+            'FocalLength': 'Focal Length',
+            'WhiteBalance': 'White Balance',
+            'DigitalZoomRatio': 'Digital Zoom',
 
-            // Information sur l'image
-            'ImageWidth': 'Largeur',
-            'ImageHeight': 'Hauteur',
-            'BitsPerSample': 'Bits par pixel',
-            'PhotometricInterpretation': 'Interprétation',
+            // Image information
+            'ImageWidth': 'Width',
+            'ImageHeight': 'Height',
+            'BitsPerSample': 'Bits per Sample',
+            'PhotometricInterpretation': 'Interpretation',
             'Orientation': 'Orientation',
-            'SamplesPerPixel': 'Échantillons/pixel',
-            'XResolution': 'Résolution X',
-            'YResolution': 'Résolution Y',
-            'ResolutionUnit': 'Unité résolution',
-            'ColorSpace': 'Espace colorimétrique',
+            'SamplesPerPixel': 'Samples per Pixel',
+            'XResolution': 'X Resolution',
+            'YResolution': 'Y Resolution',
+            'ResolutionUnit': 'Resolution Unit',
+            'ColorSpace': 'Color Space',
 
-            // Copyright et auteur
-            'Artist': 'Photographe',
+            // Copyright and author
+            'Artist': 'Photographer',
             'Copyright': 'Copyright',
-            'UserComment': 'Commentaire',
+            'UserComment': 'Comment',
 
             // GPS
             'GPSLatitude': 'Latitude',
             'GPSLongitude': 'Longitude',
             'GPSAltitude': 'Altitude',
-            'GPSTimeStamp': 'Heure GPS',
-            'GPSDateStamp': 'Date GPS'
+            'GPSTimeStamp': 'GPS Time',
+            'GPSDateStamp': 'GPS Date'
         };
 
         const formatted = {};
@@ -95,20 +95,20 @@ class ExifReader {
             }
         }
 
-        // Ajouter coordonnées GPS si disponibles
+        // Add GPS coordinates if available
         if (exifData.GPSLatitude && exifData.GPSLongitude) {
-            formatted['Coordonnées GPS'] = this.formatGPSCoordinates(exifData);
+            formatted['GPS Coordinates'] = this.formatGPSCoordinates(exifData);
         }
 
         return formatted;
     }
 
     formatExifValue(key, value) {
-        if (value === undefined || value === null) return 'Non disponible';
+        if (value === undefined || value === null) return 'Not available';
 
         // Handle empty byte arrays (like empty UserComment)
         if (Array.isArray(value) && value.every(v => v === 0)) {
-            return 'Non disponible';
+            return 'Not available';
         }
 
         // Handle string-like byte arrays
@@ -116,7 +116,7 @@ class ExifReader {
             // Convert byte array to string, filter out null bytes
             const str = String.fromCharCode(...value.filter(v => v !== 0));
             if (str.trim().length === 0) {
-                return 'Non disponible';
+                return 'Not available';
             }
             return str.trim();
         }
@@ -140,7 +140,7 @@ class ExifReader {
                     return value;
                 }
 
-            // Valeurs d'exposition
+            // Exposure values
             case 'ExposureTime':
                 return value < 1 ? `1/${Math.round(1/value)}s` : `${value}s`;
             case 'FNumber':
@@ -152,56 +152,56 @@ class ExifReader {
             case 'ISOSpeedRatings':
                 return `ISO ${value}`;
                 
-            // Modes et programmes
+            // Modes and programs
             case 'ExposureProgram':
                 const programs = {
-                    0: 'Non défini',
-                    1: 'Manuel',
-                    2: 'Programme normal',
-                    3: 'Priorité ouverture',
-                    4: 'Priorité vitesse',
-                    5: 'Programme créatif',
-                    6: 'Programme action',
+                    0: 'Not defined',
+                    1: 'Manual',
+                    2: 'Normal program',
+                    3: 'Aperture priority',
+                    4: 'Shutter priority',
+                    5: 'Creative program',
+                    6: 'Action program',
                     7: 'Portrait',
-                    8: 'Paysage'
+                    8: 'Landscape'
                 };
                 return programs[value] || value;
                 
             case 'MeteringMode':
                 const meteringModes = {
-                    0: 'Inconnu',
-                    1: 'Moyenne',
-                    2: 'Moyenne pondérée centrale',
+                    0: 'Unknown',
+                    1: 'Average',
+                    2: 'Center weighted average',
                     3: 'Spot',
                     4: 'MultiSpot',
-                    5: 'Multizone',
-                    6: 'Partielle',
-                    255: 'Autre'
+                    5: 'Pattern',
+                    6: 'Partial',
+                    255: 'Other'
                 };
                 return meteringModes[value] || value;
                 
             case 'WhiteBalance':
-                return value === 0 ? 'Auto' : 'Manuel';
+                return value === 0 ? 'Auto' : 'Manual';
                 
             case 'Flash':
                 const flashModes = {
-                    0x0: 'Pas de flash',
-                    0x1: 'Flash déclenché',
-                    0x5: 'Flash déclenché, retour non détecté',
-                    0x7: 'Flash déclenché, retour détecté',
-                    0x8: 'On, Flash non déclenché',
-                    0x9: 'Flash déclenché, mode Auto',
-                    0xd: 'Flash déclenché, mode Auto, retour non détecté',
-                    0xf: 'Flash déclenché, mode Auto, retour détecté',
-                    0x10: 'Pas de flash',
-                    0x18: 'Flash non déclenché, mode Auto',
-                    0x19: 'Flash déclenché, mode Auto',
-                    0x1d: 'Flash déclenché, mode Auto, retour non détecté',
-                    0x1f: 'Flash déclenché, mode Auto, retour détecté'
+                    0x0: 'No flash',
+                    0x1: 'Flash fired',
+                    0x5: 'Flash fired, return not detected',
+                    0x7: 'Flash fired, return detected',
+                    0x8: 'On, flash did not fire',
+                    0x9: 'Flash fired, auto mode',
+                    0xd: 'Flash fired, auto mode, return not detected',
+                    0xf: 'Flash fired, auto mode, return detected',
+                    0x10: 'No flash',
+                    0x18: 'Flash did not fire, auto mode',
+                    0x19: 'Flash fired, auto mode',
+                    0x1d: 'Flash fired, auto mode, return not detected',
+                    0x1f: 'Flash fired, auto mode, return detected'
                 };
-                return flashModes[value] || `Mode flash ${value}`;
+                return flashModes[value] || `Flash mode ${value}`;
 
-            // Résolution
+            // Resolution
             case 'XResolution':
             case 'YResolution':
                 return `${value} dpi`;
@@ -219,7 +219,7 @@ class ExifReader {
             case 'GPSAltitude':
                 return `${value} m`;
 
-            // Valeurs par défaut
+            // Default values
             default:
                 return value.toString();
         }
@@ -244,73 +244,73 @@ class ExifReader {
             
             return `${lat}° ${latRef}, ${long}° ${longRef}`;
         } catch (error) {
-            console.error('Erreur lors du formatage des coordonnées GPS:', error);
-            return 'Format GPS invalide';
+            console.error('Error formatting GPS coordinates:', error);
+            return 'Invalid GPS format';
         }
     }
 
     exportAsText(exifData) {
         if (!exifData || Object.keys(exifData).length === 0) {
-            return 'Aucune donnée EXIF disponible';
+            return 'No EXIF data available';
         }
 
         const sections = {
-            'Informations Appareil': [
-                'Marque appareil',
-                'Modèle appareil',
-                'Marque objectif',
-                'Modèle objectif',
-                'N° série appareil',
-                'N° série objectif'
+            'Camera Information': [
+                'Camera Make',
+                'Camera Model',
+                'Lens Make',
+                'Lens Model',
+                'Camera Serial Number',
+                'Lens Serial Number'
             ],
-            'Dates et Logiciel': [
-                'Date de prise',
-                'Date de création',
-                'Date de modification',
-                'Logiciel'
+            'Dates and Software': [
+                'Date Taken',
+                'Creation Date',
+                'Modification Date',
+                'Software'
             ],
-            'Paramètres de Prise de Vue': [
-                'Temps d\'exposition',
-                'Ouverture',
-                'Programme',
+            'Shooting Parameters': [
+                'Exposure Time',
+                'Aperture',
+                'Program',
                 'ISO',
-                'Compensation exposition',
-                'Ouverture max',
-                'Mode de mesure',
-                'Source lumière',
+                'Exposure Compensation',
+                'Max Aperture',
+                'Metering Mode',
+                'Light Source',
                 'Flash',
-                'Focale',
-                'Balance des blancs',
-                'Zoom numérique'
+                'Focal Length',
+                'White Balance',
+                'Digital Zoom'
             ],
-            'Informations Image': [
-                'Largeur',
-                'Hauteur',
-                'Bits par pixel',
-                'Interprétation',
+            'Image Information': [
+                'Width',
+                'Height',
+                'Bits per Sample',
+                'Interpretation',
                 'Orientation',
-                'Échantillons/pixel',
-                'Résolution X',
-                'Résolution Y',
-                'Unité résolution',
-                'Espace colorimétrique'
+                'Samples per Pixel',
+                'X Resolution',
+                'Y Resolution',
+                'Resolution Unit',
+                'Color Space'
             ],
-            'Copyright et Auteur': [
-                'Photographe',
+            'Copyright and Author': [
+                'Photographer',
                 'Copyright',
-                'Commentaire'
+                'Comment'
             ],
-            'Données GPS': [
+            'GPS Data': [
                 'Latitude',
                 'Longitude',
                 'Altitude',
-                'Heure GPS',
-                'Date GPS',
-                'Coordonnées GPS'
+                'GPS Time',
+                'GPS Date',
+                'GPS Coordinates'
             ]
         };
 
-        let textOutput = 'INFORMATIONS EXIF\n';
+        let textOutput = 'EXIF INFORMATION\n';
         textOutput += '================\n\n';
 
         for (const [section, fields] of Object.entries(sections)) {

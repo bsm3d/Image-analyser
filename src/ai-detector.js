@@ -8,27 +8,27 @@
 
 class AIDetector {
     constructor() {
-        // Constantes de sécurité
+        // Security constants
         this.MAX_IMAGE_DIMENSION = 4096;
         this.MIN_IMAGE_DIMENSION = 50;
         this.MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
         this.ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
-        // Seuils basés sur les données statistiques
+        // Thresholds based on statistical data
         this.thresholds = {
             patterns: {
-                repeatingPatterns: 0.45,  // Médiane entre IA et réel
-                sharpEdges: 0.06          // Seuil au-dessus des images réelles
+                repeatingPatterns: 0.45,  // Median between AI and real
+                sharpEdges: 0.06          // Threshold above real images
             },
             textures: {
-                uniformity: 0.60,         // Point médian observé
-                unnaturalGradients: 0.25, // Basé sur les données
-                complexity: 0.15          // Entre IA (~28%) et réel (~7%)
+                uniformity: 0.60,         // Observed midpoint
+                unnaturalGradients: 0.25, // Based on data
+                complexity: 0.15          // Between AI (~28%) and real (~7%)
             },
             colors: {
-                colorBanding: 0.22,       // Moyenne observée
-                uniqueColors: 3500,       // Point médian entre IA/réel
-                saturationVariance: 0.04  // Basé sur les moyennes
+                colorBanding: 0.22,       // Observed average
+                uniqueColors: 3500,       // Midpoint between AI/real
+                saturationVariance: 0.04  // Based on averages
             },
             symmetry: {
                 horizontalThreshold: 0.85,
@@ -44,7 +44,7 @@ class AIDetector {
             }
         };
 
-        // Base de données d'entraînement
+        // Training database
         this.trainingData = {
             aiImages: [],
             realImages: [],
@@ -54,20 +54,20 @@ class AIDetector {
 
     validateImage(imageData) {
         if (!imageData || !imageData.data || !imageData.width || !imageData.height) {
-            throw new Error('Données image invalides');
+            throw new Error('Invalid image data');
         }
 
         const {width, height} = imageData;
         if (width > this.MAX_IMAGE_DIMENSION || height > this.MAX_IMAGE_DIMENSION) {
-            throw new Error(`Dimensions d'image trop grandes. Maximum: ${this.MAX_IMAGE_DIMENSION}px`);
+            throw new Error(`Image dimensions too large. Maximum: ${this.MAX_IMAGE_DIMENSION}px`);
         }
 
         if (width < this.MIN_IMAGE_DIMENSION || height < this.MIN_IMAGE_DIMENSION) {
-            throw new Error(`Dimensions d'image trop petites. Minimum: ${this.MIN_IMAGE_DIMENSION}px`);
+            throw new Error(`Image dimensions too small. Minimum: ${this.MIN_IMAGE_DIMENSION}px`);
         }
 
         if (imageData.data.length !== width * height * 4) {
-            throw new Error('Données d\'image corrompues');
+            throw new Error('Corrupted image data');
         }
 
         return true;
@@ -104,7 +104,7 @@ class AIDetector {
         let sharpEdges = 0;
         let repeatingPatterns = 0;
 
-        // Détection des bords nets
+        // Sharp edge detection
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width - 1; x++) {
                 const i = (y * width + x) * 4;
@@ -118,7 +118,7 @@ class AIDetector {
             }
         }
 
-        // Détection des motifs répétitifs
+        // Repeating pattern detection
         for (let y = 0; y < height - 8; y += 8) {
             for (let x = 0; x < width - 8; x += 8) {
                 const patterns = new Set();
@@ -225,64 +225,53 @@ class AIDetector {
             for (let x = 0; x < width / 2; x++) {
                 const leftIdx = (y * width + x) * 4;
                 const rightIdx = (y * width + (width - 1 - x)) * 4;
+                
                 const diff = Math.abs(data[leftIdx] - data[rightIdx]) +
                            Math.abs(data[leftIdx+1] - data[rightIdx+1]) +
                            Math.abs(data[leftIdx+2] - data[rightIdx+2]);
-                if (diff < 30) horizontalSymmetry++;
+                
+                if (diff < 10) horizontalSymmetry++;
             }
         }
 
-        for (let x = 0; x < width; x++) {
-            for (let y = 0; y < height / 2; y++) {
+        for (let y = 0; y < height / 2; y++) {
+            for (let x = 0; x < width; x++) {
                 const topIdx = (y * width + x) * 4;
                 const bottomIdx = ((height - 1 - y) * width + x) * 4;
+                
                 const diff = Math.abs(data[topIdx] - data[bottomIdx]) +
                            Math.abs(data[topIdx+1] - data[bottomIdx+1]) +
                            Math.abs(data[topIdx+2] - data[bottomIdx+2]);
-                if (diff < 30) verticalSymmetry++;
+                
+                if (diff < 10) verticalSymmetry++;
             }
         }
 
         return {
-            horizontalSymmetry: horizontalSymmetry / ((width/2) * height),
-            verticalSymmetry: verticalSymmetry / (width * (height/2))
+            horizontalSymmetry: horizontalSymmetry / (width * height / 2),
+            verticalSymmetry: verticalSymmetry / (width * height / 2)
         };
     }
 
     analyzeNoise(data, width, height) {
-        let naturalNoise = 0;
         let artificialNoise = 0;
+        let naturalNoise = 0;
 
-        for (let y = 1; y < height - 1; y++) {
-            for (let x = 1; x < width - 1; x++) {
-                const idx = (y * width + x) * 4;
-                const surrounding = [
-                    ((y-1) * width + x) * 4,
-                    ((y+1) * width + x) * 4,
-                    (y * width + x-1) * 4,
-                    (y * width + x+1) * 4
-                ];
-
-                const variations = surrounding.map(sIdx => {
-                    return Math.abs(data[idx] - data[sIdx]) +
-                           Math.abs(data[idx+1] - data[sIdx+1]) +
-                           Math.abs(data[idx+2] - data[sIdx+2]);
-                });
-
-                if (Math.max(...variations) < 30 && Math.min(...variations) > 5) {
-                    naturalNoise++;
-                }
-                else if (variations.every(v => Math.abs(v - variations[0]) < 2) || 
-                         Math.max(...variations) > 100) {
-                    artificialNoise++;
-                }
-            }
+        for (let i = 0; i < data.length - 8; i += 4) {
+            const current = [data[i], data[i+1], data[i+2]];
+            const next = [data[i+4], data[i+5], data[i+6]];
+            
+            const diff = Math.abs(current[0] - next[0]) +
+                        Math.abs(current[1] - next[1]) +
+                        Math.abs(current[2] - next[2]);
+            
+            if (diff > 0 && diff < 8) artificialNoise++;
+            if (diff > 8 && diff < 20) naturalNoise++;
         }
 
-        const totalPixels = (width-2) * (height-2);
         return {
-            naturalNoise: naturalNoise / totalPixels,
-            artificialNoise: artificialNoise / totalPixels
+            artificialNoise: artificialNoise / (data.length / 4),
+            naturalNoise: naturalNoise / (data.length / 4)
         };
     }
 
@@ -290,94 +279,113 @@ class AIDetector {
         let compressionArtifacts = 0;
         let perfectEdges = 0;
 
-        for (let y = 1; y < height - 1; y++) {
-            for (let x = 1; x < width - 1; x++) {
-                const idx = (y * width + x) * 4;
-                const surrounding = [
-                    ((y-1) * width + x) * 4,
-                    ((y+1) * width + x) * 4,
-                    (y * width + x-1) * 4,
-                    (y * width + x+1) * 4
-                ];
-
-                let blockiness = 0;
-                surrounding.forEach(sIdx => {
-                    const diff = Math.abs(data[idx] - data[sIdx]) +
-                               Math.abs(data[idx+1] - data[sIdx+1]) +
-                               Math.abs(data[idx+2] - data[sIdx+2]);
-                    if (diff === 0 || diff > 100) blockiness++;
-                });
-                if (blockiness >= 3) compressionArtifacts++;
-
-                let perfectEdgeCount = 0;
-                for (let i = 0; i < surrounding.length - 1; i++) {
-                    const diff1 = Math.abs(data[surrounding[i]] - data[surrounding[i+1]]);
-                    if (diff1 === 0 || diff1 > 200) perfectEdgeCount++;
+        // JPEG block detection (8x8)
+        for (let y = 0; y < height - 8; y += 8) {
+            for (let x = 0; x < width - 8; x += 8) {
+                let blockVariation = 0;
+                for (let dy = 0; dy < 8; dy++) {
+                    for (let dx = 0; dx < 7; dx++) {
+                        const i1 = ((y + dy) * width + (x + dx)) * 4;
+                        const i2 = ((y + dy) * width + (x + dx + 1)) * 4;
+                        blockVariation += Math.abs(data[i1] - data[i2]);
+                    }
                 }
-                if (perfectEdgeCount >= 2) perfectEdges++;
+                if (blockVariation < 100) compressionArtifacts++;
             }
         }
 
-        const totalPixels = (width-2) * (height-2);
+        // Perfect edge detection
+        for (let y = 1; y < height - 1; y++) {
+            for (let x = 1; x < width - 1; x++) {
+                const idx = (y * width + x) * 4;
+                const top = ((y-1) * width + x) * 4;
+                const bottom = ((y+1) * width + x) * 4;
+                const left = (y * width + x-1) * 4;
+                const right = (y * width + x+1) * 4;
+
+                const diffs = [
+                    Math.abs(data[idx] - data[top]),
+                    Math.abs(data[idx] - data[bottom]),
+                    Math.abs(data[idx] - data[left]),
+                    Math.abs(data[idx] - data[right])
+                ];
+
+                if (Math.max(...diffs) > 100 && Math.min(...diffs) === 0) {
+                    perfectEdges++;
+                }
+            }
+        }
+
         return {
-            compressionArtifacts: compressionArtifacts / totalPixels,
-            perfectEdges: perfectEdges / totalPixels
+            compressionArtifacts: compressionArtifacts / ((width * height) / 64),
+            perfectEdges: perfectEdges / (width * height)
         };
     }
 
     calculateAIScore(analysis) {
         let score = 0;
-        const details = {};
+        let details = {};
 
-        // Patterns (30 points)
+        // Pattern analysis
         if (analysis.patterns.sharpEdges > this.thresholds.patterns.sharpEdges) {
-            const sharpScore = Math.min(20, (analysis.patterns.sharpEdges - this.thresholds.patterns.sharpEdges) * 200);
-            score += sharpScore;
-            details.sharpEdges = sharpScore;
+            const patternScore = (analysis.patterns.sharpEdges / this.thresholds.patterns.sharpEdges) * 15;
+            score += Math.min(patternScore, 15);
+            details.sharpEdges = patternScore;
         }
 
         if (analysis.patterns.repeatingPatterns < this.thresholds.patterns.repeatingPatterns) {
-            const patternScore = Math.min(10, (this.thresholds.patterns.repeatingPatterns - analysis.patterns.repeatingPatterns) * 100);
-            score += patternScore;
-            details.repeatingPatterns = patternScore;
+            const repeatScore = (1 - analysis.patterns.repeatingPatterns / this.thresholds.patterns.repeatingPatterns) * 10;
+            score += Math.min(repeatScore, 10);
+            details.repeatingPatterns = repeatScore;
         }
 
-        // Textures (35 points)
-        if (analysis.textures.complexity > this.thresholds.textures.complexity) {
-            const complexityScore = Math.min(15, (analysis.textures.complexity - this.thresholds.textures.complexity) * 150);
-            score += complexityScore;
-            details.complexity = complexityScore;
-        }
-
+        // Texture analysis
         if (analysis.textures.uniformity < this.thresholds.textures.uniformity) {
-            const uniformityScore = Math.min(10, (this.thresholds.textures.uniformity - analysis.textures.uniformity) * 100);
-            score += uniformityScore;
+            const uniformityScore = (1 - analysis.textures.uniformity / this.thresholds.textures.uniformity) * 20;
+            score += Math.min(uniformityScore, 20);
             details.uniformity = uniformityScore;
         }
 
+        if (analysis.textures.complexity > this.thresholds.textures.complexity) {
+            const complexityScore = (analysis.textures.complexity / this.thresholds.textures.complexity) * 15;
+            score += Math.min(complexityScore, 15);
+            details.complexity = complexityScore;
+        }
+
         if (analysis.textures.unnaturalGradients > this.thresholds.textures.unnaturalGradients) {
-            const gradientScore = Math.min(10, (analysis.textures.unnaturalGradients - this.thresholds.textures.unnaturalGradients) * 100);
-			score += gradientScore;
+            const gradientScore = (analysis.textures.unnaturalGradients / this.thresholds.textures.unnaturalGradients) * 10;
+            score += Math.min(gradientScore, 10);
             details.unnaturalGradients = gradientScore;
         }
 
-        // Couleurs (25 points)
+        // Color analysis
         if (analysis.colors.uniqueColors > this.thresholds.colors.uniqueColors) {
-            const colorScore = Math.min(15, (analysis.colors.uniqueColors - this.thresholds.colors.uniqueColors) / 200);
-            score += colorScore;
+            const colorScore = ((analysis.colors.uniqueColors - this.thresholds.colors.uniqueColors) / this.thresholds.colors.uniqueColors) * 15;
+            score += Math.min(colorScore, 15);
             details.uniqueColors = colorScore;
         }
 
         if (analysis.colors.colorBanding < this.thresholds.colors.colorBanding) {
-            const bandingScore = Math.min(10, (this.thresholds.colors.colorBanding - analysis.colors.colorBanding) * 100);
-            score += bandingScore;
+            const bandingScore = (1 - analysis.colors.colorBanding / this.thresholds.colors.colorBanding) * 10;
+            score += Math.min(bandingScore, 10);
             details.colorBanding = bandingScore;
         }
 
-        // Bruit (10 points)
+        // Symmetry analysis
+        if (analysis.symmetry.horizontalSymmetry > this.thresholds.symmetry.horizontalThreshold ||
+            analysis.symmetry.verticalSymmetry > this.thresholds.symmetry.verticalThreshold) {
+            const symmetryScore = Math.max(
+                analysis.symmetry.horizontalSymmetry,
+                analysis.symmetry.verticalSymmetry
+            ) * 5;
+            score += Math.min(symmetryScore, 5);
+            details.symmetry = symmetryScore;
+        }
+
+        // Noise analysis
         if (analysis.noise.artificialNoise > this.thresholds.noise.artificialNoiseThreshold) {
-            const noiseScore = Math.min(10, (analysis.noise.artificialNoise - this.thresholds.noise.artificialNoiseThreshold) * 100);
-            score += noiseScore;
+            const noiseScore = (analysis.noise.artificialNoise / this.thresholds.noise.artificialNoiseThreshold) * 10;
+            score += Math.min(noiseScore, 10);
             details.artificialNoise = noiseScore;
         }
 
@@ -392,37 +400,37 @@ class AIDetector {
 
         // Patterns
         if (analysis.patterns.sharpEdges > this.thresholds.patterns.sharpEdges) {
-            indicators.push("Bords nets artificiels détectés");
+            indicators.push("Artificial sharp edges detected");
         }
         if (analysis.patterns.repeatingPatterns < this.thresholds.patterns.repeatingPatterns) {
-            indicators.push("Absence inhabituelle de motifs répétitifs");
+            indicators.push("Unusual absence of repeating patterns");
         }
 
         // Textures
         if (analysis.textures.uniformity < this.thresholds.textures.uniformity) {
-            indicators.push("Manque d'uniformité caractéristique");
+            indicators.push("Characteristic lack of uniformity");
         }
         if (analysis.textures.complexity > this.thresholds.textures.complexity) {
-            indicators.push("Complexité anormalement élevée");
+            indicators.push("Abnormally high complexity");
         }
         if (analysis.textures.unnaturalGradients > this.thresholds.textures.unnaturalGradients) {
-            indicators.push("Dégradés non naturels détectés");
+            indicators.push("Unnatural gradients detected");
         }
 
-        // Couleurs
+        // Colors
         if (analysis.colors.uniqueColors > this.thresholds.colors.uniqueColors) {
-            indicators.push("Nombre inhabituel de couleurs uniques");
+            indicators.push("Unusual number of unique colors");
         }
         if (analysis.colors.colorBanding < this.thresholds.colors.colorBanding) {
-            indicators.push("Distribution atypique des couleurs");
+            indicators.push("Atypical color distribution");
         }
 
         // Noise
         if (analysis.noise.artificialNoise > this.thresholds.noise.artificialNoiseThreshold) {
-            indicators.push("Bruit numérique artificiel détecté");
+            indicators.push("Artificial digital noise detected");
         }
         if (analysis.noise.naturalNoise < this.thresholds.noise.naturalNoiseThreshold) {
-            indicators.push("Absence de bruit naturel");
+            indicators.push("Absence of natural noise");
         }
 
         return indicators;
@@ -430,11 +438,11 @@ class AIDetector {
 
     trainModel(images, type) {
         if (!['ai', 'real'].includes(type)) {
-            throw new Error('Type d\'entraînement invalide');
+            throw new Error('Invalid training type');
         }
 
         if (this.trainingData[`${type}Images`].length >= this.trainingData.maxSamples) {
-            throw new Error('Nombre maximum d\'échantillons atteint');
+            throw new Error('Maximum number of samples reached');
         }
 
         const analyses = images.map(imageData => {
@@ -511,14 +519,14 @@ class AIDetector {
                 }
             });
         } catch (error) {
-            throw new Error('Erreur lors de la sauvegarde du modèle');
+            throw new Error('Error saving model');
         }
     }
 
     loadModel(modelData) {
         try {
             if (typeof modelData !== 'string') {
-                throw new Error('Données de modèle invalides');
+                throw new Error('Invalid model data');
             }
 
             const parsedData = JSON.parse(modelData);
@@ -527,7 +535,7 @@ class AIDetector {
             
             return parsedData.trainingStats;
         } catch (error) {
-            throw new Error(`Erreur de chargement du modèle: ${error.message}`);
+            throw new Error(`Model loading error: ${error.message}`);
         }
     }
 
@@ -539,11 +547,11 @@ class AIDetector {
         const defaultThresholds = this.getDefaultThresholds();
         for (const category in defaultThresholds) {
             if (!thresholds[category]) {
-                throw new Error(`Catégorie de seuils manquante: ${category}`);
+                throw new Error(`Missing threshold category: ${category}`);
             }
             for (const metric in defaultThresholds[category]) {
                 if (!this.isValidNumber(thresholds[category][metric])) {
-                    throw new Error(`Seuil invalide: ${category}.${metric}`);
+                    throw new Error(`Invalid threshold: ${category}.${metric}`);
                 }
             }
         }
@@ -594,12 +602,11 @@ class AIDetector {
     }
 }
 
-// Export global sécurisé
+// Secure global export
 if (typeof window !== 'undefined') {
     Object.defineProperty(window, 'AIDetector', {
         value: AIDetector,
         writable: false,
         configurable: false
     });
-}			
-			
+}

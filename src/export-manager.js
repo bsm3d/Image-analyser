@@ -38,11 +38,9 @@ class ExportManager {
             return;
         }
 
-        // Préparer les en-têtes
         const headers = ['Timestamp', 'AI Score', 'Artefacts', 'Uniformity', 'Complexity', 'Unique Colors', 'Average Saturation'];
         const rows = [];
 
-        // Première ligne avec les données d'analyse
         const row = [
             new Date().toLocaleString(),
             this.data.analysis.score,
@@ -88,7 +86,6 @@ class ExportManager {
             
             link.click();
             
-            // Nettoyage
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
             
