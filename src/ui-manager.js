@@ -604,6 +604,19 @@ async drawImage(img, dimensions) {
                          background-color: ${this.getScoreColor(score)}">
                     </div>
                 </div>
+
+                <div class="suspicion-gauge-container">
+                    <h4>Suspicion Intensity Gauge</h4>
+                    <div class="gauge-bar-container">
+                        <div class="gauge-indicator" style="left: ${score}%;"></div>
+                    </div>
+                    <div class="gauge-labels">
+                        <span class="gauge-label-low">Low (0%)</span>
+                        <span class="gauge-label-medium">Medium (50%)</span>
+                        <span class="gauge-label-high">High (100%)</span>
+                    </div>
+                </div>
+
                 ${indicators.length > 0 ? `
                     <h3>Detected Indicators:</h3>
                     <ul>
