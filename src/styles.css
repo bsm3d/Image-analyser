@@ -432,7 +432,7 @@ section {
 }
 
 .exif-full-width .exif-items-grid {
-    padding-top: 10px;
+    padding-top: 20px;
 }
 
 .analysis-container {
@@ -645,7 +645,7 @@ input[type="file"]:hover {
 }
 
 #imagePreview {
-    display: block;
+    display: none;
     width: 100%;
     max-width: 100%;
     height: auto;
