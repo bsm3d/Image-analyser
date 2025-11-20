@@ -104,7 +104,7 @@ class ImageAnalyzer {
                     (y * width + x+1) * 4
                 ];
 
-                // Analyse de variation locale
+                // Local variation analysis
                 let localVariation = 0;
                 let gradientCount = 0;
                 surrounding.forEach(sIdx => {
@@ -117,7 +117,7 @@ class ImageAnalyzer {
 
                 if (localVariation < 50) uniformity++;
                 if (localVariation > 200) complexity++;
-                if (gradientCount >= 3) unnaturalGradients++; // Détection de dégradés trop parfaits
+                if (gradientCount >= 3) unnaturalGradients++; // Detection of too perfect gradients
             }
         }
 
@@ -140,10 +140,10 @@ class ImageAnalyzer {
             const g = data[i+1];
             const b = data[i+2];
 
-            // Analyse des couleurs uniques
+            // Unique colors analysis
             colors.add(`${Math.floor(r/8)},${Math.floor(g/8)},${Math.floor(b/8)}`);
 
-            // Calcul de la saturation
+            // Calculate saturation
             const max = Math.max(r, g, b);
             const min = Math.min(r, g, b);
             const saturation = max === 0 ? 0 : (max - min) / max;
@@ -379,25 +379,25 @@ class ImageAnalyzer {
 calculateScore(analysis) {
     let score = 0;
 
-    // 1. Analyse des Patterns (25 points)
+    // 1. Pattern Analysis (25 points)
     if (analysis.patterns.repeatingPatterns > 0.35) score += 12;
     if (analysis.patterns.sharpEdges > 0.18) score += 13;
 
-    // 2. Analyse des Textures (20 points)
+    // 2. Texture Analysis (20 points)
     if (analysis.textures.uniformity > 0.7) score += 8;
     if (analysis.textures.unnaturalGradients > 0.45) score += 8;
     if (analysis.textures.complexity < 0.15) score += 4;
 
-    // 3. Analyse des Couleurs (20 points)
+    // 3. Color Analysis (20 points)
     if (analysis.colors.colorBanding > 0.35) score += 7;
     if (analysis.colors.uniqueColors < 400) score += 7;
     if (analysis.colors.saturationVariance < 0.08) score += 6;
 
-    // 4. Symétrie (8 points)
+    // 4. Symmetry (8 points)
     if (analysis.symmetry.horizontalSymmetry > 0.85) score += 4;
     if (analysis.symmetry.verticalSymmetry > 0.85) score += 4;
 
-    // 5. Analyse du Bruit (10 points)
+    // 5. Noise Analysis (10 points)
     if (analysis.noise.artificialNoise > 0.35) score += 6;
     if (analysis.noise.naturalNoise < 0.03) score += 4;
 
