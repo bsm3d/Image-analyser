@@ -153,25 +153,173 @@ Limitations:
    - AI-generated images often show regular noise patterns
    - Suspicious perfect transitions
 
+## Analysis Methods Explained
+
+### Understanding the Analysis Metrics
+
+Image Analyzer uses a multi-vector approach with **seven core analysis categories** (scoring up to 100 points total). Each category examines specific characteristics that distinguish AI-generated images from real photographs.
+
+#### 1. Pattern Analysis (25 points max)
+**What it detects:**
+- **Repeating Patterns**: Identifies unnaturally repetitive visual elements common in AI generation
+- **Sharp Edges**: Measures edge sharpness and artificial transitions
+
+**How to interpret:**
+- ⚠️ **High scores (>12 points)**: Strong indication of repeating patterns typical of AI
+- ✓ **Low scores (<8 points)**: Natural variation suggests authentic photography
+- Threshold: `repeatingPatterns > 0.35` or `sharpEdges > 0.18` triggers detection
+
+#### 2. Texture Analysis (20 points max)
+**What it detects:**
+- **Uniformity**: Measures texture consistency across the image
+- **Unnatural Gradients**: Detects mathematically perfect color transitions
+- **Complexity**: Analyzes texture detail level
+
+**How to interpret:**
+- ⚠️ **High uniformity (>0.7)**: AI tends to create overly smooth textures
+- ⚠️ **Perfect gradients (>0.45)**: Suggests algorithmic generation
+- ✓ **High complexity (>0.25)**: Natural textures have irregular detail
+- AI-generated images often score 12-16 points in this category
+
+#### 3. Color Analysis (20 points max)
+**What it detects:**
+- **Color Banding**: Identifies posterization and limited color gradations
+- **Unique Colors**: Counts distinct color values (real photos typically have 1000+ unique colors)
+- **Saturation Variance**: Measures variation in color saturation
+
+**How to interpret:**
+- ⚠️ **Few unique colors (<400)**: AI often optimizes to limited palette
+- ⚠️ **High color banding (>0.35)**: Suggests color quantization
+- ⚠️ **Low saturation variance (<0.08)**: Unnatural color consistency
+- Real photos typically have high color diversity and natural variation
+
+#### 4. Symmetry Detection (8 points max)
+**What it detects:**
+- **Horizontal/Vertical Symmetry**: Measures bilateral symmetry in the image
+
+**How to interpret:**
+- ⚠️ **High symmetry (>0.85)**: AI generators often create unnaturally symmetric compositions
+- ✓ **Natural asymmetry (<0.70)**: Real-world scenes rarely have perfect symmetry
+- Particularly useful for detecting AI-generated faces, architecture, and centered compositions
+
+#### 5. Noise Analysis (10 points max)
+**What it detects:**
+- **Artificial Noise**: Identifies regular, patterned noise characteristic of AI
+- **Natural Noise**: Detects random noise from camera sensors
+
+**How to interpret:**
+- ⚠️ **High artificial noise (>0.35)**: Suggests algorithmic generation
+- ✓ **Natural noise present (>0.05)**: Camera sensor noise indicates real photography
+- Real photos have random grain; AI images often have suspiciously clean or patterned noise
+
+#### 6. Compression Artifacts (7 points max)
+**What it detects:**
+- **Compression Artifacts**: Analyzes JPEG compression patterns
+- **Perfect Edges**: Identifies unnaturally clean edges
+
+**How to interpret:**
+- ⚠️ **Unusual compression patterns (>0.35)**: May indicate post-generation processing
+- ⚠️ **Perfect edges (>0.25)**: Real photos have natural edge degradation
+- Note: This metric can be ambiguous as both real and AI images undergo compression
+
+#### 7. JPEG Block Detection (5 points max) - NEW in v1.0
+**What it detects:**
+- **8x8 DCT Blocks**: Analyzes JPEG compression block boundaries
+- **Block Boundary Consistency**: Detects anomalies in compression block patterns
+
+**How to interpret:**
+- ⚠️ **High block score (>0.6)**: Unusual JPEG block patterns
+- ✓ **Normal blocks (0.3-0.5)**: Expected JPEG compression structure
+- AI generators sometimes leave telltale patterns in block boundaries
+
+#### 8. Frequency Analysis (5 points max) - NEW in v1.0
+**What it detects:**
+- **High-frequency details**: Measures fine detail preservation
+- **Smoothness**: Analyzes overall image smoothness
+
+**How to interpret:**
+- ⚠️ **Low frequency ratio (<0.15)**: Overly smooth, lacking natural detail
+- ✓ **Balanced frequencies**: Real photos maintain detail across frequency spectrum
+- AI images often appear "too perfect" with reduced high-frequency content
+
+### Interactive Analysis Tools
+
+#### Visual Overlay Tools
+- **Heatmap Visualization**: Color-coded overlay highlighting suspicious regions (red = high AI probability)
+- **Edge Detection**: Sobel filter reveals edge characteristics and artifacts
+- **Block Analysis**: Visualizes 8x8 compression blocks and repetitive patterns
+- **RGB Channel Separation**: Examine individual color channels for inconsistencies
+
+#### Inspection Tools
+- **8x Magnification**: Pixel-level inspection with grid overlay for micro-detail analysis
+- **Pixel Information**: Real-time RGBA values on hover
+- **RGB Histogram**: Real-time color distribution analysis
+
+#### Enhancement Tools
+- **Brightness/Contrast Controls**: Reveal hidden artifacts and editing traces
+- **Blacklight UV Mode**: Simulates ultraviolet light to expose fluorescent anomalies
+- **Infrared Mode**: False-color IR visualization for material inconsistencies
+
+### Score Interpretation Guidelines
+
+**Total Score Range: 0-100 points**
+
+- **0-30 points**: Likely authentic photograph
+  - Multiple natural characteristics
+  - Random noise patterns
+  - Natural color variance
+  - EXIF data present (strong indicator)
+
+- **31-50 points**: Inconclusive / Borderline
+  - Mixed indicators
+  - May be edited photo or simple AI generation
+  - Requires manual inspection with tools
+  - Check EXIF data and metadata
+
+- **51-70 points**: Probably AI-generated
+  - Multiple AI indicators present
+  - Unnatural patterns detected
+  - Limited color palette
+  - Use visual tools to verify
+
+- **71-100 points**: Highly likely AI-generated
+  - Strong AI characteristics across multiple categories
+  - Perfect patterns and symmetry
+  - Artificial noise patterns
+  - Typically lacks authentic EXIF data
+
+### Best Practice Analysis Workflow
+
+1. **Initial Upload**: Review overall score and category breakdown
+2. **EXIF Check**: Verify metadata presence and consistency
+3. **Visual Tools**: Use heatmap and edge detection overlays
+4. **Magnification**: Inspect suspicious areas at 8x zoom
+5. **Color Analysis**: Check RGB histogram and channel separation
+6. **Enhancement**: Adjust brightness/contrast to reveal artifacts
+7. **Training Mode** (optional): Compare against known real/AI samples
+
+**Important Reminder**: No tool provides 100% certainty. Use this analysis as part of a broader verification process, combining technical metrics with contextual understanding and human judgment.
+
 ## Usage Guidelines
 
 ### 1. Basic Analysis
 - Upload image for quick analysis
-- Review overall probability score
-- Check detected indicators
-- Examine EXIF data
+- Review overall probability score and category breakdown
+- Check detected indicators and understand their meaning
+- Examine EXIF data for authenticity markers
 
 ### 2. Deep Analysis Mode
-- Load multiple reference images
-- Generate comparative analysis
-- Review detailed statistical reports
-- Use for higher precision requirements
+- Load multiple reference images (minimum 5 real + 5 AI)
+- Generate comparative analysis with statistical reports
+- Review detailed characteristic averages
+- Use for higher precision requirements and custom threshold calibration
 
 ### 3. Best Practices
-- Combine tool results with human judgment
-- Consider context and image source
-- Use multiple detection methods
-- Maintain critical analysis
+- **Multi-factor approach**: Never rely on a single metric
+- **Context matters**: Consider image source, purpose, and provenance
+- **Use visual tools**: Heatmaps and overlays reveal hidden details
+- **Compare with training set**: Build your own reference library
+- **Maintain critical analysis**: Technology evolves rapidly; stay updated
 
 ## Technical Requirements
 - Modern web browser

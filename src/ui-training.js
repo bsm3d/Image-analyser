@@ -139,7 +139,7 @@ class AITrainingUI {
 
         ctx.drawImage(img, x, y, width, height);
 
-        // Bouton de suppression
+        // Remove button
         const removeBtn = document.createElement('button');
         removeBtn.className = 'remove-image';
         removeBtn.innerHTML = '×';
@@ -332,7 +332,7 @@ ${JSON.stringify(this.aiDetector.thresholds, null, 2)}
             };
         }
 
-        // Analyser chaque image
+        // Analyze each image
         const analysisResults = await Promise.all(images.map(async img => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');

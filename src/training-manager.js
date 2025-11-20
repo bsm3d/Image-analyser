@@ -27,20 +27,20 @@ class TrainingManager {
         console.log('Training mode started');
     }
 
-    // Arrête le mode d'entraînement et lance l'analyse
+    // Stops training mode and launches analysis
     stopTraining() {
         if (!this.trainingMode) {
             console.warn('No training in progress');
             return false;
         }
 
-        // Vérifier qu'on a suffisamment d'échantillons
+        // Check that we have enough samples
         if (this.trainingSet.aiImages.length < 5 || this.trainingSet.realImages.length < 5) {
             console.error('Not enough samples for training');
             return false;
         }
 
-        // Entraîner le détecteur
+        // Train the detector
         try {
             this.aiDetector.trainModel(this.trainingSet.aiImages, 'ai');
             this.aiDetector.trainModel(this.trainingSet.realImages, 'real');
@@ -55,27 +55,27 @@ class TrainingManager {
         }
     }
 
-    // Ajoute une image à l'ensemble d'entraînement
+    // Adds an image to the training set
     addImage(image, type) {
         if (!this.trainingMode) {
             console.warn('Training mode is not active');
             return false;
         }
 
-        // Valider le type d'image
+        // Validate the image type
         if (type !== 'ai' && type !== 'real') {
             console.error('Invalid image type');
             return false;
         }
 
-        // Ajouter l'image
+        // Add the image
         this.trainingSet[`${type}Images`].push(image);
-        
-        console.log(`Image ajoutée (${type}). Total: ${this.trainingSet[`${type}Images`].length}`);
+
+        console.log(`Image added (${type}). Total: ${this.trainingSet[`${type}Images`].length}`);
         return true;
     }
 
-    // Exporte les données d'entraînement
+    // Exports training data
     exportTrainingData() {
         return {
             aiImagesCount: this.trainingSet.aiImages.length,
@@ -84,14 +84,14 @@ class TrainingManager {
         };
     }
 
-    // Importe des données d'entraînement précédentes
+    // Imports previous training data
     importTrainingData(data) {
         try {
-            // Restaurer les seuils si présents
+            // Restore thresholds if present
             if (data.aiThresholds) {
                 this.aiDetector.thresholds = data.aiThresholds;
             }
-            
+
             console.log('Training data imported');
             return true;
         } catch (error) {
@@ -100,7 +100,7 @@ class TrainingManager {
         }
     }
 
-    // Réinitialise complètement l'entraînement
+    // Completely resets training
     reset() {
         this.trainingMode = false;
         this.trainingSet = {
@@ -112,7 +112,7 @@ class TrainingManager {
         console.log('Full reset');
     }
 
-    // Analyse statistique des images d'entraînement
+    // Statistical analysis of training images
     getTrainingStatistics() {
         return {
             aiImages: {
@@ -126,11 +126,11 @@ class TrainingManager {
         };
     }
 
-    // Analyse détaillée d'un ensemble d'images
+    // Detailed analysis of a set of images
     analyzeImageSet(imageSet) {
         if (!imageSet || imageSet.length === 0) return null;
 
-        // Analyse des caractéristiques moyennes with caching
+        // Analysis of average characteristics with caching
         const analyses = imageSet.map(img => {
             // Check cache first
             if (this.analysisCache.has(img)) {
@@ -141,8 +141,8 @@ class TrainingManager {
             this.analysisCache.set(img, analysis);
             return analysis;
         });
-        
-        // Calcul des moyennes pour chaque catégorie
+
+        // Calculate averages for each category
         const averageCharacteristics = {
             patterns: {
                 repeatingPatterns: this.calculateAverage(analyses, 'patterns', 'repeatingPatterns'),

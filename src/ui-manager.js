@@ -552,15 +552,15 @@ async drawImage(img, dimensions) {
         try {
             console.log('Starting image analysis');
 
-            // Analyser l'image pour détecter les caractéristiques d'IA
+            // Analyze the image to detect AI characteristics
             const analysis = await this.imageAnalyzer.analyze(img);
             console.log('Analysis completed:', analysis);
 
-            // Lire les métadonnées EXIF
+            // Read EXIF metadata
             const exifData = await this.exifReader.readExif(file);
             console.log('EXIF data read:', exifData);
 
-            // Calculer le score et afficher les résultats
+            // Calculate score and display results
             const score = this.imageAnalyzer.calculateScore(analysis);
             const indicators = this.imageAnalyzer.getIndicators(analysis);
 
