@@ -96,12 +96,6 @@ body {
     border-bottom: 1px solid var(--border-color);
 }
 
-.app-header > * {
-    max-width: var(--container-max-width);
-    margin-left: auto;
-    margin-right: auto;
-}
-
 .app-header h1 {
     font-family: 'Segoe UI Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 3rem;
@@ -421,8 +415,9 @@ section {
     top: 0;
     background: var(--bg-medium);
     z-index: 10;
-    padding-bottom: 15px;
+    padding: 15px 0;
     margin-top: 0;
+    border-bottom: 1px solid var(--border-accent);
 }
 
 .analysis-container {
@@ -491,6 +486,12 @@ button:disabled {
     border-radius: 8px;
     justify-content: flex-start;
     width: 100%;
+}
+
+#analysisToolsContainer button {
+    padding: 10px 16px;
+    font-size: 14px;
+    flex-shrink: 0;
 }
 
 /* ============================================
@@ -1065,8 +1066,8 @@ input[type="file"]:hover {
    ============================================ */
 .zoom-controls {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
     display: flex;
     gap: 8px;
     z-index: 1000;
