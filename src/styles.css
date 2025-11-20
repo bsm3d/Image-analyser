@@ -416,6 +416,15 @@ section {
     overflow-y: auto;
 }
 
+.exif-full-width h2 {
+    position: sticky;
+    top: 0;
+    background: var(--bg-medium);
+    z-index: 10;
+    padding-bottom: 15px;
+    margin-top: 0;
+}
+
 .analysis-container {
     width: 100%;
 }
