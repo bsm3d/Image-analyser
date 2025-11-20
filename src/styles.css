@@ -409,30 +409,25 @@ section {
     margin-top: 30px;
 }
 
-/* BUG FIX 5: EXIF Data sticky header - Background opaque pour meilleure lisibilité */
 .exif-full-width {
-    max-height: 600px;
-    overflow-y: auto;
     position: relative;
 }
 
 .exif-full-width h2 {
-    position: sticky;
-    top: 0;
-    background: #0a1525; /* Fix: Background opaque au lieu de var(--bg-medium) rgba(10, 21, 37, 0.92) */
-    z-index: 10;
-    padding: 15px 0;
+    padding: 15px 25px;
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     border-bottom: 1px solid var(--border-accent);
 }
 
 .exif-full-width .data-panel {
-    padding-top: 0;
+    padding: 0;
 }
 
-.exif-full-width .exif-items-grid {
-    padding-top: 20px;
+.exif-scrollable-content {
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 20px 25px;
 }
 
 .analysis-container {
@@ -775,13 +770,13 @@ input[type="file"]:hover {
 .exif-items-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-top: 20px;
+    gap: 8px;
+    margin-top: 0;
 }
 
 .exif-item {
     background: rgba(0, 0, 0, 0.4);
-    padding: 15px;
+    padding: 10px 12px;
     border-radius: 6px;
     border: 1px solid rgba(52, 152, 219, 0.2);
     transition: all 0.3s ease;

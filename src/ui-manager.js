@@ -640,20 +640,24 @@ async drawImage(img, dimensions) {
         if (exifData && Object.keys(exifData).length > 0) {
             this.exifDataElement.innerHTML = `
                 <h2>EXIF Metadata</h2>
-                <div class="exif-items-grid">
-                    ${Object.entries(exifData)
-                        .map(([key, value]) => `
-                            <div class="exif-item">
-                                <strong>${key}</strong>
-                                <div>${value}</div>
-                            </div>
-                        `).join('')}
+                <div class="exif-scrollable-content">
+                    <div class="exif-items-grid">
+                        ${Object.entries(exifData)
+                            .map(([key, value]) => `
+                                <div class="exif-item">
+                                    <strong>${key}</strong>
+                                    <div>${value}</div>
+                                </div>
+                            `).join('')}
+                    </div>
                 </div>
             `;
         } else {
             this.exifDataElement.innerHTML = `
                 <h2>EXIF Metadata</h2>
-                <p>No EXIF data found in the image</p>
+                <div class="exif-scrollable-content">
+                    <p>No EXIF data found in the image</p>
+                </div>
             `;
         }
     }
