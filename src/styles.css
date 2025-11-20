@@ -105,16 +105,19 @@ body {
     margin: 0 0 10px 0;
 }
 
+/* BUG FIX 1: Centrage Header - Assurer l'alignement centré du sous-titre et version */
 .app-header .subtitle {
     font-size: 1.3rem;
     color: var(--h3-color);
     margin: 10px 0;
+    text-align: center; /* Fix: Centrage explicite */
 }
 
 .app-header .version-info {
     font-size: 0.95rem;
     color: var(--text-color);
     margin: 10px 0 0 0;
+    text-align: center; /* Fix: Centrage explicite */
 }
 
 .app-footer {
@@ -155,10 +158,11 @@ body {
 /* ============================================
    CONTAINER & LAYOUT
    ============================================ */
+/* BUG FIX 3: Largeur pleine page - Supprimer les marges latérales */
 .container {
     width: 100%;
     margin: 20px 0;
-    padding: 35px 5%;
+    padding: 35px 0; /* Fix: 5% → 0 pour occuper toute la largeur sans marges latérales */
     background-color: var(--bg-medium);
 }
 
@@ -405,6 +409,7 @@ section {
     margin-top: 30px;
 }
 
+/* BUG FIX 5: EXIF Data sticky header - Background opaque pour meilleure lisibilité */
 .exif-full-width {
     max-height: 600px;
     overflow-y: auto;
@@ -413,7 +418,7 @@ section {
 .exif-full-width h2 {
     position: sticky;
     top: 0;
-    background: var(--bg-medium);
+    background: #0a1525; /* Fix: Background opaque au lieu de var(--bg-medium) rgba(10, 21, 37, 0.92) */
     z-index: 10;
     padding: 15px 0;
     margin-top: 0;
@@ -619,12 +624,14 @@ input[type="file"]:hover {
 /* ============================================
    IMAGE DISPLAY & CANVAS
    ============================================ */
+/* BUG FIX 4: Hauteur zone bienvenue - Réduire l'espace vide initial */
 .canvas-container {
     position: relative;
     display: block;
     width: 100%;
     max-width: 100%;
     overflow: hidden;
+    min-height: 300px; /* Fix: Hauteur minimale réduite pour éviter espace vide excessif */
 }
 
 #imagePreview {
@@ -633,12 +640,14 @@ input[type="file"]:hover {
     max-width: 100%;
     height: auto;
     object-fit: contain;
+    min-height: 300px; /* Fix: Hauteur minimale cohérente avec container */
 }
 
 .canvas-container canvas {
     display: block;
     max-width: 100%;
     height: auto;
+    min-height: 300px; /* Fix: Hauteur minimale pour tous les canvas */
 }
 #imageContainer,
 #exifImageContainer {
@@ -1064,10 +1073,11 @@ input[type="file"]:hover {
 /* ============================================
    ZOOM CONTROLS OVERLAY
    ============================================ */
+/* BUG FIX 2: Positionnement Zoom Controls - Dégager le scrollbar vertical */
 .zoom-controls {
     position: absolute;
     top: 15px;
-    right: 15px;
+    right: 35px; /* Fix: 15px → 35px pour éviter chevauchement avec scrollbar (12px + marge) */
     display: flex;
     gap: 8px;
     z-index: 1000;
