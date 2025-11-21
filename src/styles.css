@@ -166,6 +166,13 @@ body {
     background-color: var(--bg-medium);
 }
 
+/* Documentation pages only - centered container with padding */
+body:has(section) .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 40px;
+}
+
 .main-content {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -377,15 +384,112 @@ table tr:hover {
 }
 
 /* ============================================
+   CODE BLOCKS & EMPHASIS
+   ============================================ */
+code {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--h3-color);
+    font-size: 0.9em;
+}
+
+pre {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+    font-size: 0.95em;
+}
+
+strong {
+    color: var(--h4-color);
+    font-weight: 600;
+}
+
+em {
+    color: var(--h3-color);
+    font-style: italic;
+}
+
+/* ============================================
    SECTIONS
    ============================================ */
 section {
     margin-bottom: 45px;
 }
 
+/* Documentation section styles */
+section h2 {
+    font-family: 'Segoe UI Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--heading-color);
+    border-bottom: 2px solid var(--border-accent);
+    padding-bottom: 15px;
+    margin: 0 0 30px 0;
+    text-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+}
+
+section h3 {
+    font-size: 1.7rem;
+    color: var(--h3-color);
+    margin: 30px 0 20px;
+    font-weight: 500;
+}
+
+section h4 {
+    font-size: 1.3rem;
+    color: var(--h4-color);
+    margin: 25px 0 15px;
+    font-weight: 500;
+}
+
+section p {
+    margin: 15px 0;
+    line-height: 1.8;
+}
+
+section ul, section ol {
+    margin: 15px 0 15px 30px;
+    line-height: 1.8;
+}
+
+section li {
+    margin: 10px 0;
+}
+
 .param-section {
-    margin-left: 25px;
-    margin-bottom: 30px;
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 4px solid var(--secondary-color);
+    border-radius: 4px;
+    padding: 20px 25px;
+    margin: 25px 0;
+}
+
+.param-section h4 {
+    margin-top: 0;
+    color: var(--h4-color);
+}
+
+.param-section p {
+    margin: 10px 0;
+}
+
+.param-section ul {
+    margin: 15px 0 10px 25px;
+}
+
+.param-section li {
+    margin: 8px 0;
 }
 
 .preview-section,
@@ -1459,6 +1563,77 @@ footer p {
         font-size: 12px;
         padding: 10px 12px;
         min-width: 150px;
+    }
+}
+
+/* ============================================
+   RESPONSIVE FOR DOCUMENTATION PAGES
+   ============================================ */
+@media (max-width: 768px) {
+    .cover-page h1 {
+        font-size: 2.5rem;
+    }
+
+    .cover-page h2 {
+        font-size: 1.5rem;
+    }
+
+    .cover-page {
+        padding: 40px 15px;
+    }
+
+    body:has(section) .container {
+        padding: 30px 20px;
+    }
+
+    section h2 {
+        font-size: 1.8rem;
+    }
+
+    section h3 {
+        font-size: 1.4rem;
+    }
+
+    section h4 {
+        font-size: 1.2rem;
+    }
+
+    #toc-section {
+        padding: 20px;
+    }
+
+    table {
+        font-size: 0.9em;
+    }
+
+    table th, table td {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cover-page {
+        padding: 40px 15px;
+    }
+
+    .cover-page h1 {
+        font-size: 2rem;
+    }
+
+    .cover-page h2 {
+        font-size: 1.2rem;
+    }
+
+    body:has(section) .container {
+        padding: 20px 15px;
+    }
+
+    table {
+        font-size: 0.85em;
+    }
+
+    table th, table td {
+        padding: 8px;
     }
 }
 
