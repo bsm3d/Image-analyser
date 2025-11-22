@@ -379,59 +379,60 @@ class ImageAnalyzer {
 calculateScore(analysis) {
     let score = 0;
 
-    // 1. Pattern Analysis (25 points)
-    if (analysis.patterns.repeatingPatterns > 0.35) score += 12;
-    if (analysis.patterns.sharpEdges > 0.18) score += 13;
+    // 1. Pattern Analysis (20 points)
+    if (analysis.patterns.repeatingPatterns > 0.30) score += 10;
+    if (analysis.patterns.sharpEdges > 0.22) score += 10;
 
     // 2. Texture Analysis (20 points)
-    if (analysis.textures.uniformity > 0.7) score += 8;
-    if (analysis.textures.unnaturalGradients > 0.45) score += 8;
-    if (analysis.textures.complexity < 0.15) score += 4;
+    if (analysis.textures.uniformity > 0.65) score += 7;
+    if (analysis.textures.unnaturalGradients > 0.40) score += 7;
+    if (analysis.textures.complexity < 0.20) score += 6;
 
     // 3. Color Analysis (20 points)
-    if (analysis.colors.colorBanding > 0.35) score += 7;
-    if (analysis.colors.uniqueColors < 400) score += 7;
+    if (analysis.colors.colorBanding > 0.25) score += 7;
+    if (analysis.colors.uniqueColors < 900) score += 7;
     if (analysis.colors.saturationVariance < 0.08) score += 6;
 
     // 4. Symmetry (8 points)
-    if (analysis.symmetry.horizontalSymmetry > 0.85) score += 4;
-    if (analysis.symmetry.verticalSymmetry > 0.85) score += 4;
+    if (analysis.symmetry.horizontalSymmetry > 0.82) score += 4;
+    if (analysis.symmetry.verticalSymmetry > 0.82) score += 4;
 
-    // 5. Noise Analysis (10 points)
-    if (analysis.noise.artificialNoise > 0.35) score += 6;
-    if (analysis.noise.naturalNoise < 0.03) score += 4;
+    // 5. Noise Analysis (12 points)
+    if (analysis.noise.artificialNoise > 0.30) score += 7;
+    if (analysis.noise.naturalNoise < 0.06) score += 5;
 
-    // 6. Artifacts (7 points)
-    if (analysis.artifacts.compressionArtifacts > 0.35) score += 4;
-    if (analysis.artifacts.perfectEdges > 0.25) score += 3;
+    // 6. Artifacts (8 points)
+    if (analysis.artifacts.compressionArtifacts > 0.45) score += 5;
+    if (analysis.artifacts.perfectEdges > 0.20) score += 3;
 
-    // 7. JPEG Blocks (5 points) - New
+    // 7. JPEG Blocks (6 points)
     if (analysis.jpegBlocks && analysis.jpegBlocks.blockiness < 0.05) {
-        score += 5; // Too smooth, suspicious
+        score += 6; // Too smooth, suspicious
     }
 
-    // 8. Frequency Analysis (5 points) - New
+    // 8. Frequency Analysis (6 points)
     if (analysis.frequency) {
-        if (analysis.frequency.balance < 0.15) score += 3; // Too uniform
-        if (analysis.frequency.lowFrequency > 0.6) score += 2; // Overly smooth
+        if (analysis.frequency.balance < 0.18) score += 3; // Too uniform
+        if (analysis.frequency.lowFrequency > 0.55) score += 3; // Overly smooth
     }
 
-    // Vérification supplémentaire pour les images de type événementiel
-    if (this.detectEventPhoto(analysis)) {
-        score = Math.max(8, score * 0.45); // Réduction plus agressive
+    // Check if this is a real photo
+    if (this.detectRealPhoto(analysis)) {
+        score = Math.max(5, score * 0.4); // Significant reduction for real photos
     }
 
     return Math.min(100, Math.max(0, score));
 }
 
-detectEventPhoto(analysis) {
-    // Critères plus stricts pour identifier une photo réelle
+detectRealPhoto(analysis) {
+    // Criteria to identify a real photo (not AI-generated)
     return (
-        analysis.textures.complexity > 0.35 && // Textures plus complexes
-        analysis.noise.naturalNoise > 0.15 && // Plus de bruit naturel
-        analysis.colors.saturationVariance > 0.15 && // Variation de couleurs plus naturelle
-        (analysis.symmetry.horizontalSymmetry < 0.6 || 
-         analysis.symmetry.verticalSymmetry < 0.6) // Moins de symétrie
+        analysis.textures.complexity > 0.28 && // Natural complexity
+        analysis.noise.naturalNoise > 0.10 && // Natural noise present
+        analysis.colors.uniqueColors > 1200 && // Rich color palette
+        analysis.colors.saturationVariance > 0.12 && // Natural color variation
+        (analysis.symmetry.horizontalSymmetry < 0.70 ||
+         analysis.symmetry.verticalSymmetry < 0.70) // Natural asymmetry
     );
 }
 
