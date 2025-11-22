@@ -597,7 +597,7 @@ async drawImage(img, dimensions) {
 
                 console.log('AI analysis completed:', result);
 
-                score = result.score;
+                score = Math.round(result.score); // Fix round number display
                 indicators = result.indicators;
                 analysis = result.analysis;
 
