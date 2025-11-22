@@ -10,6 +10,9 @@ class UIManager {
     constructor() {
         console.log('Initializing UIManager...');
 
+        // Analysis mode
+        this.analysisMode = 'heuristic';
+
         // Éléments du DOM
         this.imageInput = document.getElementById('imageInput');
         this.canvas = document.getElementById('imagePreview');
@@ -45,8 +48,12 @@ class UIManager {
             if (typeof ExportManager === 'undefined') {
                 throw new Error('ExportManager not defined');
             }
+            if (typeof AIDetector === 'undefined') {
+                throw new Error('AIDetector not defined');
+            }
 
             this.imageAnalyzer = new ImageAnalyzer(this.canvas);
+            this.aiDetector = new AIDetector();
             this.exifReader = new ExifReader();
             this.exportManager = new ExportManager();
 
@@ -221,6 +228,22 @@ class UIManager {
     }
 
     bindEvents() {
+        // Analysis mode selector
+        const analysisModeSelect = document.getElementById('analysisModeSelect');
+        const openTrainingModeBtn = document.getElementById('openTrainingMode');
+
+        if (analysisModeSelect) {
+            analysisModeSelect.addEventListener('change', (e) => {
+                this.analysisMode = e.target.value;
+                console.log('Analysis mode changed to:', this.analysisMode);
+
+                // Show/hide training mode button based on selected mode
+                if (openTrainingModeBtn) {
+                    openTrainingModeBtn.style.display = this.analysisMode === 'ai' ? 'inline-block' : 'none';
+                }
+            });
+        }
+
         // Gérer le chargement d'image
         if (this.imageInput) {
             this.imageInput.addEventListener('change', (e) => {
@@ -550,19 +573,42 @@ async drawImage(img, dimensions) {
 
     async analyzeImage(img, file) {
         try {
-            console.log('Starting image analysis');
+            console.log('Starting image analysis in', this.analysisMode, 'mode');
 
-            // Analyze the image to detect AI characteristics
-            const analysis = await this.imageAnalyzer.analyze(img);
-            console.log('Analysis completed:', analysis);
+            let score, indicators, analysis;
+
+            if (this.analysisMode === 'heuristic') {
+                // Heuristic mode: use ImageAnalyzer
+                analysis = await this.imageAnalyzer.analyze(img);
+                console.log('Heuristic analysis completed:', analysis);
+
+                score = this.imageAnalyzer.calculateScore(analysis);
+                indicators = this.imageAnalyzer.getIndicators(analysis);
+            } else {
+                // AI mode: use AIDetector
+                const tempCanvas = document.createElement('canvas');
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCanvas.width = img.width;
+                tempCanvas.height = img.height;
+                tempCtx.drawImage(img, 0, 0, img.width, img.height);
+
+                const imageData = tempCtx.getImageData(0, 0, img.width, img.height);
+                const result = this.aiDetector.analyzeImage(imageData);
+
+                console.log('AI analysis completed:', result);
+
+                score = result.score;
+                indicators = result.indicators;
+                analysis = result.analysis;
+
+                // Clean up
+                tempCanvas.width = 0;
+                tempCanvas.height = 0;
+            }
 
             // Read EXIF metadata
             const exifData = await this.exifReader.readExif(file);
             console.log('EXIF data read:', exifData);
-
-            // Calculate score and display results
-            const score = this.imageAnalyzer.calculateScore(analysis);
-            const indicators = this.imageAnalyzer.getIndicators(analysis);
 
             // Store analysis for heatmap
             this.currentAnalysis = analysis;
