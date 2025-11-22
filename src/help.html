@@ -472,7 +472,76 @@
 
         <!-- SECTION 5: EXPORT & TRAINING -->
         <section id="export-training">
-            <h2>5. Export Options & Training Mode</h2>
+            <h2>5. Analysis Modes, Export Options & Training</h2>
+
+            <h3>Analysis Modes</h3>
+            <p>Image Analyzer offers two distinct analysis modes, each with different detection approaches. Use the <strong>Analysis Mode Selector</strong> dropdown in the main interface to switch between them.</p>
+
+            <div class="param-section">
+                <h4>Heuristic Analysis Mode (Default)</h4>
+                <p>Uses fixed, recalibrated thresholds based on statistical analysis of known AI and real images. This mode:</p>
+                <ul>
+                    <li><strong>Fixed Thresholds:</strong> Uses predetermined detection thresholds optimized for general use</li>
+                    <li><strong>Fast Analysis:</strong> Immediate results without requiring training data</li>
+                    <li><strong>Consistent Results:</strong> Same thresholds applied to all images</li>
+                    <li><strong>Best For:</strong> General purpose analysis, quick checks, unknown image sources</li>
+                    <li><strong>Detection Criteria:</strong> Pattern repetition, texture uniformity, color palette, noise characteristics</li>
+                </ul>
+            </div>
+
+            <div class="param-section">
+                <h4>AI Trainable Analysis Mode</h4>
+                <p>Uses adaptive thresholds that can be customized through the Training Mode. This mode:</p>
+                <ul>
+                    <li><strong>Adaptive Thresholds:</strong> Detection thresholds adjust based on your training samples</li>
+                    <li><strong>Customizable:</strong> Fine-tune detection for specific AI generators or image types</li>
+                    <li><strong>Learning Capability:</strong> Improves accuracy when trained with verified samples</li>
+                    <li><strong>Best For:</strong> Specialized analysis, specific AI generators (Midjourney, DALL-E, etc.), domain-specific detection</li>
+                    <li><strong>Requires Training:</strong> Most effective after training with known AI and real image samples</li>
+                </ul>
+            </div>
+
+            <h4>Which Mode Should You Use?</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Situation</th>
+                        <th>Recommended Mode</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>General image verification</td>
+                        <td>Heuristic</td>
+                        <td>No training required, reliable for most cases</td>
+                    </tr>
+                    <tr>
+                        <td>Unknown image sources</td>
+                        <td>Heuristic</td>
+                        <td>Broad detection coverage</td>
+                    </tr>
+                    <tr>
+                        <td>Specific AI generator (Midjourney, DALL-E)</td>
+                        <td>AI Trainable (after training)</td>
+                        <td>Can be optimized for generator's characteristics</td>
+                    </tr>
+                    <tr>
+                        <td>Batch analysis of similar images</td>
+                        <td>AI Trainable (after training)</td>
+                        <td>Learns patterns specific to your dataset</td>
+                    </tr>
+                    <tr>
+                        <td>First-time use</td>
+                        <td>Heuristic</td>
+                        <td>Works immediately without setup</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <p><strong>Pro Tip:</strong> When switching to AI Trainable mode, the <strong>Training Mode</strong> button becomes visible. Use it to train the detector with your verified AI and real image samples for improved accuracy.</p>
+            </div>
 
             <h3>Export Functionality</h3>
             <p>Image Analyzer allows you to export analysis results in multiple formats for documentation, further analysis, or integration with other tools.</p>

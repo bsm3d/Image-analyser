@@ -333,15 +333,17 @@ class AIDetector {
             details.sharpEdges = patternScore;
         }
 
-        if (analysis.patterns.repeatingPatterns < this.thresholds.patterns.repeatingPatterns) {
-            const repeatScore = (1 - analysis.patterns.repeatingPatterns / this.thresholds.patterns.repeatingPatterns) * 10;
+        // FIXED: More repeating patterns = more AI (was inverted)
+        if (analysis.patterns.repeatingPatterns > this.thresholds.patterns.repeatingPatterns) {
+            const repeatScore = (analysis.patterns.repeatingPatterns / this.thresholds.patterns.repeatingPatterns) * 10;
             score += Math.min(repeatScore, 10);
             details.repeatingPatterns = repeatScore;
         }
 
         // Texture analysis
-        if (analysis.textures.uniformity < this.thresholds.textures.uniformity) {
-            const uniformityScore = (1 - analysis.textures.uniformity / this.thresholds.textures.uniformity) * 20;
+        // FIXED: More uniformity = more AI (was inverted)
+        if (analysis.textures.uniformity > this.thresholds.textures.uniformity) {
+            const uniformityScore = (analysis.textures.uniformity / this.thresholds.textures.uniformity) * 20;
             score += Math.min(uniformityScore, 20);
             details.uniformity = uniformityScore;
         }
@@ -359,14 +361,16 @@ class AIDetector {
         }
 
         // Color analysis
-        if (analysis.colors.uniqueColors > this.thresholds.colors.uniqueColors) {
-            const colorScore = ((analysis.colors.uniqueColors - this.thresholds.colors.uniqueColors) / this.thresholds.colors.uniqueColors) * 15;
+        // FIXED: Fewer unique colors = more AI (was inverted)
+        if (analysis.colors.uniqueColors < this.thresholds.colors.uniqueColors) {
+            const colorScore = (1 - analysis.colors.uniqueColors / this.thresholds.colors.uniqueColors) * 15;
             score += Math.min(colorScore, 15);
             details.uniqueColors = colorScore;
         }
 
-        if (analysis.colors.colorBanding < this.thresholds.colors.colorBanding) {
-            const bandingScore = (1 - analysis.colors.colorBanding / this.thresholds.colors.colorBanding) * 10;
+        // FIXED: More color banding = more AI (was inverted)
+        if (analysis.colors.colorBanding > this.thresholds.colors.colorBanding) {
+            const bandingScore = (analysis.colors.colorBanding / this.thresholds.colors.colorBanding) * 10;
             score += Math.min(bandingScore, 10);
             details.colorBanding = bandingScore;
         }
@@ -402,13 +406,15 @@ class AIDetector {
         if (analysis.patterns.sharpEdges > this.thresholds.patterns.sharpEdges) {
             indicators.push("Artificial sharp edges detected");
         }
-        if (analysis.patterns.repeatingPatterns < this.thresholds.patterns.repeatingPatterns) {
-            indicators.push("Unusual absence of repeating patterns");
+        // FIXED: More repeating patterns = more AI
+        if (analysis.patterns.repeatingPatterns > this.thresholds.patterns.repeatingPatterns) {
+            indicators.push("Excessive repeating patterns detected");
         }
 
         // Textures
-        if (analysis.textures.uniformity < this.thresholds.textures.uniformity) {
-            indicators.push("Characteristic lack of uniformity");
+        // FIXED: More uniformity = more AI
+        if (analysis.textures.uniformity > this.thresholds.textures.uniformity) {
+            indicators.push("Abnormally uniform textures");
         }
         if (analysis.textures.complexity > this.thresholds.textures.complexity) {
             indicators.push("Abnormally high complexity");
@@ -418,11 +424,13 @@ class AIDetector {
         }
 
         // Colors
-        if (analysis.colors.uniqueColors > this.thresholds.colors.uniqueColors) {
-            indicators.push("Unusual number of unique colors");
+        // FIXED: Fewer unique colors = more AI
+        if (analysis.colors.uniqueColors < this.thresholds.colors.uniqueColors) {
+            indicators.push("Limited color palette");
         }
-        if (analysis.colors.colorBanding < this.thresholds.colors.colorBanding) {
-            indicators.push("Atypical color distribution");
+        // FIXED: More color banding = more AI
+        if (analysis.colors.colorBanding > this.thresholds.colors.colorBanding) {
+            indicators.push("Artificial color banding detected");
         }
 
         // Noise
